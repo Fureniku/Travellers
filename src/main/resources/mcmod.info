@@ -1,0 +1,16 @@
+[
+{
+  "modid": "travellers",
+  "name": "Travellers",
+  "description": "Worlds Adrift - In Minecraft!",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "http://www.silvaniastudios.com/mods/",
+  "updateUrl": "http://www.silvaniastudios.com/mods/update/worlds-acraft.json",
+  "authorList": ["Fureniku", "JamesM2W", "Node"],
+  "credits": "Bossa Studios & the Worlds Adrift team, the Worlds Adrift community (discord.gg/worldsadrift)",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

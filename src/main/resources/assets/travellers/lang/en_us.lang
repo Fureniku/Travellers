@@ -1,0 +1,97 @@
+tile.ore_aluminium.name=Aluminium Ore
+tile.ore_titanium.name=Titanium Ore
+tile.ore_tin.name=Tin Ore
+tile.ore_iron.name=Iron Ore
+tile.ore_bronze.name=Bronze Ore
+tile.ore_nickel.name=Nickel Ore
+tile.ore_orthite.name=Orthite Ore
+tile.ore_epilar.name=Epilar Ore
+tile.ore_steel.name=Steel Ore
+tile.ore_eternium.name=Eternium Ore
+tile.ore_copper.name=Copper Ore
+tile.ore_lead.name=Lead Ore
+tile.ore_silver.name=Silver Ore
+tile.ore_tungsten.name=Tungsten Ore
+tile.ore_gold.name=Gold Ore
+
+item.shard_atlas.name=Atlas Shard
+item.scrap_aluminium.name=Aluminium Scrap
+item.scrap_titanium.name=Titanium Scrap
+item.scrap_tin.name=Tin Scrap
+item.scrap_iron.name=Iron Scrap
+item.scrap_bronze.name=Bronze Scrap
+item.scrap_nickel.name=Nickel Scrap
+item.scrap_orthite.name=Orthite Scrap
+item.scrap_epilar.name=Epilar Scrap
+item.scrap_steel.name=Steel Scrap
+item.scrap_eternium.name=Eternium Scrap
+item.scrap_copper.name=Copper Scrap
+item.scrap_lead.name=Lead Scrap
+item.scrap_silver.name=Silver Scrap
+item.scrap_tungsten.name=Tungsten Scrap
+item.scrap_gold.name=Gold Scrap
+
+itemGroup.travellers=Travellers
+
+travellers.config.title_world=Travellers: World Config
+
+travellers.tooltip.metal.aluminium=
+travellers.tooltip.metal.titanium=
+travellers.tooltip.metal.tin=Hard and durable, a balanced material.
+travellers.tooltip.metal.iron=Reasonably hard and heat resistant given its modest weight.
+travellers.tooltip.metal.bronze=Relatively stress resistant and conductive, but a bit heavy.
+travellers.tooltip.metal.nickel=
+travellers.tooltip.metal.orthite=
+travellers.tooltip.metal.epilar=Durable and resistant to stress, but not as hard as it appears at first glance.
+travellers.tooltip.metal.steel=Durable, resistant to heat, and can handle moderate stress.
+travellers.tooltip.metal.eternium=
+travellers.tooltip.metal.copper=A good conductor of heat and electricity, but otherwise unexceptional.
+travellers.tooltip.metal.lead=Can withstand some stress but too heavy for many uses.
+travellers.tooltip.metal.silver=
+travellers.tooltip.metal.tungsten=Unparalleled strength and heat resistance but very heavy.
+travellers.tooltip.metal.gold=
+
+travellers.tooltip.wood.cedar=Extremely light and soft, cannot withstand much damage.
+travellers.tooltip.wood.hemlock=Very light but durable enough to be used in certain scenarios.	
+travellers.tooltip.wood.chestnut=Lightweight but nevertheless versatile timber.
+travellers.tooltip.wood.elm=Medium weight with no outstanding strengths or vulnerabilities.
+travellers.tooltip.wood.birch=Soft but otherwise high performance for it's weight.
+travellers.tooltip.wood.ash=Extremely flexible all-rounder but heavy for timber.
+travellers.tooltip.wood.oak=Durable and versatile but very heavy for wood.
+travellers.tooltip.wood.palm=The heaviest but also most useful wood.
+
+travellers.tooltip.food.daccat_berries=Small but flavoursome berries, eating some will slowly recover health.
+travellers.tooltip.food.conos_salt=From the vast salt plains near the city of Conos in what used to be central Sabor. Can be used as a cooking ingredient.
+travellers.tooltip.food.glazed_manta=Manta meat with a sweet, sticky glaze.
+travellers.tooltip.food.flaky_thuntomite_meat=Flaky meat from tiger thuntomites. Can be eaten raw or used as an ingredient.
+travellers.tooltip.food.thuntomite_stew=A hearty thuntomite stew.
+travellers.tooltip.food.breaded_mushrooms=A crispy coated mushroom. Delicious.
+
+travellers.tooltip.ship_parts.engine=Provides propulsion if attached to a ship, requires a power generator to run.
+travellers.tooltip.ship_parts.cannon=Deliver withering barrages against ships or target enemies on land.
+travellers.tooltip.ship_parts.wing=Improves turning if attached vertically and pitching if attached horizontally.
+travellers.tooltip.ship_parts.swivel_gun=Close range ship turrets capable of shredding soft targets.
+travellers.tooltip.ship_parts.power_generator=Generators refine fuel to power engines. Interact with them once they are attached to a ship to place fuel inside.
+
+travellers.tooltip.crafting.paint_can=Place in the customization slot while crafting ship parts to paint them.
+
+travellers.tooltip.weapons.cannon_shells=Cannon shells for ship cannons. Can be placed inside the ammo boxes of cannons.
+travellers.tooltip.weapons.swivel_gun_buckshot_shells=Buckshot shells that can be placed in swivel gun ammo boxes.
+travellers.tooltip.weapons.pistol_bullets=Metal bullets for a pistol
+travellers.tooltip.weapons.pistol=Fires bullets at high velocity capable of causing damage to players and creatures.
+travellers.tooltip.weapons.drissian_pistol=The rebels of Driss would wrap their pistols in bandages to protect them from sandstorms.
+
+travellers.tooltip.clothing.dye_navy=Navy colored pigment. A royal blue loved by the Kioki.
+travellers.tooltip.clothing.dye_teal=Teal colored pigment. People seem to feel happier just looking at it.
+travellers.tooltip.clothing.maeshift_cloth=Makeshift cloth made from plant fibers. A crafting component that can be used as a fabric in many schematics.
+
+travellers.tooltip.utility.hip_lantern=Small lantern, which can be attached to a belt strap to light the way. The default key to turn on and off is Y.
+travellers.tooltip.utility.torch=Flaming torch, which can be held aloft to light dark areas.
+travellers.tooltip.utility.makeshift_storage=A makeshift container for storing items on land or leaving them for fellow travellers.
+travellers.tooltip.utility.scanner_tool=A traveller's best friend; used to gain insight and knowledge from the world around you.
+
+travellers.tooltip.misc.atlas_shard=Shards of a mysterious stone which can be energized to produce lift.
+travellers.tooltip.misc.fuel=Energy rich liquid that can power a ship's engine.
+travellers.tooltip.misc.plant_fibers=Tough fibers from plants that can be woven together to create basic crafting components.
+travellers.tooltip.misc.assembly_station=Use to construct ship parts and equipment. \n Ancient technology too complex to understand. Can construct advanced objects with raw materials once a schematic is plugged in.
+travellers.tooltip.misc.shipyard=The foundation of a construction yard for building skyships. \nThe inner workings are a mystery lost to time. Though people have been able to use them to create skyships for generations.

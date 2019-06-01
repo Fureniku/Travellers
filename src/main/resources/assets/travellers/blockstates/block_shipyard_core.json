@@ -1,0 +1,13 @@
+{
+	"forge_marker": 1,
+	"defaults": {
+		"textures": {
+			"all": "travellers:blocks/ore_aluminium"
+		},
+		"model": "travellers:shipyard_core",
+		"uvlock": true
+	},
+	"variants": {
+		"normal": [{}]
+	}
+}
