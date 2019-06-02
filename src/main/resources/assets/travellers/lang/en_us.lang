@@ -95,3 +95,8 @@ travellers.tooltip.misc.fuel=Energy rich liquid that can power a ship's engine.
 travellers.tooltip.misc.plant_fibers=Tough fibers from plants that can be woven together to create basic crafting components.
 travellers.tooltip.misc.assembly_station=Use to construct ship parts and equipment. \n Ancient technology too complex to understand. Can construct advanced objects with raw materials once a schematic is plugged in.
 travellers.tooltip.misc.shipyard=The foundation of a construction yard for building skyships. \nThe inner workings are a mystery lost to time. Though people have been able to use them to create skyships for generations.
+
+
+
+travellers.tooltip.ui.invalid_placement=Cannot place item here, not enough space.
+travellers.tooltip.ui.invalid_placement_flat=Cannot place item here, place on a flat surface.
