@@ -30,34 +30,34 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 
 public class BlockDatabank extends BlockBasic implements ITileEntityProvider {
-	
-	public static final PropertyEnum<DatabankPartEnum> PART = 
-			PropertyEnum.<DatabankPartEnum>create("part", DatabankPartEnum.class);
-	
+
+	public static final PropertyEnum<DatabankPartEnum> PART = PropertyEnum.<DatabankPartEnum> create("part",
+			DatabankPartEnum.class);
+
 	protected DatabankRarityEnum rarity;
 
 	public BlockDatabank(String name, DatabankRarityEnum rarity) {
 		super(name, Material.IRON);
 
 		this.rarity = rarity;
-		
+
 		ModBlocks.block_databanks.add(this);
 		ModBlocks.item_databanks.add(new ItemBlock(this).setRegistryName(this.getRegistryName()));
-		
+
 		this.setDefaultState(this.blockState.getBaseState().withProperty(PART, DatabankPartEnum.LOWER));
 	}
-	
+
 	/*
 	 * Register method
 	 */
 	public void registerModels() {
 		Travellers.proxy.registerItemRenderer(Item.getItemFromBlock(this), 0, "inventory");
 	}
-	
+
 	/*
 	 * Tile Entity Methods
 	 */
-	
+
 	@Override
 	public boolean hasTileEntity(IBlockState state) {
 		return true;
@@ -65,18 +65,18 @@ public class BlockDatabank extends BlockBasic implements ITileEntityProvider {
 
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
-		return new TileEntityDatabank(state.getValue(PART));
+		return new TileEntityDatabank();
 	}
 
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new TileEntityDatabank(getStateFromMeta(meta).getValue(PART));
+		return new TileEntityDatabank();
 	}
-	
+
 	/*
 	 * Blockstate Methods
 	 */
-	
+
 	@Override
 	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, new IProperty[] { PART });
@@ -116,13 +116,13 @@ public class BlockDatabank extends BlockBasic implements ITileEntityProvider {
 			return returnValue.withProperty(PART, DatabankPartEnum.UPPER);
 		}
 	}
-	
+
 	/*
 	 * Drop Behaviour
 	 */
-	
+
 	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-		return state.getValue(PART) == DatabankPartEnum.UPPER ? Items.AIR : Item.getItemFromBlock(this);
+		return Item.getItemFromBlock(this);
 	}
 
 	@Override
@@ -132,7 +132,6 @@ public class BlockDatabank extends BlockBasic implements ITileEntityProvider {
 		TileEntity tileentity = te;
 
 		if (tileentity instanceof TileEntityDatabank) {
-			//TileEntityDatabank tileentitydatabank = (TileEntityDatabank) tileentity;
 
 			ItemStack itemstack = new ItemStack(getItemDropped(state, new Random(), 0));
 			NBTTagCompound nbttagcompound = new NBTTagCompound();
@@ -188,7 +187,8 @@ public class BlockDatabank extends BlockBasic implements ITileEntityProvider {
 
 					String rarityString = String.format("%s%s", DatabankRarityEnum.color(rarity),
 							rarity.toString().toLowerCase());
-					String msg = String.format("§eScanned %s§e Databank for %d knowledge§r", rarityString, rarity.getKnowledgeBoost());
+					String msg = String.format("§eScanned %s§e Databank for %d knowledge§r", rarityString,
+							rarity.getKnowledgeBoost());
 
 					playerIn.sendMessage(new TextComponentString(msg));
 
@@ -204,16 +204,19 @@ public class BlockDatabank extends BlockBasic implements ITileEntityProvider {
 
 	@Override
 	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
-		if (state.getValue(PART) == DatabankPartEnum.UPPER) {
-			if (worldIn.getBlockState(fromPos).getMaterial() == Material.AIR) {
-				worldIn.destroyBlock(pos, false); //Upper block doesn't drop
-			}
-		} else if (state.getValue(PART) == DatabankPartEnum.LOWER) {
-			if (worldIn.getBlockState(fromPos).getMaterial() == Material.AIR) {
-				worldIn.destroyBlock(pos, true); //Lower block drops
+		
+		System.out.println("fromPos: " + fromPos.getX() + ", " + fromPos.getY() + ", " + fromPos.getZ());
+		System.out.println("pos: " + pos.getX() + ", " + pos.getY() + ", " + pos.getZ());
+		
+		if (worldIn.getBlockState(fromPos).getMaterial() == Material.AIR) {
+			if (state.getValue(PART) == DatabankPartEnum.LOWER) {
+				worldIn.destroyBlock(pos, true);
+				System.out.println("I'm a lower block and the part below me has been destroyed!");
+			}  else if (state.getValue(PART) == DatabankPartEnum.UPPER) {
+				worldIn.destroyBlock(pos, true);
+				System.out.println("I'm an upper block and the part above me has been destroyed!");
 			}
 		}
 	}
-
 
 }

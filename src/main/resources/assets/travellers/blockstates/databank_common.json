@@ -14,6 +14,8 @@
 		"part=lower": [{
 			"textures": {"all": "travellers:blocks/databank_common_lower"}
 		}],
-		"inventory": [{}]
+		"inventory": [{
+			"textures": {"all": "travellers:blocks/databank_common"}
+		}]
     }
 }

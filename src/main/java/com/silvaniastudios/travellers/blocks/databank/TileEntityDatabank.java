@@ -14,14 +14,16 @@ import net.minecraftforge.common.util.Constants;
 public class TileEntityDatabank extends TileEntity {
 
 	private List<UUID> scannedBy = new ArrayList<UUID>(); // Array of Entity IDs which scanned the databank
-	private DatabankPartEnum part;
-
-	public TileEntityDatabank(DatabankPartEnum part) {
-		this.part = part;
+	
+	protected DatabankPartEnum part;
+	
+	public TileEntityDatabank() {
 	}
 
 	public boolean beScannedBy (EntityPlayer player) {
 		this.scannedBy.add(player.getUniqueID());
+		markDirty();
+		this.part = this.world.getBlockState(this.pos).getValue(BlockDatabank.PART);
 		
 		String str = String.format("Scanned by entityId=%s", player.getUniqueID().toString());
 		System.out.println(str);

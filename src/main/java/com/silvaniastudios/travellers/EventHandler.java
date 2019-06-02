@@ -17,6 +17,9 @@ public class EventHandler {
 
 		String message = String.format("§eYou have %d knowledge§r", knowledge.getKnowledge());
 		player.sendMessage(new TextComponentString(message));
+		
+		String message1 = String.format("§e You are entity {%s}§r", player.getUniqueID().toString());
+		player.sendMessage(new TextComponentString(message1));
 	}
 
 	/**

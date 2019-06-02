@@ -52,7 +52,7 @@ public class ModBlocks {
 	
 	public static void register(IForgeRegistry<Block> registry) {
 		GameRegistry.registerTileEntity(TileEntityDatabank.class, new ResourceLocation(Travellers.MODID + ":databank"));
-		
+
 		registry.registerAll(
 				aluminium_ore,
 				titanium_ore,
