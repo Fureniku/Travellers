@@ -33,7 +33,7 @@ public class Travellers {
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-		GameRegistry.registerWorldGenerator(new WorldGen(), 3);
+		//TODO GameRegistry.registerWorldGenerator(new WorldGen(), 3);
 	}
 	    
 	@EventHandler
