@@ -1,19 +1,21 @@
 {
-    "forge_marker": 1,
-    "defaults": {
-        "model": "travellers:databank_uncommon",
+	"forge_marker": 1,
+	"defaults": {
 		"textures": {
 			"all": "travellers:blocks/databank_uncommon"
-		}
-    },
+		},
+		"model": "cube_all",
+		"uvlock": true
+	},
     "variants": {
-        "normal": [{}],
 		"part=upper": [{
 			"textures": {"all": "travellers:blocks/databank_uncommon_upper"}
 		}],
 		"part=lower": [{
 			"textures": {"all": "travellers:blocks/databank_uncommon_lower"}
 		}],
-		"inventory": [{}]
+		"inventory": [{
+			"transform": "forge:default-block"
+		}]
     }
 }
