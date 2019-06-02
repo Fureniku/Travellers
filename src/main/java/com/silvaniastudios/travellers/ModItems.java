@@ -1,7 +1,12 @@
 package com.silvaniastudios.travellers;
 
 import com.silvaniastudios.travellers.items.ItemBasic;
+import com.silvaniastudios.travellers.items.ItemGrapple;
+import com.silvaniastudios.travellers.items.ItemRepairTool;
+import com.silvaniastudios.travellers.items.ItemSalvager;
+import com.silvaniastudios.travellers.items.ItemScanner;
 import com.silvaniastudios.travellers.items.ItemScrapMetal;
+import com.silvaniastudios.travellers.items.ItemShipyardTool;
 
 import net.minecraft.item.Item;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -26,6 +31,12 @@ public class ModItems {
 	public static ItemScrapMetal tungsten_scrap = new ItemScrapMetal("scrap_tungsten");
 	public static ItemScrapMetal gold_scrap = new ItemScrapMetal("scrap_gold");
 	
+	public static ItemGrapple grapple = new ItemGrapple("grapple");
+	public static ItemSalvager salvager = new ItemSalvager("gauntlet_salvager");
+	public static ItemRepairTool repair_tool = new ItemRepairTool("gauntlet_repair_tool");
+	public static ItemShipyardTool shipyard_tool = new ItemShipyardTool("gauntlet_shipyard_tool");
+	public static ItemScanner scanner = new ItemScanner("gauntlet_scanner");
+	
 	public static void register(IForgeRegistry<Item> registry) {
 		registry.register(atlas_shard);
 		
@@ -44,10 +55,17 @@ public class ModItems {
 		registry.register(silver_scrap);
 		registry.register(tungsten_scrap);
 		registry.register(gold_scrap);
+		
+		registry.register(grapple);
+		registry.register(salvager);
+		registry.register(repair_tool);
+		registry.register(shipyard_tool);
+		registry.register(scanner);
 	}
 	
 	public static void registerModels() {
 		atlas_shard.registerItemModel();
+		
 		aluminium_scrap.registerItemModel();
 		titanium_scrap.registerItemModel();
 		tin_scrap.registerItemModel();
@@ -63,6 +81,12 @@ public class ModItems {
 		silver_scrap.registerItemModel();
 		tungsten_scrap.registerItemModel();
 		gold_scrap.registerItemModel();
+		
+		grapple.registerItemModel();
+		salvager.registerItemModel();
+		repair_tool.registerItemModel();
+		shipyard_tool.registerItemModel();
+		scanner.registerItemModel();
 	}
 
 }

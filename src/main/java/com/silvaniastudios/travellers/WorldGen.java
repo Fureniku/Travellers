@@ -3,7 +3,6 @@ package com.silvaniastudios.travellers;
 import java.util.Random;
 
 import com.silvaniastudios.travellers.blocks.TravellersOre;
-import com.silvaniastudios.travellers.config.WorldConfig;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -29,6 +28,7 @@ public class WorldGen implements IWorldGenerator {
 		//addOreSpawn(atlasOre, world, random, chunkX * 16, chunkZ * 16, WorldConfig.ore.atlasVeinsPerChunk, WorldConfig.ore.atlasHeightMin, WorldConfig.ore.atlasHeightMax);
 	}
 
+	@SuppressWarnings("unused")
 	private void addOreSpawn(WorldGenMinable wgm, World world, Random random, int x, int z, int vpc, int minY, int maxY) {
 		int rangeY = maxY - minY;
 		for (int i = 0; i < vpc; i++) {
