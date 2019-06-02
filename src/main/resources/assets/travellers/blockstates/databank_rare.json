@@ -1,0 +1,19 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "travellers:databank_rare",
+		"textures": {
+			"all": "travellers:blocks/databank_rare"
+		}
+    },
+    "variants": {
+        "normal": [{}],
+		"part=upper": [{
+			"textures": {"all": "travellers:blocks/databank_rare_upper"}
+		}],
+		"part=lower": [{
+			"textures": {"all": "travellers:blocks/databank_rare_lower"}
+		}],
+		"inventory": [{}]
+    }
+}

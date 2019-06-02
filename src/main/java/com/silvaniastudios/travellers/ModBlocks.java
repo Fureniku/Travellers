@@ -1,6 +1,12 @@
 package com.silvaniastudios.travellers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.silvaniastudios.travellers.blocks.TravellersOre;
+import com.silvaniastudios.travellers.blocks.databank.BlockDatabank;
+import com.silvaniastudios.travellers.blocks.databank.DatabankRarityEnum;
+import com.silvaniastudios.travellers.blocks.databank.TileEntityDatabank;
 import com.silvaniastudios.travellers.blocks.shipyard.ShipyardBlockCore;
 import com.silvaniastudios.travellers.blocks.shipyard.ShipyardBlockParts;
 
@@ -8,7 +14,9 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -31,10 +39,20 @@ public class ModBlocks {
 	public static TravellersOre tungsten_ore = new TravellersOre("ore_tungsten", ModItems.tungsten_scrap);
 	public static TravellersOre gold_ore = new TravellersOre("ore_gold", ModItems.gold_scrap);
 	
+	public static List<BlockDatabank> block_databanks = new ArrayList<BlockDatabank>();
+	public static List<Item> item_databanks = new ArrayList<Item>();
+	
+	public static BlockDatabank databank_common = new BlockDatabank("databank_common", DatabankRarityEnum.COMMON);
+	public static BlockDatabank databank_uncommon = new BlockDatabank("databank_uncommon", DatabankRarityEnum.UNCOMMON);
+	public static BlockDatabank databank_rare = new BlockDatabank("databank_rare", DatabankRarityEnum.RARE);
+	public static BlockDatabank databank_exotic = new BlockDatabank("databank_exotic", DatabankRarityEnum.EXOTIC);
+	
 	public static ShipyardBlockCore block_shipyard_core = new ShipyardBlockCore("block_shipyard_core");
 	public static ShipyardBlockParts block_shipyard_parts = new ShipyardBlockParts("block_shipyard_parts");
 	
 	public static void register(IForgeRegistry<Block> registry) {
+		GameRegistry.registerTileEntity(TileEntityDatabank.class, new ResourceLocation(Travellers.MODID + ":databank"));
+		
 		registry.registerAll(
 				aluminium_ore,
 				titanium_ore,
@@ -55,6 +73,8 @@ public class ModBlocks {
 				block_shipyard_core,
 				block_shipyard_parts
 			);
+		
+		registry.registerAll(block_databanks.toArray(new Block[0]));
 	}
 	
 	public static void registerItemBlocks(IForgeRegistry<Item> registry) {
@@ -76,6 +96,9 @@ public class ModBlocks {
 		
 		registry.register(new ItemBlock(block_shipyard_core).setRegistryName(block_shipyard_core.getRegistryName()));
 		registry.register(new ItemBlock(block_shipyard_parts).setRegistryName(block_shipyard_parts.getRegistryName()));
+		
+		registry.registerAll(item_databanks.toArray(new Item[0]));
+		
 	}
 
 	public static void registerModels() {
@@ -97,6 +120,10 @@ public class ModBlocks {
 		
 		block_shipyard_core.initModel();
 		block_shipyard_parts.initModel();
+		
+		for (BlockDatabank block : block_databanks) {
+			block.registerModels();
+		}
 	}
 	
 	@SideOnly(Side.CLIENT)

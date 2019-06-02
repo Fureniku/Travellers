@@ -1,5 +1,8 @@
 package com.silvaniastudios.travellers;
 
+import com.silvaniastudios.travellers.commands.CommandGetKnowledge;
+import com.silvaniastudios.travellers.commands.CommandSetKnowledge;
+
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -12,8 +15,8 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 @Mod(modid = Travellers.MODID, version = Travellers.VERSION, updateJSON = "http://www.silvaniastudios.com/mods/update/travellers.json")
 public class Travellers {
@@ -33,7 +36,7 @@ public class Travellers {
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-		GameRegistry.registerWorldGenerator(new WorldGen(), 3);
+		//TODO GameRegistry.registerWorldGenerator(new WorldGen(), 3);
 	}
 	    
 	@EventHandler
@@ -44,6 +47,12 @@ public class Travellers {
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
 	}
+	
+    @EventHandler
+    public void serverStarting(FMLServerStartingEvent event) {
+    	event.registerServerCommand(new CommandGetKnowledge());
+    	event.registerServerCommand(new CommandSetKnowledge());
+    }
 	
 	@Mod.EventBusSubscriber
 	public static class RegistrationHandler {

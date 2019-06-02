@@ -1,0 +1,19 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "travellers:databank_exotic",
+		"textures": {
+			"all": "travellers:blocks/databank_exotic"
+		}
+    },
+    "variants": {
+        "normal": [{}],
+		"part=upper": [{
+			"textures": {"all": "travellers:blocks/databank_exotic_upper"}
+		}],
+		"part=lower": [{
+			"textures": {"all": "travellers:blocks/databank_exotic_lower"}
+		}],
+		"inventory": [{}]
+    }
+}

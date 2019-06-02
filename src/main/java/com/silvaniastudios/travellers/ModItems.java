@@ -7,9 +7,9 @@ import net.minecraft.item.Item;
 import net.minecraftforge.registries.IForgeRegistry;
 
 public class ModItems {
-	
+
 	public static ItemBasic atlas_shard = new ItemBasic("shard_atlas");
-	
+
 	public static ItemScrapMetal aluminium_scrap = new ItemScrapMetal("scrap_aluminium");
 	public static ItemScrapMetal titanium_scrap = new ItemScrapMetal("scrap_titanium");
 	public static ItemScrapMetal tin_scrap = new ItemScrapMetal("scrap_tin");
@@ -25,10 +25,10 @@ public class ModItems {
 	public static ItemScrapMetal silver_scrap = new ItemScrapMetal("scrap_silver");
 	public static ItemScrapMetal tungsten_scrap = new ItemScrapMetal("scrap_tungsten");
 	public static ItemScrapMetal gold_scrap = new ItemScrapMetal("scrap_gold");
-	
+
 	public static void register(IForgeRegistry<Item> registry) {
 		registry.register(atlas_shard);
-		
+
 		registry.register(aluminium_scrap);
 		registry.register(titanium_scrap);
 		registry.register(tin_scrap);
@@ -44,8 +44,9 @@ public class ModItems {
 		registry.register(silver_scrap);
 		registry.register(tungsten_scrap);
 		registry.register(gold_scrap);
+
 	}
-	
+
 	public static void registerModels() {
 		atlas_shard.registerItemModel();
 		aluminium_scrap.registerItemModel();
