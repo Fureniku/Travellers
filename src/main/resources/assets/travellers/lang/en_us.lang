@@ -14,6 +14,11 @@ tile.ore_silver.name=Silver Ore
 tile.ore_tungsten.name=Tungsten Ore
 tile.ore_gold.name=Gold Ore
 
+tile.databank_common.name=Common Databank
+tile.databank_uncommon.name=Uncommon Databank
+tile.databank_rare.name=Rare Databank
+tile.databank_exotic.name=Exotic Databank
+
 item.shard_atlas.name=Atlas Shard
 item.scrap_aluminium.name=Aluminium Scrap
 item.scrap_titanium.name=Titanium Scrap

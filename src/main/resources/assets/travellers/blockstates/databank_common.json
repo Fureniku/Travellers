@@ -1,0 +1,21 @@
+{
+	"forge_marker": 1,
+	"defaults": {
+		"textures": {
+			"all": "travellers:blocks/databank_common"
+		},
+		"model": "cube_all",
+		"uvlock": true
+	},
+    "variants": {
+		"part=upper": [{
+			"textures": {"all": "travellers:blocks/databank_common_upper"}
+		}],
+		"part=lower": [{
+			"textures": {"all": "travellers:blocks/databank_common_lower"}
+		}],
+		"inventory": [{
+			"transform": "forge:default-block"
+		}]
+    }
+}

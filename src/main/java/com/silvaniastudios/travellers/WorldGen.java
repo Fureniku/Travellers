@@ -1,4 +1,4 @@
-package com.silvaniastudios.travellers;
+/*package com.silvaniastudios.travellers;
 
 import java.util.Random;
 
@@ -36,4 +36,4 @@ public class WorldGen implements IWorldGenerator {
 			wgm.generate(world, random, pos);
 		}
 	}
-}
+}*/
