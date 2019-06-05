@@ -1,5 +1,6 @@
 package com.silvaniastudios.travellers;
 
+import com.silvaniastudios.travellers.client.gui.GuiHandler;
 import com.silvaniastudios.travellers.commands.CommandGetKnowledge;
 import com.silvaniastudios.travellers.commands.CommandSetKnowledge;
 
@@ -8,6 +9,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -37,6 +39,7 @@ public class Travellers {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		//TODO GameRegistry.registerWorldGenerator(new WorldGen(), 3);
+		proxy.preInit(event);
 	}
 	    
 	@EventHandler
@@ -46,6 +49,7 @@ public class Travellers {
 	
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
+		MinecraftForge.EVENT_BUS.register(new GuiHandler());
 	}
 	
     @EventHandler

@@ -25,9 +25,6 @@ public class TileEntityDatabank extends TileEntity {
 		markDirty();
 		this.part = this.world.getBlockState(this.pos).getValue(BlockDatabank.PART);
 		
-		String str = String.format("Scanned by entityId=%s", player.getUniqueID().toString());
-		System.out.println(str);
-		
 		if (this.part == DatabankPartEnum.UPPER) {
 			BlockPos blockBelow = new BlockPos(this.getPos().getX(), this.getPos().getY() - 1, this.getPos().getZ());
 			TileEntity tileEntityBelow = this.getWorld().getTileEntity(blockBelow);
@@ -70,7 +67,6 @@ public class TileEntityDatabank extends TileEntity {
 			NBTTagCompound tag = tagList.getCompoundTagAt(i); // iterate through parsing the entityid out
 			String entityId = tag.getString(String.format("EntityId%d", i));
 			scannedBy.add(i, UUID.fromString(entityId));
-			System.out.println(String.format("Scanned by entityId=%s", entityId));
 		}
 		
 		super.readFromNBT(compound); //move on with your life!

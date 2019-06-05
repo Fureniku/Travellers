@@ -1,18 +1,26 @@
 {
 	"forge_marker": 1,
 	"defaults": {
+		"model": "travellers:databank_top",
 		"textures": {
-			"all": "travellers:blocks/databank_common"
-		},
-		"model": "cube_all",
-		"uvlock": true
+			"0": "travellers:blocks/databank",
+			"particle": "travellers:blocks/databank"
+		}
 	},
     "variants": {
 		"part=upper": [{
-			"textures": {"all": "travellers:blocks/databank_common_upper"}
+			"model": "travellers:databank_top",
+			"textures": {
+				"0": "travellers:blocks/databank",
+				"particle": "travellers:blocks/databank"
+			}
 		}],
 		"part=lower": [{
-			"textures": {"all": "travellers:blocks/databank_common_lower"}
+			"model": "travellers:databank_bottom",
+			"textures": {
+				"0": "travellers:blocks/databank",
+				"particle": "travellers:blocks/databank"
+			}
 		}],
 		"inventory": [{
 			"transform": "forge:default-block"

@@ -2,8 +2,10 @@ package com.silvaniastudios.travellers;
 
 import com.silvaniastudios.travellers.capability.knowledge.IKnowledge;
 import com.silvaniastudios.travellers.capability.knowledge.KnowledgeProvider;
+import com.silvaniastudios.travellers.network.KnowledgeMessage;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -20,6 +22,11 @@ public class EventHandler {
 		
 		String message1 = String.format("§e You are entity {%s}§r", player.getUniqueID().toString());
 		player.sendMessage(new TextComponentString(message1));
+		
+		PacketHandler.INSTANCE.sendTo(
+				new KnowledgeMessage(
+						player.getCapability(KnowledgeProvider.KNOWLEDGE, null).getKnowledge()),
+				(EntityPlayerMP) player);
 	}
 
 	/**
@@ -33,4 +40,5 @@ public class EventHandler {
 
 		knowledge.setKnowledge(oldKnowledge.getKnowledge());
 	}
+
 }

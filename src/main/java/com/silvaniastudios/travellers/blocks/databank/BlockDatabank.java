@@ -3,10 +3,12 @@ package com.silvaniastudios.travellers.blocks.databank;
 import java.util.Random;
 
 import com.silvaniastudios.travellers.ModBlocks;
+import com.silvaniastudios.travellers.PacketHandler;
 import com.silvaniastudios.travellers.Travellers;
 import com.silvaniastudios.travellers.blocks.BlockBasic;
 import com.silvaniastudios.travellers.capability.knowledge.IKnowledge;
 import com.silvaniastudios.travellers.capability.knowledge.KnowledgeProvider;
+import com.silvaniastudios.travellers.network.KnowledgeMessage;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -17,6 +19,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -26,6 +29,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockDatabank extends BlockBasic implements ITileEntityProvider {
@@ -45,6 +49,13 @@ public class BlockDatabank extends BlockBasic implements ITileEntityProvider {
 
 		this.setDefaultState(this.blockState.getBaseState().withProperty(PART, DatabankPartEnum.LOWER));
 	}
+
+	@Override
+	public boolean doesSideBlockRendering(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face) {
+		return false;
+	}
+	
+	
 
 	/*
 	 * Register method
@@ -191,6 +202,11 @@ public class BlockDatabank extends BlockBasic implements ITileEntityProvider {
 
 					playerIn.sendMessage(new TextComponentString(msg));
 
+					PacketHandler.INSTANCE.sendTo(
+							new KnowledgeMessage(
+									playerIn.getCapability(KnowledgeProvider.KNOWLEDGE, null).getKnowledge()),
+							(EntityPlayerMP) playerIn);
+
 					return true;
 				}
 
@@ -203,17 +219,12 @@ public class BlockDatabank extends BlockBasic implements ITileEntityProvider {
 
 	@Override
 	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
-		
-		System.out.println("fromPos: " + fromPos.getX() + ", " + fromPos.getY() + ", " + fromPos.getZ());
-		System.out.println("pos: " + pos.getX() + ", " + pos.getY() + ", " + pos.getZ());
-		
 		if (worldIn.getBlockState(fromPos).getMaterial() == Material.AIR) {
 			if (state.getValue(PART) == DatabankPartEnum.LOWER) {
 				worldIn.destroyBlock(pos, true);
-				System.out.println("I'm a lower block and the part below me has been destroyed!");
-			}  else if (state.getValue(PART) == DatabankPartEnum.UPPER) {
+
+			} else if (state.getValue(PART) == DatabankPartEnum.UPPER) {
 				worldIn.destroyBlock(pos, true);
-				System.out.println("I'm an upper block and the part above me has been destroyed!");
 			}
 		}
 	}
