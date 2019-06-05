@@ -25,6 +25,8 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
@@ -54,8 +56,16 @@ public class BlockDatabank extends BlockBasic implements ITileEntityProvider {
 	public boolean doesSideBlockRendering(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face) {
 		return false;
 	}
-	
-	
+
+	@Override
+	public EnumBlockRenderType getRenderType(IBlockState state) {
+		return EnumBlockRenderType.MODEL;
+	}
+
+	@Override
+	public BlockRenderLayer getBlockLayer() {
+		return BlockRenderLayer.CUTOUT;
+	}
 
 	/*
 	 * Register method
@@ -219,7 +229,7 @@ public class BlockDatabank extends BlockBasic implements ITileEntityProvider {
 
 	@Override
 	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
-		if (worldIn.getBlockState(fromPos).getMaterial() == Material.AIR) {
+		if (worldIn.getBlockState(fromPos).getMaterial() == Material.AIR && blockIn instanceof BlockDatabank) {
 			if (state.getValue(PART) == DatabankPartEnum.LOWER) {
 				worldIn.destroyBlock(pos, true);
 
