@@ -23,7 +23,7 @@ public class ShipyardBlockPartsFlap extends BlockBasic implements IMetaBlockName
 
 	public ShipyardBlockPartsFlap(String name) {
 		super(name, Material.IRON);
-		this.setDefaultState(this.blockState.getBaseState().withProperty(PART_ID, EnumParts.ramp_n));
+		this.setDefaultState(this.blockState.getBaseState().withProperty(PART_ID, EnumParts.flap_n_l));
 	}
 	
 	@Override
@@ -91,22 +91,22 @@ public class ShipyardBlockPartsFlap extends BlockBasic implements IMetaBlockName
 	}
 	
 	public enum EnumParts implements IStringSerializable {
-		side_n (0, "side_n"),
-		side_ne(1, "side_ne"),
-		side_e (2, "side_e"),
-		side_se(3, "side_se"),
-		side_s (4, "side_s"),
-		side_sw(5, "side_sw"),
-		side_w (6, "side_w"),
-		side_nw(7, "side_nw"),
-		ramp_n (8, "ramp_n"),
-		ramp_ne(9, "ramp_ne"),
-		ramp_e (10, "ramp_e"),
-		ramp_se(11, "ramp_se"),
-		ramp_s (12, "ramp_s"),
-		ramp_sw(13, "ramp_sw"),
-		ramp_w (14, "ramp_w"),
-		ramp_nw(15, "ramp_nw");
+		flap_n_l(0, "flap_n_l"),
+		flap_e_l(1, "flap_e_l"),
+		flap_s_l(2, "flap_s_l"),
+		flap_w_l(3, "flap_w_l"),
+		flap_n_r(4, "flap_n_r"),
+		flap_e_r(5, "flap_e_r"),
+		flap_s_r(6, "flap_s_r"),
+		flap_w_r(7, "flap_w_r"),
+		flap_ne_l(8, "flap_ne_l"),
+		flap_se_l(9, "flap_se_l"),
+		flap_sw_l(10, "flap_sw_l"),
+		flap_nw_l(11, "flap_nw_l"),
+		flap_ne_r(12, "flap_ne_r"),
+		flap_se_r(13, "flap_se_r"),
+		flap_sw_r(14, "flap_sw_r"),
+		flap_nw_r(15, "flap_nw_r");
 		
 		private static final EnumParts[] META_LOOKUP = new EnumParts[values().length];
 		private final int meta;

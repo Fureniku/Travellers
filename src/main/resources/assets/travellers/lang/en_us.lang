@@ -31,6 +31,8 @@ item.scrap_silver.name=Silver Scrap
 item.scrap_tungsten.name=Tungsten Scrap
 item.scrap_gold.name=Gold Scrap
 
+item.shipyard.name=Shipyard
+
 itemGroup.travellers=Travellers
 
 travellers.config.title_world=Travellers: World Config

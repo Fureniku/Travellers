@@ -3,6 +3,8 @@ package com.silvaniastudios.travellers;
 import com.silvaniastudios.travellers.blocks.TravellersOre;
 import com.silvaniastudios.travellers.blocks.shipyard.ShipyardBlockCore;
 import com.silvaniastudios.travellers.blocks.shipyard.ShipyardBlockParts;
+import com.silvaniastudios.travellers.blocks.shipyard.ShipyardBlockPartsFlap;
+import com.silvaniastudios.travellers.blocks.shipyard.ShipyardBlockPartsRamp;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -33,6 +35,8 @@ public class ModBlocks {
 	
 	public static ShipyardBlockCore block_shipyard_core = new ShipyardBlockCore("block_shipyard_core");
 	public static ShipyardBlockParts block_shipyard_parts = new ShipyardBlockParts("block_shipyard_parts");
+	public static ShipyardBlockPartsFlap block_shipyard_parts_flap = new ShipyardBlockPartsFlap("block_shipyard_parts_flap");
+	public static ShipyardBlockPartsRamp block_shipyard_parts_ramp = new ShipyardBlockPartsRamp("block_shipyard_parts_ramp");
 	
 	public static void register(IForgeRegistry<Block> registry) {
 		registry.registerAll(
@@ -53,7 +57,9 @@ public class ModBlocks {
 				gold_ore,
 				
 				block_shipyard_core,
-				block_shipyard_parts
+				block_shipyard_parts,
+				block_shipyard_parts_flap,
+				block_shipyard_parts_ramp
 			);
 	}
 	
@@ -76,6 +82,8 @@ public class ModBlocks {
 		
 		registry.register(new ItemBlock(block_shipyard_core).setRegistryName(block_shipyard_core.getRegistryName()));
 		registry.register(new ItemBlock(block_shipyard_parts).setRegistryName(block_shipyard_parts.getRegistryName()));
+		registry.register(new ItemBlock(block_shipyard_parts_flap).setRegistryName(block_shipyard_parts_flap.getRegistryName()));
+		registry.register(new ItemBlock(block_shipyard_parts_ramp).setRegistryName(block_shipyard_parts_ramp.getRegistryName()));
 	}
 
 	public static void registerModels() {
@@ -97,6 +105,8 @@ public class ModBlocks {
 		
 		block_shipyard_core.initModel();
 		block_shipyard_parts.initModel();
+		block_shipyard_parts_flap.initModel();
+		block_shipyard_parts_ramp.initModel();
 	}
 	
 	@SideOnly(Side.CLIENT)

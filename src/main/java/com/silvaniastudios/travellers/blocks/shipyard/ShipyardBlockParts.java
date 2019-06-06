@@ -90,10 +90,19 @@ public class ShipyardBlockParts extends BlockBasic implements IMetaBlockName {
 	
 	public enum EnumParts implements IStringSerializable {
 		main (0, "main"),
-		angle_sw(1, "angle_sw"),
-		angle_nw(2, "angle_nw"),
-		angle_ne(3, "angle_ne"),
-		angle_se(4, "angle_se");
+		plate_n(1, "plate_n"),
+		plate_e(2, "plate_e"),
+		plate_s(3, "plate_s"),
+		plate_w(4, "plate_w"),
+		angle_ne_l(5, "angle_ne_l"),
+		angle_se_l(6, "angle_se_l"),
+		angle_sw_l(7, "angle_sw_l"),
+		angle_nw_l(8, "angle_nw_l"),
+		angle_ne_r(9, "angle_ne_r"),
+		angle_se_r(10, "angle_se_r"),
+		angle_sw_r(11, "angle_sw_r"),
+		angle_nw_r(12, "angle_nw_r");
+		
 		
 		private static final EnumParts[] META_LOOKUP = new EnumParts[values().length];
 		private final int meta;

@@ -1,7 +1,6 @@
 package com.silvaniastudios.travellers.blocks.shipyard;
 
 import com.silvaniastudios.travellers.ModItems;
-import com.silvaniastudios.travellers.Travellers;
 import com.silvaniastudios.travellers.blocks.BlockBasic;
 
 import net.minecraft.block.material.Material;
@@ -24,7 +23,6 @@ public class ShipyardBlockCore extends BlockBasic {
 
 	public ShipyardBlockCore(String name) {
 		super(name, Material.IRON);
-		this.setCreativeTab(Travellers.tabTravellers);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(ROTATE_ID, EnumRotate.n));
 	}
 	

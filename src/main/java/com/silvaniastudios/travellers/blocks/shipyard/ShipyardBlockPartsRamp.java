@@ -23,7 +23,7 @@ public class ShipyardBlockPartsRamp extends BlockBasic implements IMetaBlockName
 
 	public ShipyardBlockPartsRamp(String name) {
 		super(name, Material.IRON);
-		this.setDefaultState(this.blockState.getBaseState().withProperty(PART_ID, EnumParts.ramp_n));
+		this.setDefaultState(this.blockState.getBaseState().withProperty(PART_ID, EnumParts.ramp_a_n_l));
 	}
 	
 	@Override
@@ -91,22 +91,22 @@ public class ShipyardBlockPartsRamp extends BlockBasic implements IMetaBlockName
 	}
 	
 	public enum EnumParts implements IStringSerializable {
-		side_n (0, "side_n"),
-		side_ne(1, "side_ne"),
-		side_e (2, "side_e"),
-		side_se(3, "side_se"),
-		side_s (4, "side_s"),
-		side_sw(5, "side_sw"),
-		side_w (6, "side_w"),
-		side_nw(7, "side_nw"),
-		ramp_n (8, "ramp_n"),
-		ramp_ne(9, "ramp_ne"),
-		ramp_e (10, "ramp_e"),
-		ramp_se(11, "ramp_se"),
-		ramp_s (12, "ramp_s"),
-		ramp_sw(13, "ramp_sw"),
-		ramp_w (14, "ramp_w"),
-		ramp_nw(15, "ramp_nw");
+		ramp_a_n_l(0, "ramp_a_n_l"),
+		ramp_a_n_r(1, "ramp_a_n_r"),
+		ramp_a_e_l(2, "ramp_a_e_l"),
+		ramp_a_e_r(3, "ramp_a_e_r"),
+		ramp_a_s_l(4, "ramp_a_s_l"),
+		ramp_a_s_r(5, "ramp_a_s_r"),
+		ramp_a_w_l(6, "ramp_a_w_l"),
+		ramp_a_w_r(7, "ramp_a_w_r"),
+		ramp_b_n_l(8, "ramp_b_n_l"),
+		ramp_b_n_r(9, "ramp_b_n_r"),
+		ramp_b_e_l(10, "ramp_b_e_l"),
+		ramp_b_e_r(11, "ramp_b_e_r"),
+		ramp_b_s_l(12, "ramp_b_s_l"),
+		ramp_b_s_r(13, "ramp_b_s_r"),
+		ramp_b_w_l(14, "ramp_b_w_l"),
+		ramp_b_w_r(15, "ramp_b_w_r");
 		
 		private static final EnumParts[] META_LOOKUP = new EnumParts[values().length];
 		private final int meta;

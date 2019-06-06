@@ -13,10 +13,18 @@
 		}],
 		"part": {
 			"main": { "model": "travellers:shipyard_plate_square" },
-			"angle_sw": { "model": "travellers:shipyard_plate_angle" },
-			"angle_nw": { "model": "travellers:shipyard_plate_angle", "y": 90 },
-			"angle_ne": { "model": "travellers:shipyard_plate_angle", "y": 180 },
-			"angle_se": { "model": "travellers:shipyard_plate_angle", "y": 270 }
+			"plate_n": { "model": "travellers:shipyard_plate_square_ex" },
+			"plate_e": { "model": "travellers:shipyard_plate_square_ex", "y": 90 },
+			"plate_s": { "model": "travellers:shipyard_plate_square_ex", "y": 180 },
+			"plate_w": { "model": "travellers:shipyard_plate_square_ex", "y": 270 },
+			"angle_ne_l": { "model": "travellers:shipyard_plate_angle_l", "y": 180 },
+			"angle_se_l": { "model": "travellers:shipyard_plate_angle_l", "y": 270 },
+			"angle_sw_l": { "model": "travellers:shipyard_plate_angle_l" },
+			"angle_nw_l": { "model": "travellers:shipyard_plate_angle_l", "y": 90 },
+			"angle_ne_r": { "model": "travellers:shipyard_plate_angle_r", "y": 180 },
+			"angle_se_r": { "model": "travellers:shipyard_plate_angle_r", "y": 270 },
+			"angle_sw_r": { "model": "travellers:shipyard_plate_angle_r" },
+			"angle_nw_r": { "model": "travellers:shipyard_plate_angle_r", "y": 90 }
 		}
 	}
 }
