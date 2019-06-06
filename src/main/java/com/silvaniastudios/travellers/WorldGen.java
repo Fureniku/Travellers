@@ -3,7 +3,6 @@
 import java.util.Random;
 
 import com.silvaniastudios.travellers.blocks.TravellersOre;
-import com.silvaniastudios.travellers.config.WorldConfig;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -25,12 +24,11 @@ public class WorldGen implements IWorldGenerator {
 	}
 	
 	private void generateOverworld(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
-		int atlasVar = WorldConfig.ore.atlasMaxVeinSize-WorldConfig.ore.atlasMinVeinSize;
-		atlasOre = new WorldGenMinable(atlasBlock.getDefaultState(), WorldConfig.ore.atlasMinVeinSize-random.nextInt(atlasVar));
-		
-		addOreSpawn(atlasOre, world, random, chunkX * 16, chunkZ * 16, WorldConfig.ore.atlasVeinsPerChunk, WorldConfig.ore.atlasHeightMin, WorldConfig.ore.atlasHeightMax);
+
+		//addOreSpawn(atlasOre, world, random, chunkX * 16, chunkZ * 16, WorldConfig.ore.atlasVeinsPerChunk, WorldConfig.ore.atlasHeightMin, WorldConfig.ore.atlasHeightMax);
 	}
 
+	@SuppressWarnings("unused")
 	private void addOreSpawn(WorldGenMinable wgm, World world, Random random, int x, int z, int vpc, int minY, int maxY) {
 		int rangeY = maxY - minY;
 		for (int i = 0; i < vpc; i++) {

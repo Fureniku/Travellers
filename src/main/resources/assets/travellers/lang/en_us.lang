@@ -40,21 +40,21 @@ itemGroup.travellers=Travellers
 
 travellers.config.title_world=Travellers: World Config
 
-travellers.tooltip.metal.aluminium=
-travellers.tooltip.metal.titanium=
+travellers.tooltip.metal.aluminium=Extremely light and resistant to stress.
+travellers.tooltip.metal.titanium=Very light for such a strong metal but a terrible conductor.
 travellers.tooltip.metal.tin=Hard and durable, a balanced material.
 travellers.tooltip.metal.iron=Reasonably hard and heat resistant given its modest weight.
 travellers.tooltip.metal.bronze=Relatively stress resistant and conductive, but a bit heavy.
-travellers.tooltip.metal.nickel=
-travellers.tooltip.metal.orthite=
+travellers.tooltip.metal.nickel=Heat resistant and hard, a versatile metal.
+travellers.tooltip.metal.orthite=Moderately conductive, and resistant to stress, but weak to heat.
 travellers.tooltip.metal.epilar=Durable and resistant to stress, but not as hard as it appears at first glance.
 travellers.tooltip.metal.steel=Durable, resistant to heat, and can handle moderate stress.
-travellers.tooltip.metal.eternium=
+travellers.tooltip.metal.eternium=Hard, durable and resistant to heat, but poor under stress.
 travellers.tooltip.metal.copper=A good conductor of heat and electricity, but otherwise unexceptional.
 travellers.tooltip.metal.lead=Can withstand some stress but too heavy for many uses.
-travellers.tooltip.metal.silver=
+travellers.tooltip.metal.silver=A great conductor of heat and electricity, but otherwise unexceptional.
 travellers.tooltip.metal.tungsten=Unparalleled strength and heat resistance but very heavy.
-travellers.tooltip.metal.gold=
+travellers.tooltip.metal.gold=An exceptional conductor of heat and electricity, but otherwise unexceptional.
 
 travellers.tooltip.wood.cedar=Extremely light and soft, cannot withstand much damage.
 travellers.tooltip.wood.hemlock=Very light but durable enough to be used in certain scenarios.	
