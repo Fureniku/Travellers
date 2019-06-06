@@ -207,7 +207,7 @@ public class BlockDatabank extends BlockBasic implements ITileEntityProvider {
 
 					String rarityString = String.format("%s%s", DatabankRarityEnum.color(rarity),
 							rarity.toString().toLowerCase());
-					String msg = String.format("§eScanned %s§e Databank for %d knowledge§r", rarityString,
+					String msg = String.format("§eScanned %s§e databank for %d knowledge§r", rarityString,
 							rarity.getKnowledgeBoost());
 
 					playerIn.sendMessage(new TextComponentString(msg));
