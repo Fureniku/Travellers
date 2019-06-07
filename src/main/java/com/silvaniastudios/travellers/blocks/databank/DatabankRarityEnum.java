@@ -16,15 +16,15 @@ public enum DatabankRarityEnum {
 	public static String color(DatabankRarityEnum rarity) {
 		switch(rarity) {
 		case COMMON:
-			return "";
+			return "§f";
 		case UNCOMMON:
-			return "";
+			return "§2";
 		case RARE:
-			return "";
+			return "§1";
 		case EXOTIC:
-			return "";
+			return "§e";
 		default:
-			return "";
+			return "§r";
 		}
 	}
 }

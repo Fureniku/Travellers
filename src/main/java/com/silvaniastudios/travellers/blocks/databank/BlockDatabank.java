@@ -3,6 +3,7 @@ package com.silvaniastudios.travellers.blocks.databank;
 import java.util.Random;
 
 import com.silvaniastudios.travellers.ModBlocks;
+import com.silvaniastudios.travellers.ModItems;
 import com.silvaniastudios.travellers.PacketHandler;
 import com.silvaniastudios.travellers.Travellers;
 import com.silvaniastudios.travellers.blocks.BlockBasic;
@@ -184,7 +185,7 @@ public class BlockDatabank extends BlockBasic implements ITileEntityProvider {
 			return true;
 		} else if (playerIn.isSpectator()) {
 			return true;
-		} else {
+		} else if (playerIn.getHeldItem(hand).getItem() == ModItems.scanner) {
 			TileEntity dataBankTileEntity = worldIn.getTileEntity(pos);
 
 			if (dataBankTileEntity instanceof TileEntityDatabank) {
