@@ -212,6 +212,9 @@ public class GuiShipyard extends GuiContainer {
 		
 		fontRenderer.drawString(I18n.format("travellers.gui.shipyard.beams"), 207, 68, 4210752);
 		fontRenderer.drawString(I18n.format("travellers.gui.shipyard.decks"), 362, 68, 4210752);
+		fontRenderer.drawString(beams_cost, 245 - getStringWidthInPixels(beams_cost)/2, 83, 4210752);
+		fontRenderer.drawString(decks_cost, 399 - getStringWidthInPixels(decks_cost)/2, 83, 4210752);
+		
 		fontRenderer.drawString(craft_time, 313 - getStringWidthInPixels(craft_time)/2, 74, 4210752);
 		fontRenderer.drawString(frame_weight, 313 - getStringWidthInPixels(frame_weight)/2, 175, 4210752);
 	}

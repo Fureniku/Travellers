@@ -13,6 +13,9 @@ tile.ore_lead.name=Lead Ore
 tile.ore_silver.name=Silver Ore
 tile.ore_tungsten.name=Tungsten Ore
 tile.ore_gold.name=Gold Ore
+tile.ore_magnesium.name=Magnesium Ore
+tile.ore_palladium.name=Palladium Ore
+tile.ore_platinum.name=Platinum Ore
 
 tile.databank_common.name=Common Databank
 tile.databank_uncommon.name=Uncommon Databank
@@ -35,12 +38,35 @@ item.scrap_lead.name=Lead Scrap
 item.scrap_silver.name=Silver Scrap
 item.scrap_tungsten.name=Tungsten Scrap
 item.scrap_gold.name=Gold Scrap
+item.scrap_magnesium.name=Magnesium Scrap
+item.scrap_palladium.name=Palladium Scrap
+item.scrap_platinum.name=Platinum Scrap
+
+item.planks_cedar.name=Cedar Planks
+item.planks_hemlock.name=Hemlock Planks
+item.planks_chestnut.name=Chestnut Planks
+item.planks_elm.name=Elm Planks
+item.planks_birch.name=Birch Planks
+item.planks_ash.name=Ash Planks
+item.planks_oak.name=Oak Planks
+item.planks_palm.name=Palm Planks
+item.planks_ebony.name=Ebony Planks
+item.planks_ironwood.name=Ironwood Planks
+item.planks_mahogony.name=Mahogony Planks
+item.planks_maple.name=Maple Planks
+
+item.grapple.name=Grapple
+item.gauntlet_salvager.name=Salvager Gauntlet
+item.gauntlet_repair_tool.name=Repair Gauntlet
+item.gauntlet_shipyard_tool.name=Shipbuilding Tool
+item.gauntlet_scanner.name=Scanner
+
 
 item.shipyard.name=Shipyard
 
 itemGroup.travellers=Travellers
 
-travellers.config.title_world=Travellers: World Config
+travellers.config.title_world=Travellers Config
 
 travellers.tooltip.metal.aluminium=Extremely light and resistant to stress.
 travellers.tooltip.metal.titanium=Very light for such a strong metal but a terrible conductor.
@@ -59,7 +85,7 @@ travellers.tooltip.metal.tungsten=Unparalleled strength and heat resistance but 
 travellers.tooltip.metal.gold=An exceptional conductor of heat and electricity, but otherwise unexceptional.
 
 travellers.tooltip.wood.cedar=Extremely light and soft, cannot withstand much damage.
-travellers.tooltip.wood.hemlock=Very light but durable enough to be used in certain scenarios.	
+travellers.tooltip.wood.hemlock=Very light but durable enough to be used in certain scenarios.
 travellers.tooltip.wood.chestnut=Lightweight but nevertheless versatile timber.
 travellers.tooltip.wood.elm=Medium weight with no outstanding strengths or vulnerabilities.
 travellers.tooltip.wood.birch=Soft but otherwise high performance for it's weight.

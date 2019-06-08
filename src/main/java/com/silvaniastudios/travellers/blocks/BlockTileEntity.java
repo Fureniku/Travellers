@@ -61,7 +61,6 @@ public class BlockTileEntity extends TileEntity {
 		return nbt;
 	}
 	
-	
 	@Override
 	public SPacketUpdateTileEntity getUpdatePacket() {
 		return new SPacketUpdateTileEntity(getPos(), 0, this.getUpdateTag());

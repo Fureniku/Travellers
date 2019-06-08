@@ -3,6 +3,7 @@ package com.silvaniastudios.travellers;
 import com.silvaniastudios.travellers.items.ItemBasic;
 import com.silvaniastudios.travellers.items.ItemScrapMetal;
 import com.silvaniastudios.travellers.items.ItemShipyard;
+import com.silvaniastudios.travellers.items.ItemWoodPlanks;
 import com.silvaniastudios.travellers.items.tools.ItemGrapple;
 import com.silvaniastudios.travellers.items.tools.ItemRepairTool;
 import com.silvaniastudios.travellers.items.tools.ItemSalvager;
@@ -31,6 +32,22 @@ public class ModItems {
 	public static ItemScrapMetal silver_scrap = new ItemScrapMetal("scrap_silver");
 	public static ItemScrapMetal tungsten_scrap = new ItemScrapMetal("scrap_tungsten");
 	public static ItemScrapMetal gold_scrap = new ItemScrapMetal("scrap_gold");
+	public static ItemScrapMetal magnesium_scrap = new ItemScrapMetal("scrap_magnesium");
+	public static ItemScrapMetal palladium_scrap = new ItemScrapMetal("scrap_palladium");
+	public static ItemScrapMetal platinum_scrap = new ItemScrapMetal("scrap_platinum");
+	
+	public static ItemWoodPlanks cedar_planks = new ItemWoodPlanks("planks_cedar");
+	public static ItemWoodPlanks hemlock_planks = new ItemWoodPlanks("planks_hemlock");
+	public static ItemWoodPlanks chestnut_planks = new ItemWoodPlanks("planks_chestnut");
+	public static ItemWoodPlanks elm_planks = new ItemWoodPlanks("planks_elm");
+	public static ItemWoodPlanks birch_planks = new ItemWoodPlanks("planks_birch");
+	public static ItemWoodPlanks ash_planks = new ItemWoodPlanks("planks_ash");
+	public static ItemWoodPlanks oak_planks = new ItemWoodPlanks("planks_oak");
+	public static ItemWoodPlanks palm_planks = new ItemWoodPlanks("planks_palm");
+	public static ItemWoodPlanks ebony_planks = new ItemWoodPlanks("planks_ebony");
+	public static ItemWoodPlanks ironwood_planks = new ItemWoodPlanks("planks_ironwood");
+	public static ItemWoodPlanks mahogony_planks = new ItemWoodPlanks("planks_mahogony");
+	public static ItemWoodPlanks maple_planks = new ItemWoodPlanks("planks_maple");
 	
 	public static ItemGrapple grapple = new ItemGrapple("grapple");
 	public static ItemSalvager salvager = new ItemSalvager("gauntlet_salvager");
@@ -59,6 +76,23 @@ public class ModItems {
 		registry.register(tungsten_scrap);
 		registry.register(gold_scrap);
 		
+		registry.register(magnesium_scrap);
+		registry.register(palladium_scrap);
+		registry.register(platinum_scrap);
+		
+		registry.register(cedar_planks);
+		registry.register(hemlock_planks);
+		registry.register(chestnut_planks);
+		registry.register(elm_planks);
+		registry.register(birch_planks);
+		registry.register(ash_planks);
+		registry.register(oak_planks);
+		registry.register(palm_planks);
+		registry.register(ebony_planks);
+		registry.register(ironwood_planks);
+		registry.register(mahogony_planks);
+		registry.register(maple_planks);
+		
 		registry.register(grapple);
 		registry.register(salvager);
 		registry.register(repair_tool);
@@ -86,6 +120,24 @@ public class ModItems {
 		silver_scrap.registerItemModel();
 		tungsten_scrap.registerItemModel();
 		gold_scrap.registerItemModel();
+		
+		magnesium_scrap.registerItemModel();
+		palladium_scrap.registerItemModel();
+		platinum_scrap.registerItemModel();
+		
+		cedar_planks.registerItemModel();
+		hemlock_planks.registerItemModel();
+		chestnut_planks.registerItemModel();
+		elm_planks.registerItemModel();
+		birch_planks.registerItemModel();
+		ash_planks.registerItemModel();
+		oak_planks.registerItemModel();
+		palm_planks.registerItemModel();
+		
+		ebony_planks.registerItemModel();
+		ironwood_planks.registerItemModel();
+		mahogony_planks.registerItemModel();
+		maple_planks.registerItemModel();
 		
 		grapple.registerItemModel();
 		salvager.registerItemModel();
