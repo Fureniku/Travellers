@@ -1,4 +1,4 @@
-package com.silvaniastudios.travellers.blocks.shipyard;
+package com.silvaniastudios.travellers.blocks.tileentity.shipyard;
 
 import com.silvaniastudios.travellers.blocks.BlockBasic;
 import com.silvaniastudios.travellers.blocks.IMetaBlockName;
@@ -17,13 +17,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
-public class ShipyardBlockPartsFlap extends BlockBasic implements IMetaBlockName {
+public class ShipyardBlockPartsRamp extends BlockBasic implements IMetaBlockName {
 	
 	public static final PropertyEnum<EnumParts> PART_ID = PropertyEnum.create("part", EnumParts.class);
 
-	public ShipyardBlockPartsFlap(String name) {
+	public ShipyardBlockPartsRamp(String name) {
 		super(name, Material.IRON);
-		this.setDefaultState(this.blockState.getBaseState().withProperty(PART_ID, EnumParts.flap_n_l));
+		this.setDefaultState(this.blockState.getBaseState().withProperty(PART_ID, EnumParts.ramp_a_n_l));
 	}
 	
 	@Override
@@ -91,22 +91,22 @@ public class ShipyardBlockPartsFlap extends BlockBasic implements IMetaBlockName
 	}
 	
 	public enum EnumParts implements IStringSerializable {
-		flap_n_l(0, "flap_n_l"),
-		flap_e_l(1, "flap_e_l"),
-		flap_s_l(2, "flap_s_l"),
-		flap_w_l(3, "flap_w_l"),
-		flap_n_r(4, "flap_n_r"),
-		flap_e_r(5, "flap_e_r"),
-		flap_s_r(6, "flap_s_r"),
-		flap_w_r(7, "flap_w_r"),
-		flap_ne_l(8, "flap_ne_l"),
-		flap_se_l(9, "flap_se_l"),
-		flap_sw_l(10, "flap_sw_l"),
-		flap_nw_l(11, "flap_nw_l"),
-		flap_ne_r(12, "flap_ne_r"),
-		flap_se_r(13, "flap_se_r"),
-		flap_sw_r(14, "flap_sw_r"),
-		flap_nw_r(15, "flap_nw_r");
+		ramp_a_n_l(0, "ramp_a_n_l"),
+		ramp_a_n_r(1, "ramp_a_n_r"),
+		ramp_a_e_l(2, "ramp_a_e_l"),
+		ramp_a_e_r(3, "ramp_a_e_r"),
+		ramp_a_s_l(4, "ramp_a_s_l"),
+		ramp_a_s_r(5, "ramp_a_s_r"),
+		ramp_a_w_l(6, "ramp_a_w_l"),
+		ramp_a_w_r(7, "ramp_a_w_r"),
+		ramp_b_n_l(8, "ramp_b_n_l"),
+		ramp_b_n_r(9, "ramp_b_n_r"),
+		ramp_b_e_l(10, "ramp_b_e_l"),
+		ramp_b_e_r(11, "ramp_b_e_r"),
+		ramp_b_s_l(12, "ramp_b_s_l"),
+		ramp_b_s_r(13, "ramp_b_s_r"),
+		ramp_b_w_l(14, "ramp_b_w_l"),
+		ramp_b_w_r(15, "ramp_b_w_r");
 		
 		private static final EnumParts[] META_LOOKUP = new EnumParts[values().length];
 		private final int meta;

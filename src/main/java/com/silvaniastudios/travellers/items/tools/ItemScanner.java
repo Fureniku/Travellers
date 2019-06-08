@@ -1,4 +1,6 @@
-package com.silvaniastudios.travellers.items;
+package com.silvaniastudios.travellers.items.tools;
+
+import com.silvaniastudios.travellers.items.ItemBasic;
 
 public class ItemScanner extends ItemBasic {
 

@@ -95,10 +95,27 @@ travellers.tooltip.utility.scanner_tool=A traveller's best friend; used to gain 
 travellers.tooltip.misc.atlas_shard=Shards of a mysterious stone which can be energized to produce lift.
 travellers.tooltip.misc.fuel=Energy rich liquid that can power a ship's engine.
 travellers.tooltip.misc.plant_fibers=Tough fibers from plants that can be woven together to create basic crafting components.
-travellers.tooltip.misc.assembly_station=Use to construct ship parts and equipment. \n Ancient technology too complex to understand. Can construct advanced objects with raw materials once a schematic is plugged in.
-travellers.tooltip.misc.shipyard=The foundation of a construction yard for building skyships. \nThe inner workings are a mystery lost to time. Though people have been able to use them to create skyships for generations.
-
-
+travellers.tooltip.misc.assembly_station_a=Use to construct ship parts and equipment.
+travellers.tooltip.misc.assembly_station_b=Ancient technology too complex to understand. Can construct advanced objects with raw materials once a schematic is plugged in.
+travellers.tooltip.misc.shipyard_a=The foundation of a construction yard for building skyships.
+travellers.tooltip.misc.shipyard_b=The inner workings are a mystery lost to time. Though people have been able to use them to create skyships for generations.
 
 travellers.tooltip.ui.invalid_placement=Cannot place item here, not enough space.
 travellers.tooltip.ui.invalid_placement_flat=Cannot place item here, place on a flat surface.
+
+travellers.gui.button.show=SHOW
+travellers.gui.button.craft=CRAFT
+travellers.gui.button.rename=RENAME
+travellers.gui.button.edit=EDIT SHIP FRAME
+travellers.gui.button.save=SAVE SHIP FRAME
+travellers.gui.button.revert=REVERT CHANGES
+travellers.gui.button.duplicate=DUPLICATE SCHEMATIC
+travellers.gui.button.unload=UNLOAD SCHEMATIC
+
+travellers.gui.shipyard.guidance=Click EDIT to customize the shape of your ship.
+travellers.gui.shipyard.code=SHIPYARD CODE
+travellers.gui.shipyard.active_schematic=ACTIVE SCHEMATIC
+travellers.gui.shipyard.owner=Owner:
+travellers.gui.shipyard.schematics_list=SHIP SCHEMATICS
+travellers.gui.shipyard.beams=Beams
+travellers.gui.shipyard.decks=Decks

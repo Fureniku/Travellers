@@ -1,16 +1,18 @@
 package com.silvaniastudios.travellers;
 
 import com.silvaniastudios.travellers.blocks.TravellersOre;
-import com.silvaniastudios.travellers.blocks.shipyard.ShipyardBlockCore;
-import com.silvaniastudios.travellers.blocks.shipyard.ShipyardBlockParts;
-import com.silvaniastudios.travellers.blocks.shipyard.ShipyardBlockPartsFlap;
-import com.silvaniastudios.travellers.blocks.shipyard.ShipyardBlockPartsRamp;
+import com.silvaniastudios.travellers.blocks.tileentity.shipyard.ShipyardBlockCore;
+import com.silvaniastudios.travellers.blocks.tileentity.shipyard.ShipyardBlockParts;
+import com.silvaniastudios.travellers.blocks.tileentity.shipyard.ShipyardBlockPartsFlap;
+import com.silvaniastudios.travellers.blocks.tileentity.shipyard.ShipyardBlockPartsRamp;
+import com.silvaniastudios.travellers.blocks.tileentity.shipyard.ShipyardEntity;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -107,6 +109,11 @@ public class ModBlocks {
 		block_shipyard_parts.initModel();
 		block_shipyard_parts_flap.initModel();
 		block_shipyard_parts_ramp.initModel();
+	}
+	
+	@SuppressWarnings("deprecation")
+	public static void registerTileEntities() {
+		GameRegistry.registerTileEntity(ShipyardEntity.class, Travellers.MODID + ":shipyard_entity");
 	}
 	
 	@SideOnly(Side.CLIENT)

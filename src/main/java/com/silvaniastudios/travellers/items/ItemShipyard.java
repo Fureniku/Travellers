@@ -1,27 +1,42 @@
 package com.silvaniastudios.travellers.items;
 
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import com.silvaniastudios.travellers.ModBlocks;
-import com.silvaniastudios.travellers.blocks.shipyard.ShipyardBlockCore;
-import com.silvaniastudios.travellers.blocks.shipyard.ShipyardBlockParts;
-import com.silvaniastudios.travellers.blocks.shipyard.ShipyardBlockPartsFlap;
-import com.silvaniastudios.travellers.blocks.shipyard.ShipyardBlockPartsRamp;
+import com.silvaniastudios.travellers.blocks.tileentity.shipyard.ShipyardBlockCore;
+import com.silvaniastudios.travellers.blocks.tileentity.shipyard.ShipyardBlockParts;
+import com.silvaniastudios.travellers.blocks.tileentity.shipyard.ShipyardBlockPartsFlap;
+import com.silvaniastudios.travellers.blocks.tileentity.shipyard.ShipyardBlockPartsRamp;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemShipyard extends ItemBasic {
 
 	public ItemShipyard(String name) {
 		super(name);
+	}
+	
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+		tooltip.add(I18n.format("travellers.tooltip.misc.shipyard_a"));
+		tooltip.add("");
+		tooltip.add(I18n.format("travellers.tooltip.misc.shipyard_b"));
 	}
 	
 	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
@@ -72,15 +87,11 @@ public class ItemShipyard extends ItemBasic {
 		for (int i = 0; i < 6; i++) {
 			for (int j = 0; j < 6; j++) {
 				BlockPos checkPoint = startPoint.offset(right, j).offset(down, i);
-				System.out.println("Checking placement at " + checkPoint.getX() + ", " + checkPoint.getY() + ", " + checkPoint.getZ());
 				if (!isReplaceable(world, checkPoint)) {
-					System.out.println("Invalid placement detected. Cancelling.");
 					return false;
 				}
 			}
 		}
-		
-		System.out.println("Placement appears valid. Place!");
 		
 		return world.getBlockState(pos).getBlock().isReplaceable(world, pos);
 	}
@@ -134,8 +145,6 @@ public class ItemShipyard extends ItemBasic {
 			for (int j = 0; j < 6; j++) {
 				BlockPos checkPoint = startPoint.offset(EnumFacing.EAST, j).offset(EnumFacing.SOUTH, i);
 				IBlockState placementState = ModBlocks.block_shipyard_parts.getDefaultState();
-
-				System.out.println("baseId: " + baseId + ", position: " + checkPoint.getX() + ", " + checkPoint.getY() + ", " + checkPoint.getZ());
 				
 				if (baseId == 0 || baseId == 5|| baseId == 30 || baseId == 35) {
 					world.setBlockToAir(checkPoint);

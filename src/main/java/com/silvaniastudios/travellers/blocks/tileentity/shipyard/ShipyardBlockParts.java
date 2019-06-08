@@ -1,5 +1,6 @@
-package com.silvaniastudios.travellers.blocks.shipyard;
+package com.silvaniastudios.travellers.blocks.tileentity.shipyard;
 
+import com.silvaniastudios.travellers.ModItems;
 import com.silvaniastudios.travellers.blocks.BlockBasic;
 import com.silvaniastudios.travellers.blocks.IMetaBlockName;
 
@@ -17,13 +18,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
-public class ShipyardBlockPartsRamp extends BlockBasic implements IMetaBlockName {
+public class ShipyardBlockParts extends BlockBasic implements IMetaBlockName {
 	
 	public static final PropertyEnum<EnumParts> PART_ID = PropertyEnum.create("part", EnumParts.class);
 
-	public ShipyardBlockPartsRamp(String name) {
+	public ShipyardBlockParts(String name) {
 		super(name, Material.IRON);
-		this.setDefaultState(this.blockState.getBaseState().withProperty(PART_ID, EnumParts.ramp_a_n_l));
+		this.setDefaultState(this.blockState.getBaseState().withProperty(PART_ID, EnumParts.main));
 	}
 	
 	@Override
@@ -76,7 +77,7 @@ public class ShipyardBlockPartsRamp extends BlockBasic implements IMetaBlockName
 	
 	@Override
 	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-        return new ItemStack(state.getBlock(), 1, this.getMetaFromState(state));
+        return new ItemStack(ModItems.shipyard, 1);
     }
 	
 	public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
@@ -85,28 +86,23 @@ public class ShipyardBlockPartsRamp extends BlockBasic implements IMetaBlockName
 		items.add(new ItemStack(this, 1, 2));
 		items.add(new ItemStack(this, 1, 3));
 		items.add(new ItemStack(this, 1, 4));
-		items.add(new ItemStack(this, 1, 5));
-		items.add(new ItemStack(this, 1, 6));
-		items.add(new ItemStack(this, 1, 7));
 	}
 	
 	public enum EnumParts implements IStringSerializable {
-		ramp_a_n_l(0, "ramp_a_n_l"),
-		ramp_a_n_r(1, "ramp_a_n_r"),
-		ramp_a_e_l(2, "ramp_a_e_l"),
-		ramp_a_e_r(3, "ramp_a_e_r"),
-		ramp_a_s_l(4, "ramp_a_s_l"),
-		ramp_a_s_r(5, "ramp_a_s_r"),
-		ramp_a_w_l(6, "ramp_a_w_l"),
-		ramp_a_w_r(7, "ramp_a_w_r"),
-		ramp_b_n_l(8, "ramp_b_n_l"),
-		ramp_b_n_r(9, "ramp_b_n_r"),
-		ramp_b_e_l(10, "ramp_b_e_l"),
-		ramp_b_e_r(11, "ramp_b_e_r"),
-		ramp_b_s_l(12, "ramp_b_s_l"),
-		ramp_b_s_r(13, "ramp_b_s_r"),
-		ramp_b_w_l(14, "ramp_b_w_l"),
-		ramp_b_w_r(15, "ramp_b_w_r");
+		main (0, "main"),
+		plate_n(1, "plate_n"),
+		plate_e(2, "plate_e"),
+		plate_s(3, "plate_s"),
+		plate_w(4, "plate_w"),
+		angle_ne_l(5, "angle_ne_l"),
+		angle_se_l(6, "angle_se_l"),
+		angle_sw_l(7, "angle_sw_l"),
+		angle_nw_l(8, "angle_nw_l"),
+		angle_ne_r(9, "angle_ne_r"),
+		angle_se_r(10, "angle_se_r"),
+		angle_sw_r(11, "angle_sw_r"),
+		angle_nw_r(12, "angle_nw_r");
+		
 		
 		private static final EnumParts[] META_LOOKUP = new EnumParts[values().length];
 		private final int meta;

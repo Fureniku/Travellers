@@ -1,6 +1,5 @@
-package com.silvaniastudios.travellers.blocks.shipyard;
+package com.silvaniastudios.travellers.blocks.tileentity.shipyard;
 
-import com.silvaniastudios.travellers.ModItems;
 import com.silvaniastudios.travellers.blocks.BlockBasic;
 import com.silvaniastudios.travellers.blocks.IMetaBlockName;
 
@@ -18,13 +17,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
-public class ShipyardBlockParts extends BlockBasic implements IMetaBlockName {
+public class ShipyardBlockPartsFlap extends BlockBasic implements IMetaBlockName {
 	
 	public static final PropertyEnum<EnumParts> PART_ID = PropertyEnum.create("part", EnumParts.class);
 
-	public ShipyardBlockParts(String name) {
+	public ShipyardBlockPartsFlap(String name) {
 		super(name, Material.IRON);
-		this.setDefaultState(this.blockState.getBaseState().withProperty(PART_ID, EnumParts.main));
+		this.setDefaultState(this.blockState.getBaseState().withProperty(PART_ID, EnumParts.flap_n_l));
 	}
 	
 	@Override
@@ -77,7 +76,7 @@ public class ShipyardBlockParts extends BlockBasic implements IMetaBlockName {
 	
 	@Override
 	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-        return new ItemStack(ModItems.shipyard, 1);
+        return new ItemStack(state.getBlock(), 1, this.getMetaFromState(state));
     }
 	
 	public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
@@ -86,23 +85,28 @@ public class ShipyardBlockParts extends BlockBasic implements IMetaBlockName {
 		items.add(new ItemStack(this, 1, 2));
 		items.add(new ItemStack(this, 1, 3));
 		items.add(new ItemStack(this, 1, 4));
+		items.add(new ItemStack(this, 1, 5));
+		items.add(new ItemStack(this, 1, 6));
+		items.add(new ItemStack(this, 1, 7));
 	}
 	
 	public enum EnumParts implements IStringSerializable {
-		main (0, "main"),
-		plate_n(1, "plate_n"),
-		plate_e(2, "plate_e"),
-		plate_s(3, "plate_s"),
-		plate_w(4, "plate_w"),
-		angle_ne_l(5, "angle_ne_l"),
-		angle_se_l(6, "angle_se_l"),
-		angle_sw_l(7, "angle_sw_l"),
-		angle_nw_l(8, "angle_nw_l"),
-		angle_ne_r(9, "angle_ne_r"),
-		angle_se_r(10, "angle_se_r"),
-		angle_sw_r(11, "angle_sw_r"),
-		angle_nw_r(12, "angle_nw_r");
-		
+		flap_n_l(0, "flap_n_l"),
+		flap_e_l(1, "flap_e_l"),
+		flap_s_l(2, "flap_s_l"),
+		flap_w_l(3, "flap_w_l"),
+		flap_n_r(4, "flap_n_r"),
+		flap_e_r(5, "flap_e_r"),
+		flap_s_r(6, "flap_s_r"),
+		flap_w_r(7, "flap_w_r"),
+		flap_ne_l(8, "flap_ne_l"),
+		flap_se_l(9, "flap_se_l"),
+		flap_sw_l(10, "flap_sw_l"),
+		flap_nw_l(11, "flap_nw_l"),
+		flap_ne_r(12, "flap_ne_r"),
+		flap_se_r(13, "flap_se_r"),
+		flap_sw_r(14, "flap_sw_r"),
+		flap_nw_r(15, "flap_nw_r");
 		
 		private static final EnumParts[] META_LOOKUP = new EnumParts[values().length];
 		private final int meta;
