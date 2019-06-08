@@ -1,12 +1,13 @@
 package com.silvaniastudios.travellers;
 
 import com.silvaniastudios.travellers.items.ItemBasic;
-import com.silvaniastudios.travellers.items.ItemGrapple;
-import com.silvaniastudios.travellers.items.ItemRepairTool;
-import com.silvaniastudios.travellers.items.ItemSalvager;
-import com.silvaniastudios.travellers.items.ItemScanner;
 import com.silvaniastudios.travellers.items.ItemScrapMetal;
-import com.silvaniastudios.travellers.items.ItemShipyardTool;
+import com.silvaniastudios.travellers.items.ItemShipyard;
+import com.silvaniastudios.travellers.items.tools.ItemGrapple;
+import com.silvaniastudios.travellers.items.tools.ItemRepairTool;
+import com.silvaniastudios.travellers.items.tools.ItemSalvager;
+import com.silvaniastudios.travellers.items.tools.ItemScanner;
+import com.silvaniastudios.travellers.items.tools.ItemShipyardTool;
 
 import net.minecraft.item.Item;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -37,6 +38,7 @@ public class ModItems {
 	public static ItemShipyardTool shipyard_tool = new ItemShipyardTool("gauntlet_shipyard_tool");
 	public static ItemScanner scanner = new ItemScanner("gauntlet_scanner");
 	
+	public static ItemShipyard shipyard = new ItemShipyard("shipyard");
 
 	public static void register(IForgeRegistry<Item> registry) {
 		registry.register(atlas_shard);
@@ -62,6 +64,8 @@ public class ModItems {
 		registry.register(repair_tool);
 		registry.register(shipyard_tool);
 		registry.register(scanner);
+		
+		registry.register(shipyard);
 	}
 
 	public static void registerModels() {
@@ -88,6 +92,8 @@ public class ModItems {
 		repair_tool.registerItemModel();
 		shipyard_tool.registerItemModel();
 		scanner.registerItemModel();
+		
+		shipyard.registerItemModel();
 	}
 
 }

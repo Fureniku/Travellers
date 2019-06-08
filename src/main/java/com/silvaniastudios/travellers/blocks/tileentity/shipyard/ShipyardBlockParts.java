@@ -1,5 +1,6 @@
-package com.silvaniastudios.travellers.blocks.shipyard;
+package com.silvaniastudios.travellers.blocks.tileentity.shipyard;
 
+import com.silvaniastudios.travellers.ModItems;
 import com.silvaniastudios.travellers.blocks.BlockBasic;
 import com.silvaniastudios.travellers.blocks.IMetaBlockName;
 
@@ -23,7 +24,7 @@ public class ShipyardBlockParts extends BlockBasic implements IMetaBlockName {
 
 	public ShipyardBlockParts(String name) {
 		super(name, Material.IRON);
-		this.setDefaultState(this.blockState.getBaseState().withProperty(PART_ID, EnumParts.ramp_n));
+		this.setDefaultState(this.blockState.getBaseState().withProperty(PART_ID, EnumParts.main));
 	}
 	
 	@Override
@@ -76,7 +77,7 @@ public class ShipyardBlockParts extends BlockBasic implements IMetaBlockName {
 	
 	@Override
 	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-        return new ItemStack(state.getBlock(), 1, this.getMetaFromState(state));
+        return new ItemStack(ModItems.shipyard, 1);
     }
 	
 	public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
@@ -85,28 +86,23 @@ public class ShipyardBlockParts extends BlockBasic implements IMetaBlockName {
 		items.add(new ItemStack(this, 1, 2));
 		items.add(new ItemStack(this, 1, 3));
 		items.add(new ItemStack(this, 1, 4));
-		items.add(new ItemStack(this, 1, 5));
-		items.add(new ItemStack(this, 1, 6));
-		items.add(new ItemStack(this, 1, 7));
 	}
 	
 	public enum EnumParts implements IStringSerializable {
-		side_n (0, "side_n"),
-		side_ne(1, "side_ne"),
-		side_e (2, "side_e"),
-		side_se(3, "side_se"),
-		side_s (4, "side_s"),
-		side_sw(5, "side_sw"),
-		side_w (6, "side_w"),
-		side_nw(7, "side_nw"),
-		ramp_n (8, "ramp_n"),
-		ramp_ne(9, "ramp_ne"),
-		ramp_e (10, "ramp_e"),
-		ramp_se(11, "ramp_se"),
-		ramp_s (12, "ramp_s"),
-		ramp_sw(13, "ramp_sw"),
-		ramp_w (14, "ramp_w"),
-		ramp_nw(15, "ramp_nw");
+		main (0, "main"),
+		plate_n(1, "plate_n"),
+		plate_e(2, "plate_e"),
+		plate_s(3, "plate_s"),
+		plate_w(4, "plate_w"),
+		angle_ne_l(5, "angle_ne_l"),
+		angle_se_l(6, "angle_se_l"),
+		angle_sw_l(7, "angle_sw_l"),
+		angle_nw_l(8, "angle_nw_l"),
+		angle_ne_r(9, "angle_ne_r"),
+		angle_se_r(10, "angle_se_r"),
+		angle_sw_r(11, "angle_sw_r"),
+		angle_nw_r(12, "angle_nw_r");
+		
 		
 		private static final EnumParts[] META_LOOKUP = new EnumParts[values().length];
 		private final int meta;

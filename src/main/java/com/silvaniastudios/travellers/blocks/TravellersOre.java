@@ -3,6 +3,7 @@ package com.silvaniastudios.travellers.blocks;
 import java.util.Random;
 
 import com.silvaniastudios.travellers.ModItems;
+import com.silvaniastudios.travellers.Travellers;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -27,6 +28,7 @@ public class TravellersOre extends BlockBasic implements IMetaBlockName {
 
 	public TravellersOre(String name, Item dropItem) {
 		super(name, Material.ROCK);
+		this.setCreativeTab(Travellers.tabTravellers);
 		this.dropItem = dropItem;
 		this.setHarvestLevel("pickaxe", 0, getStateFromMeta(0));
 		this.setHardness(1.2F);

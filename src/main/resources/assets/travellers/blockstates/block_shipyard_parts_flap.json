@@ -1,0 +1,33 @@
+{
+	"forge_marker": 1,
+	"defaults": {
+		"textures": {
+			"all": "travellers:blocks/ore_aluminium"
+		},
+		"model": "travellers:shipyard_flap",
+		"uvlock": true
+	},
+	"variants": {
+		"inventory": [{
+			"transform": "forge:default-block"
+		}],
+		"part": {
+			"flap_n_l": { "model": "travellers:shipyard_flap_l", "y": 90 },
+			"flap_e_l": { "model": "travellers:shipyard_flap_l", "y": 180 },
+			"flap_s_l": { "model": "travellers:shipyard_flap_l", "y": 270 },
+			"flap_w_l": { "model": "travellers:shipyard_flap_l" },
+			"flap_n_r": { "model": "travellers:shipyard_flap_r", "y": 90 },
+			"flap_e_r": { "model": "travellers:shipyard_flap_r", "y": 180 },
+			"flap_s_r": { "model": "travellers:shipyard_flap_r", "y": 270 },
+			"flap_w_r": { "model": "travellers:shipyard_flap_r" },
+			"flap_ne_l": { "model": "travellers:shipyard_flap_angle_l", "y": 180 },
+			"flap_se_l": { "model": "travellers:shipyard_flap_angle_l", "y": 270 },
+			"flap_sw_l": { "model": "travellers:shipyard_flap_angle_l" },
+			"flap_nw_l": { "model": "travellers:shipyard_flap_angle_l", "y": 90 },
+			"flap_ne_r": { "model": "travellers:shipyard_flap_angle_r", "y": 180 },
+			"flap_se_r": { "model": "travellers:shipyard_flap_angle_r", "y": 270 },
+			"flap_sw_r": { "model": "travellers:shipyard_flap_angle_r" },
+			"flap_nw_r": { "model": "travellers:shipyard_flap_angle_r", "y": 90 }
+		}
+	}
+}
