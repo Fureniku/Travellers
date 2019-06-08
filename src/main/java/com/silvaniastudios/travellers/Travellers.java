@@ -22,57 +22,57 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Mod(modid = Travellers.MODID, version = Travellers.VERSION, updateJSON = "http://www.silvaniastudios.com/mods/update/travellers.json")
 public class Travellers {
-	
+
 	public static final String MODID = "travellers";
 	public static final String VERSION = "0.0.1";
-	
+
 	@SidedProxy(clientSide = "com.silvaniastudios.travellers.client.ClientProxy", serverSide = "com.silvaniastudios.travellers.CommonProxy")
 	public static CommonProxy proxy;
-	
+
 	public static final CreativeTabs tabTravellers = new CreativeTabs("travellers") {
 		@Override
 		public ItemStack getTabIconItem() {
 			return new ItemStack(ModItems.atlas_shard, 1, 0);
 		}
 	};
-	
+
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-		//TODO GameRegistry.registerWorldGenerator(new WorldGen(), 3);
+		// TODO GameRegistry.registerWorldGenerator(new WorldGen(), 3);
 		proxy.preInit(event);
 	}
-	    
+
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
 		proxy.init(event);
 	}
-	
+
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
 		MinecraftForge.EVENT_BUS.register(new GuiHandler());
 	}
-	
-    @EventHandler
-    public void serverStarting(FMLServerStartingEvent event) {
-    	event.registerServerCommand(new CommandGetKnowledge());
-    	event.registerServerCommand(new CommandSetKnowledge());
-    }
-	
+
+	@EventHandler
+	public void serverStarting(FMLServerStartingEvent event) {
+		event.registerServerCommand(new CommandGetKnowledge());
+		event.registerServerCommand(new CommandSetKnowledge());
+	}
+
 	@Mod.EventBusSubscriber
 	public static class RegistrationHandler {
-		
+
 		@SubscribeEvent
 		public static void registerItems(RegistryEvent.Register<Item> event) {
 			ModItems.register(event.getRegistry());
 			ModBlocks.registerItemBlocks(event.getRegistry());
 		}
-		
+
 		@SubscribeEvent
 		public static void registerModels(ModelRegistryEvent event) {
 			ModItems.registerModels();
 			ModBlocks.registerModels();
 		}
-		
+
 		@SubscribeEvent
 		public static void registerBlocks(RegistryEvent.Register<Block> event) {
 			ModBlocks.register(event.getRegistry());

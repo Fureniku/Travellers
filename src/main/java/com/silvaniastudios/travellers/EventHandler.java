@@ -2,6 +2,8 @@ package com.silvaniastudios.travellers;
 
 import com.silvaniastudios.travellers.capability.knowledge.IKnowledge;
 import com.silvaniastudios.travellers.capability.knowledge.KnowledgeProvider;
+import com.silvaniastudios.travellers.capability.tree.ISchematicTree;
+import com.silvaniastudios.travellers.capability.tree.SchematicTreeProvider;
 import com.silvaniastudios.travellers.network.KnowledgeMessage;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,12 +18,15 @@ public class EventHandler {
 	public void onPlayerLogsIn(PlayerLoggedInEvent event) {
 		EntityPlayer player = event.player;
 		IKnowledge knowledge = player.getCapability(KnowledgeProvider.KNOWLEDGE, null);
+		ISchematicTree schematicTree = player.getCapability(SchematicTreeProvider.SCHEMATIC_TREE, null);
 
 		String message = String.format("§eYou have %d knowledge§r", knowledge.getKnowledge());
 		player.sendMessage(new TextComponentString(message));
 		
-		String message1 = String.format("§e You are entity {%s}§r", player.getUniqueID().toString());
+		String message1 = String.format("§eYou are entity {%s}§r", player.getUniqueID().toString());
 		player.sendMessage(new TextComponentString(message1));
+		
+		player.sendMessage(new TextComponentString(schematicTree.stringify()));
 		
 		PacketHandler.INSTANCE.sendTo(
 				new KnowledgeMessage(
@@ -37,7 +42,11 @@ public class EventHandler {
 		EntityPlayer player = event.getEntityPlayer();
 		IKnowledge knowledge = player.getCapability(KnowledgeProvider.KNOWLEDGE, null);
 		IKnowledge oldKnowledge = event.getOriginal().getCapability(KnowledgeProvider.KNOWLEDGE, null);
-
+		
+		ISchematicTree schematicTree = player.getCapability(SchematicTreeProvider.SCHEMATIC_TREE, null);
+		ISchematicTree oldSchematicTree = player.getCapability(SchematicTreeProvider.SCHEMATIC_TREE, null);
+		
+		schematicTree.setTreeFromNBT(oldSchematicTree.makeNBTFromTree());
 		knowledge.setKnowledge(oldKnowledge.getKnowledge());
 	}
 
