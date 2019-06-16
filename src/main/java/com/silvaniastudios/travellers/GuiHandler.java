@@ -1,7 +1,10 @@
 package com.silvaniastudios.travellers;
 
+import com.silvaniastudios.travellers.blocks.tileentity.assembler.AssemblerContainer;
+import com.silvaniastudios.travellers.blocks.tileentity.assembler.AssemblerEntity;
 import com.silvaniastudios.travellers.blocks.tileentity.shipyard.ShipyardContainer;
 import com.silvaniastudios.travellers.blocks.tileentity.shipyard.ShipyardEntity;
+import com.silvaniastudios.travellers.client.gui.GuiAssembler;
 import com.silvaniastudios.travellers.client.gui.GuiShipyard;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,6 +22,9 @@ public class GuiHandler implements IGuiHandler {
 			if (ID == 1) {
 				return new ShipyardContainer(player.inventory, (ShipyardEntity) te);
 			}
+			if (ID == 2) {
+				return new AssemblerContainer(player.inventory, (AssemblerEntity) te);
+			}
 		}
 		return null;
 	}
@@ -30,6 +36,10 @@ public class GuiHandler implements IGuiHandler {
 			if (ID == 1) {
 				ShipyardEntity entity = (ShipyardEntity) te;
 				return new GuiShipyard(entity, new ShipyardContainer(player.inventory, entity));
+			}
+			if (ID == 2) {
+				AssemblerEntity entity = (AssemblerEntity) te;
+				return new GuiAssembler(entity, new AssemblerContainer(player.inventory, entity));
 			}
 		}
 		return null;
