@@ -1,7 +1,9 @@
 package com.silvaniastudios.travellers;
 
-import com.silvaniastudios.travellers.client.gui.GuiHandler;
+import com.silvaniastudios.travellers.commands.CommandGetKnTree;
 import com.silvaniastudios.travellers.commands.CommandGetKnowledge;
+import com.silvaniastudios.travellers.commands.CommandResearchKnTree;
+import com.silvaniastudios.travellers.commands.CommandResetKnTree;
 import com.silvaniastudios.travellers.commands.CommandSetKnowledge;
 
 import net.minecraft.block.Block;
@@ -62,6 +64,9 @@ public class Travellers {
     public void serverStarting(FMLServerStartingEvent event) {
     	event.registerServerCommand(new CommandGetKnowledge());
     	event.registerServerCommand(new CommandSetKnowledge());
+    	event.registerServerCommand(new CommandResearchKnTree());
+    	event.registerServerCommand(new CommandGetKnTree());
+    	event.registerServerCommand(new CommandResetKnTree());
     }
 	
 	@Mod.EventBusSubscriber

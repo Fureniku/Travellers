@@ -4,6 +4,9 @@ import com.silvaniastudios.travellers.capability.CapabilityHandler;
 import com.silvaniastudios.travellers.capability.knowledge.IKnowledge;
 import com.silvaniastudios.travellers.capability.knowledge.Knowledge;
 import com.silvaniastudios.travellers.capability.knowledge.KnowledgeStorage;
+import com.silvaniastudios.travellers.capability.tree.IKnTree;
+import com.silvaniastudios.travellers.capability.tree.KnTree;
+import com.silvaniastudios.travellers.capability.tree.KnTreeStorage;
 
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
@@ -23,11 +26,14 @@ public class CommonProxy {
 
 	}
 
+	@SuppressWarnings("deprecation")
 	public void init(FMLInitializationEvent event) {
 		//OreDictionary.registerOre(CopperConfig.oredict.oreOreDict, new ItemStack(ModBlocks.blockOre1, 1, 0));
 		//OreDictionary.registerOre(CopperConfig.oredict.nuggetOreDict, ModItems.nuggetCopper);
 		
 		CapabilityManager.INSTANCE.register(IKnowledge.class, new KnowledgeStorage(), Knowledge.class);
+		CapabilityManager.INSTANCE.register(IKnTree.class, new KnTreeStorage(), KnTree.class);
+		
 		MinecraftForge.EVENT_BUS.register(new CapabilityHandler());
 		MinecraftForge.EVENT_BUS.register(new EventHandler());
 	}

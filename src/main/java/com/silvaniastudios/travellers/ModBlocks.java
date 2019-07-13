@@ -62,7 +62,7 @@ public class ModBlocks {
 	public static ShipyardBlockPartsFlap block_shipyard_parts_flap = new ShipyardBlockPartsFlap("block_shipyard_parts_flap");
 	public static ShipyardBlockPartsRamp block_shipyard_parts_ramp = new ShipyardBlockPartsRamp("block_shipyard_parts_ramp");
 	
-	public static AssemblerBlock assembling_station = new AssemblerBlock("assembling_station");
+	public static AssemblerBlock assembling_station = new AssemblerBlock("assembling_station_block");
 	
 	public static void register(IForgeRegistry<Block> registry) {
 		GameRegistry.registerTileEntity(TileEntityDatabank.class, new ResourceLocation(Travellers.MODID + ":databank"));
