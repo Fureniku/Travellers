@@ -24,7 +24,6 @@ public class BlockBasic extends Block {
 		super(mat);
 		this.name = name;
 		this.setHardness(1.0F);
-		this.setCreativeTab(Travellers.tabTravellers);
 		this.setHarvestLevel("pickaxe", 0);
 		setUnlocalizedName(name);
 		setRegistryName(name);

@@ -13,18 +13,23 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 @Mod(modid = Travellers.MODID, version = Travellers.VERSION, updateJSON = "http://www.silvaniastudios.com/mods/update/travellers.json")
 public class Travellers {
 	
 	public static final String MODID = "travellers";
 	public static final String VERSION = "0.0.1";
+	
+	@Instance(MODID)
+	public static Travellers instance;
 	
 	@SidedProxy(clientSide = "com.silvaniastudios.travellers.client.ClientProxy", serverSide = "com.silvaniastudios.travellers.CommonProxy")
 	public static CommonProxy proxy;
@@ -44,6 +49,7 @@ public class Travellers {
 	    
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
+		NetworkRegistry.INSTANCE.registerGuiHandler(Travellers.instance, new GuiHandler());
 		proxy.init(event);
 	}
 	
@@ -76,7 +82,7 @@ public class Travellers {
 		@SubscribeEvent
 		public static void registerBlocks(RegistryEvent.Register<Block> event) {
 			ModBlocks.register(event.getRegistry());
+			ModBlocks.registerTileEntities();
 		}
 	}
-
 }

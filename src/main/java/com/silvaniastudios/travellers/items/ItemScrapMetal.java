@@ -35,8 +35,7 @@ public class ItemScrapMetal extends ItemBasic {
     @Override
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		tooltip.add("Metal");
-		tooltip.add("Quality: " + stack.getItemDamage());
-		tooltip.add("Subname: " + name.substring(6));
+		tooltip.add("Quality: " + getQuality(stack));
 		tooltip.add(I18n.format("travellers.tooltip.metal." + name.substring(6)));
 	}
 	

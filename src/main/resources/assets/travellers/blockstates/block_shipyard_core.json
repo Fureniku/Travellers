@@ -8,6 +8,14 @@
 		"uvlock": true
 	},
 	"variants": {
-		"normal": [{}]
+		"inventory": [{
+			"transform": "forge:default-block"
+		}],
+		"rotate": {
+			"n": { "model": "travellers:shipyard_core", "y": 270 },
+			"e": { "model": "travellers:shipyard_core" },
+			"s": { "model": "travellers:shipyard_core", "y": 90 },
+			"w": { "model": "travellers:shipyard_core", "y": 180 }
+		}
 	}
 }

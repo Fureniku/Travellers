@@ -1,0 +1,33 @@
+{
+	"forge_marker": 1,
+	"defaults": {
+		"textures": {
+			"all": "travellers:blocks/ore_aluminium"
+		},
+		"model": "travellers:shipyard_flap",
+		"uvlock": true
+	},
+	"variants": {
+		"inventory": [{
+			"transform": "forge:default-block"
+		}],
+		"part": {
+			"ramp_a_n_l": { "model": "travellers:shipyard_ramp_a_l"},
+			"ramp_a_n_r": { "model": "travellers:shipyard_ramp_a_r" },
+			"ramp_a_e_l": { "model": "travellers:shipyard_ramp_a_l", "y": 90 },
+			"ramp_a_e_r": { "model": "travellers:shipyard_ramp_a_r", "y": 90 },
+			"ramp_a_s_l": { "model": "travellers:shipyard_ramp_a_l", "y": 180 },
+			"ramp_a_s_r": { "model": "travellers:shipyard_ramp_a_r", "y": 180 },
+			"ramp_a_w_l": { "model": "travellers:shipyard_ramp_a_l", "y": 270 },
+			"ramp_a_w_r": { "model": "travellers:shipyard_ramp_a_r", "y": 270 },
+			"ramp_b_n_l": { "model": "travellers:shipyard_ramp_b_l" },
+			"ramp_b_n_r": { "model": "travellers:shipyard_ramp_b_r" },
+			"ramp_b_e_l": { "model": "travellers:shipyard_ramp_b_l", "y": 90 },
+			"ramp_b_e_r": { "model": "travellers:shipyard_ramp_b_r", "y": 90 },
+			"ramp_b_s_l": { "model": "travellers:shipyard_ramp_b_l", "y": 180 },
+			"ramp_b_s_r": { "model": "travellers:shipyard_ramp_b_r", "y": 180 },
+			"ramp_b_w_l": { "model": "travellers:shipyard_ramp_b_l", "y": 270 },
+			"ramp_b_w_r": { "model": "travellers:shipyard_ramp_b_r", "y": 270 }
+		}
+	}
+}

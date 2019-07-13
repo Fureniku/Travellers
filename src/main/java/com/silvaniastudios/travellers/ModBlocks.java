@@ -7,8 +7,11 @@ import com.silvaniastudios.travellers.blocks.TravellersOre;
 import com.silvaniastudios.travellers.blocks.databank.BlockDatabank;
 import com.silvaniastudios.travellers.blocks.databank.DatabankRarityEnum;
 import com.silvaniastudios.travellers.blocks.databank.TileEntityDatabank;
-import com.silvaniastudios.travellers.blocks.shipyard.ShipyardBlockCore;
-import com.silvaniastudios.travellers.blocks.shipyard.ShipyardBlockParts;
+import com.silvaniastudios.travellers.blocks.tileentity.shipyard.ShipyardBlockCore;
+import com.silvaniastudios.travellers.blocks.tileentity.shipyard.ShipyardBlockParts;
+import com.silvaniastudios.travellers.blocks.tileentity.shipyard.ShipyardBlockPartsFlap;
+import com.silvaniastudios.travellers.blocks.tileentity.shipyard.ShipyardBlockPartsRamp;
+import com.silvaniastudios.travellers.blocks.tileentity.shipyard.ShipyardEntity;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -38,6 +41,9 @@ public class ModBlocks {
 	public static TravellersOre silver_ore = new TravellersOre("ore_silver", ModItems.silver_scrap);
 	public static TravellersOre tungsten_ore = new TravellersOre("ore_tungsten", ModItems.tungsten_scrap);
 	public static TravellersOre gold_ore = new TravellersOre("ore_gold", ModItems.gold_scrap);
+	public static TravellersOre magnesium_ore = new TravellersOre("ore_magnesium", ModItems.magnesium_scrap);
+	public static TravellersOre palladium_ore = new TravellersOre("ore_palladium", ModItems.palladium_scrap);
+	public static TravellersOre platinum_ore = new TravellersOre("ore_platinum", ModItems.platinum_scrap);
 	
 	public static List<BlockDatabank> block_databanks = new ArrayList<BlockDatabank>();
 	public static List<Item> item_databanks = new ArrayList<Item>();
@@ -49,6 +55,8 @@ public class ModBlocks {
 	
 	public static ShipyardBlockCore block_shipyard_core = new ShipyardBlockCore("block_shipyard_core");
 	public static ShipyardBlockParts block_shipyard_parts = new ShipyardBlockParts("block_shipyard_parts");
+	public static ShipyardBlockPartsFlap block_shipyard_parts_flap = new ShipyardBlockPartsFlap("block_shipyard_parts_flap");
+	public static ShipyardBlockPartsRamp block_shipyard_parts_ramp = new ShipyardBlockPartsRamp("block_shipyard_parts_ramp");
 	
 	public static void register(IForgeRegistry<Block> registry) {
 		GameRegistry.registerTileEntity(TileEntityDatabank.class, new ResourceLocation(Travellers.MODID + ":databank"));
@@ -69,9 +77,14 @@ public class ModBlocks {
 				silver_ore,
 				tungsten_ore,
 				gold_ore,
+				magnesium_ore,
+				palladium_ore,
+				platinum_ore,
 				
 				block_shipyard_core,
-				block_shipyard_parts
+				block_shipyard_parts,
+				block_shipyard_parts_flap,
+				block_shipyard_parts_ramp
 			);
 		
 		registry.registerAll(block_databanks.toArray(new Block[0]));
@@ -93,12 +106,16 @@ public class ModBlocks {
 		registry.register(new ItemBlock(silver_ore).setRegistryName(silver_ore.getRegistryName()));
 		registry.register(new ItemBlock(tungsten_ore).setRegistryName(tungsten_ore.getRegistryName()));
 		registry.register(new ItemBlock(gold_ore).setRegistryName(gold_ore.getRegistryName()));
-		
-		registry.register(new ItemBlock(block_shipyard_core).setRegistryName(block_shipyard_core.getRegistryName()));
-		registry.register(new ItemBlock(block_shipyard_parts).setRegistryName(block_shipyard_parts.getRegistryName()));
+		registry.register(new ItemBlock(magnesium_ore).setRegistryName(magnesium_ore.getRegistryName()));
+		registry.register(new ItemBlock(palladium_ore).setRegistryName(palladium_ore.getRegistryName()));
+		registry.register(new ItemBlock(platinum_ore).setRegistryName(platinum_ore.getRegistryName()));
 		
 		registry.registerAll(item_databanks.toArray(new Item[0]));
-		
+
+		registry.register(new ItemBlock(block_shipyard_core).setRegistryName(block_shipyard_core.getRegistryName()));
+		registry.register(new ItemBlock(block_shipyard_parts).setRegistryName(block_shipyard_parts.getRegistryName()));
+		registry.register(new ItemBlock(block_shipyard_parts_flap).setRegistryName(block_shipyard_parts_flap.getRegistryName()));
+		registry.register(new ItemBlock(block_shipyard_parts_ramp).setRegistryName(block_shipyard_parts_ramp.getRegistryName()));
 	}
 
 	public static void registerModels() {
@@ -117,13 +134,23 @@ public class ModBlocks {
 		silver_ore.initModel();
 		tungsten_ore.initModel();
 		gold_ore.initModel();
-		
-		block_shipyard_core.initModel();
-		block_shipyard_parts.initModel();
-		
+		magnesium_ore.initModel();
+		palladium_ore.initModel();
+		platinum_ore.initModel();
+
 		for (BlockDatabank block : block_databanks) {
 			block.registerModels();
 		}
+		
+		block_shipyard_core.initModel();
+		block_shipyard_parts.initModel();
+		block_shipyard_parts_flap.initModel();
+		block_shipyard_parts_ramp.initModel();
+	}
+	
+	@SuppressWarnings("deprecation")
+	public static void registerTileEntities() {
+		GameRegistry.registerTileEntity(ShipyardEntity.class, Travellers.MODID + ":shipyard_entity");
 	}
 	
 	@SideOnly(Side.CLIENT)
