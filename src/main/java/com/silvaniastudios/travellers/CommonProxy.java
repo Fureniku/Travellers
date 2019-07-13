@@ -4,9 +4,6 @@ import com.silvaniastudios.travellers.capability.CapabilityHandler;
 import com.silvaniastudios.travellers.capability.knowledge.IKnowledge;
 import com.silvaniastudios.travellers.capability.knowledge.Knowledge;
 import com.silvaniastudios.travellers.capability.knowledge.KnowledgeStorage;
-import com.silvaniastudios.travellers.capability.tree.ISchematicTree;
-import com.silvaniastudios.travellers.capability.tree.SchematicTreeCapability;
-import com.silvaniastudios.travellers.capability.tree.SchematicTreeStorage;
 
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
@@ -29,7 +26,6 @@ public class CommonProxy {
 	public void init(FMLInitializationEvent event) {
 		//OreDictionary.registerOre(CopperConfig.oredict.oreOreDict, new ItemStack(ModBlocks.blockOre1, 1, 0));
 		//OreDictionary.registerOre(CopperConfig.oredict.nuggetOreDict, ModItems.nuggetCopper);
-		CapabilityManager.INSTANCE.register(ISchematicTree.class, new SchematicTreeStorage(), SchematicTreeCapability.class);
 		
 		CapabilityManager.INSTANCE.register(IKnowledge.class, new KnowledgeStorage(), Knowledge.class);
 		MinecraftForge.EVENT_BUS.register(new CapabilityHandler());

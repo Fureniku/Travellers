@@ -9,15 +9,14 @@ import com.silvaniastudios.travellers.items.ItemBasic;
 
 public class Schematic extends ItemBasic {
 
-	protected String schematicName;
-	protected String schematicDesc;
+	private String schematicName;
+	private String schematicDesc;
 	private Map<String, ArrayList<Integer>> stats;
 	private Map<String, ArrayList<Integer>> crafting;
 
 	private int knowledgeCost;
-	private SchematicType type;
 
-	public Schematic(SchematicType type, String schematicName, Map<String, ArrayList<Integer>> stats, Map<String, ArrayList<Integer>> crafting,
+	public Schematic(String schematicName, Map<String, ArrayList<Integer>> stats, Map<String, ArrayList<Integer>> crafting,
 			@Nullable int knowledgeCost) {
 		super(schematicName);
 
@@ -26,18 +25,6 @@ public class Schematic extends ItemBasic {
 		this.setKnowledgeCost(knowledgeCost);
 		this.setStats(stats);
 		this.setCrafting(crafting);
-		this.setType(type);
-	}
-	
-	public Schematic(SchematicType type, String schematicName) {
-		super(schematicName);
-		
-		this.setSchematicName(schematicName);
-		this.setType(type);
-	}
-	
-	public static enum SchematicType {
-		SPECIAL, ENGINE, WING, CANNON, SWIVELCANNON, SHIPPART, COOKING, CLOTHING
 	}
 
 	/**
@@ -108,20 +95,6 @@ public class Schematic extends ItemBasic {
 	 */
 	public void setCrafting(Map<String, ArrayList<Integer>> crafting) {
 		this.crafting = crafting;
-	}
-
-	/**
-	 * @return the type
-	 */
-	public SchematicType getType() {
-		return type;
-	}
-
-	/**
-	 * @param type the type to set
-	 */
-	public void setType(SchematicType type) {
-		this.type = type;
 	}
 
 }
