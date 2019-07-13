@@ -1,5 +1,6 @@
 package com.silvaniastudios.travellers;
 
+import com.silvaniastudios.travellers.items.ItemAssembler;
 import com.silvaniastudios.travellers.items.ItemBasic;
 import com.silvaniastudios.travellers.items.ItemScrapMetal;
 import com.silvaniastudios.travellers.items.ItemShipyard;
@@ -56,6 +57,12 @@ public class ModItems {
 	public static ItemScanner scanner = new ItemScanner("gauntlet_scanner");
 	
 	public static ItemShipyard shipyard = new ItemShipyard("shipyard");
+	public static ItemAssembler assembling_station = new ItemAssembler("assembling_station");
+	
+	//Unregistered stub items
+	public static ItemBasic paint_barel = new ItemBasic("paint_barrel");
+	public static ItemBasic paint_bucket = new ItemBasic("paint_bucket");
+
 
 	public static void register(IForgeRegistry<Item> registry) {
 		registry.register(atlas_shard);
@@ -100,6 +107,7 @@ public class ModItems {
 		registry.register(scanner);
 		
 		registry.register(shipyard);
+		registry.register(assembling_station);
 	}
 
 	public static void registerModels() {
@@ -146,6 +154,7 @@ public class ModItems {
 		scanner.registerItemModel();
 		
 		shipyard.registerItemModel();
+		assembling_station.registerItemModel();
 	}
 
 }

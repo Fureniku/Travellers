@@ -4,9 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.silvaniastudios.travellers.blocks.TravellersOre;
+
 import com.silvaniastudios.travellers.blocks.databank.BlockDatabank;
 import com.silvaniastudios.travellers.blocks.databank.DatabankRarityEnum;
 import com.silvaniastudios.travellers.blocks.databank.TileEntityDatabank;
+import com.silvaniastudios.travellers.blocks.tileentity.assembler.AssemblerBlock;
+import com.silvaniastudios.travellers.blocks.tileentity.assembler.AssemblerEntity;
+
 import com.silvaniastudios.travellers.blocks.tileentity.shipyard.ShipyardBlockCore;
 import com.silvaniastudios.travellers.blocks.tileentity.shipyard.ShipyardBlockParts;
 import com.silvaniastudios.travellers.blocks.tileentity.shipyard.ShipyardBlockPartsFlap;
@@ -58,6 +62,8 @@ public class ModBlocks {
 	public static ShipyardBlockPartsFlap block_shipyard_parts_flap = new ShipyardBlockPartsFlap("block_shipyard_parts_flap");
 	public static ShipyardBlockPartsRamp block_shipyard_parts_ramp = new ShipyardBlockPartsRamp("block_shipyard_parts_ramp");
 	
+	public static AssemblerBlock assembling_station = new AssemblerBlock("assembling_station");
+	
 	public static void register(IForgeRegistry<Block> registry) {
 		GameRegistry.registerTileEntity(TileEntityDatabank.class, new ResourceLocation(Travellers.MODID + ":databank"));
 
@@ -84,7 +90,9 @@ public class ModBlocks {
 				block_shipyard_core,
 				block_shipyard_parts,
 				block_shipyard_parts_flap,
-				block_shipyard_parts_ramp
+				block_shipyard_parts_ramp,
+				
+				assembling_station
 			);
 		
 		registry.registerAll(block_databanks.toArray(new Block[0]));
@@ -116,6 +124,8 @@ public class ModBlocks {
 		registry.register(new ItemBlock(block_shipyard_parts).setRegistryName(block_shipyard_parts.getRegistryName()));
 		registry.register(new ItemBlock(block_shipyard_parts_flap).setRegistryName(block_shipyard_parts_flap.getRegistryName()));
 		registry.register(new ItemBlock(block_shipyard_parts_ramp).setRegistryName(block_shipyard_parts_ramp.getRegistryName()));
+		
+		registry.register(new ItemBlock(assembling_station).setRegistryName(assembling_station.getRegistryName()));
 	}
 
 	public static void registerModels() {
@@ -146,11 +156,14 @@ public class ModBlocks {
 		block_shipyard_parts.initModel();
 		block_shipyard_parts_flap.initModel();
 		block_shipyard_parts_ramp.initModel();
+		
+		assembling_station.initModel();
 	}
 	
 	@SuppressWarnings("deprecation")
 	public static void registerTileEntities() {
 		GameRegistry.registerTileEntity(ShipyardEntity.class, Travellers.MODID + ":shipyard_entity");
+		GameRegistry.registerTileEntity(AssemblerEntity.class, Travellers.MODID + ":assembler_entity");
 	}
 	
 	@SideOnly(Side.CLIENT)
