@@ -7,9 +7,9 @@ import com.silvaniastudios.travellers.ModItems;
 import com.silvaniastudios.travellers.PacketHandler;
 import com.silvaniastudios.travellers.Travellers;
 import com.silvaniastudios.travellers.blocks.BlockBasic;
-import com.silvaniastudios.travellers.capability.knowledge.IKnowledge;
-import com.silvaniastudios.travellers.capability.knowledge.KnowledgeProvider;
-import com.silvaniastudios.travellers.network.KnowledgeMessage;
+import com.silvaniastudios.travellers.capability.playerData.IPlayerData;
+import com.silvaniastudios.travellers.capability.playerData.PlayerDataProvider;
+import com.silvaniastudios.travellers.network.PlayerDataSyncMessage;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -203,8 +203,8 @@ public class BlockDatabank extends BlockBasic implements ITileEntityProvider {
 						return true;
 					}
 
-					IKnowledge knowledge = playerIn.getCapability(KnowledgeProvider.KNOWLEDGE, null);
-					knowledge.setKnowledge(knowledge.getKnowledge() + rarity.getKnowledgeBoost());
+					IPlayerData playerData = playerIn.getCapability(PlayerDataProvider.PLAYER_DATA, null);
+					playerData.incrementKnowledgeBalance(rarity.getKnowledgeBoost());
 
 					String rarityString = String.format("%s%s", DatabankRarityEnum.color(rarity),
 							rarity.toString().toLowerCase());
@@ -213,9 +213,7 @@ public class BlockDatabank extends BlockBasic implements ITileEntityProvider {
 
 					playerIn.sendMessage(new TextComponentString(msg));
 
-					PacketHandler.INSTANCE.sendTo(
-							new KnowledgeMessage(
-									playerIn.getCapability(KnowledgeProvider.KNOWLEDGE, null).getKnowledge()),
+					PacketHandler.INSTANCE.sendTo(new PlayerDataSyncMessage(playerData),
 							(EntityPlayerMP) playerIn);
 
 					return true;

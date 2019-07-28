@@ -1,7 +1,7 @@
 package com.silvaniastudios.travellers.client.gui;
 
-import com.silvaniastudios.travellers.capability.knowledge.IKnowledge;
-import com.silvaniastudios.travellers.capability.knowledge.KnowledgeProvider;
+import com.silvaniastudios.travellers.capability.playerData.IPlayerData;
+import com.silvaniastudios.travellers.capability.playerData.PlayerDataProvider;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -12,7 +12,7 @@ public class GuiKnowledgeOverlay extends Gui {
 	protected int width;
 	protected int height;
 
-	protected IKnowledge knowledgeCapability;
+	protected IPlayerData playerData;
 
 	public GuiKnowledgeOverlay() {
 		ScaledResolution scaled = new ScaledResolution(Minecraft.getMinecraft());
@@ -21,10 +21,10 @@ public class GuiKnowledgeOverlay extends Gui {
 	}
 
 	public void draw() {
-		if (Minecraft.getMinecraft().player.hasCapability(KnowledgeProvider.KNOWLEDGE, null)) {
-			this.knowledgeCapability = Minecraft.getMinecraft().player.getCapability(KnowledgeProvider.KNOWLEDGE, null);
+		if (Minecraft.getMinecraft().player.hasCapability(PlayerDataProvider.PLAYER_DATA, null)) {
+			this.playerData = Minecraft.getMinecraft().player.getCapability(PlayerDataProvider.PLAYER_DATA, null);
 
-			String string = String.format("Knowledge: %d", this.knowledgeCapability.getKnowledge());
+			String string = String.format("Knowledge: %d", this.playerData.getKnowledgeBalance());
 
 			//drawCenteredString(Minecraft.getMinecraft().fontRenderer, string, 0, 0,
 			//		Integer.parseInt("FFAA00", 16));
