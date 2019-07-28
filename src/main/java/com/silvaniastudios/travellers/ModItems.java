@@ -12,10 +12,14 @@ import com.silvaniastudios.travellers.items.tools.ItemScanner;
 import com.silvaniastudios.travellers.items.tools.ItemShipyardTool;
 
 import net.minecraft.item.Item;
+import net.minecraft.item.Item.ToolMaterial;
+import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.registries.IForgeRegistry;
 
 public class ModItems {
-
+	
+	public static final ToolMaterial ANCIENT_SALVAGER = EnumHelper.addToolMaterial("ANCIENT_SALVAGER", 3, 2000, 20.0F, 5.0F, 0);
+	
 	public static ItemBasic atlas_shard = new ItemBasic("shard_atlas");
 
 	public static ItemScrapMetal aluminium_scrap = new ItemScrapMetal("scrap_aluminium");
@@ -62,6 +66,8 @@ public class ModItems {
 	//Unregistered stub items
 	public static ItemBasic paint_barel = new ItemBasic("paint_barrel");
 	public static ItemBasic paint_bucket = new ItemBasic("paint_bucket");
+	
+	
 
 
 	public static void register(IForgeRegistry<Item> registry) {

@@ -13,6 +13,7 @@ import com.silvaniastudios.travellers.network.PlayerDataSyncMessage;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
@@ -21,6 +22,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -34,6 +36,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockDatabank extends BlockBasic implements ITileEntityProvider {
 
@@ -44,6 +48,7 @@ public class BlockDatabank extends BlockBasic implements ITileEntityProvider {
 
 	public BlockDatabank(String name, DatabankRarityEnum rarity) {
 		super(name, Material.IRON);
+		this.setHarvestLevel("pickaxe", 2);
 
 		this.rarity = rarity;
 
@@ -52,6 +57,11 @@ public class BlockDatabank extends BlockBasic implements ITileEntityProvider {
 
 		this.setDefaultState(this.blockState.getBaseState().withProperty(PART, DatabankPartEnum.LOWER));
 	}
+	
+	public EnumPushReaction getMobilityFlag(IBlockState state)
+    {
+        return EnumPushReaction.DESTROY;
+    }
 
 	@Override
 	public boolean doesSideBlockRendering(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face) {
@@ -66,6 +76,16 @@ public class BlockDatabank extends BlockBasic implements ITileEntityProvider {
 	@Override
 	public BlockRenderLayer getBlockLayer() {
 		return BlockRenderLayer.CUTOUT;
+	}
+	
+	@Override
+	public boolean isFullCube(IBlockState state) {
+		return false;
+	}
+	
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
+		return false;
 	}
 
 	/*
@@ -141,9 +161,15 @@ public class BlockDatabank extends BlockBasic implements ITileEntityProvider {
 	/*
 	 * Drop Behaviour
 	 */
-
+	
+	@SideOnly(Side.CLIENT)
+    public boolean hasCustomBreakingProgress(IBlockState state)
+    {
+        return true;
+    }
+	
 	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-		return Item.getItemFromBlock(this);
+		return state.getValue(PART) == DatabankPartEnum.LOWER ? Items.AIR : Item.getItemFromBlock(this);
 	}
 
 	@Override
@@ -163,15 +189,19 @@ public class BlockDatabank extends BlockBasic implements ITileEntityProvider {
 			spawnAsEntity(worldIn, pos, itemstack);
 		}
 	}
-
+	
 	@Override
-	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player,
-			boolean willHarvest) {
-		return super.removedByPlayer(state, world, pos, player, willHarvest);
-	}
-
-	@Override
-	public void dropBlockAsItemWithChance(World worldIn, BlockPos pos, IBlockState state, float chance, int fortune) {
+	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
+		
+		if (state.getValue(PART) != DatabankPartEnum.LOWER) {
+			if (worldIn.getBlockState(pos.offset(EnumFacing.UP)).getBlock() != this) {
+				worldIn.setBlockToAir(pos);
+			}
+		} else if (worldIn.getBlockState(pos.offset(EnumFacing.DOWN)).getBlock() != this) {
+			if (!worldIn.isRemote) {
+				this.dropBlockAsItem(worldIn, pos, state, 0);
+			}
+		} 
 	}
 
 	/*
@@ -226,16 +256,6 @@ public class BlockDatabank extends BlockBasic implements ITileEntityProvider {
 
 	}
 
-	@Override
-	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
-		if (worldIn.getBlockState(fromPos).getMaterial() == Material.AIR && blockIn instanceof BlockDatabank) {
-			if (state.getValue(PART) == DatabankPartEnum.LOWER) {
-				worldIn.destroyBlock(pos, true);
 
-			} else if (state.getValue(PART) == DatabankPartEnum.UPPER) {
-				worldIn.destroyBlock(pos, true);
-			}
-		}
-	}
 
 }
