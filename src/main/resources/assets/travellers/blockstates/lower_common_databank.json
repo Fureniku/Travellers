@@ -1,7 +1,7 @@
 {
 	"forge_marker": 1,
 	"defaults": {
-		"model": "travellers:databank_top",
+		"model": "travellers:databank_bottom",
 		"textures": {
 			"0": "travellers:blocks/databank",
 			"particle": "travellers:blocks/databank"
@@ -11,6 +11,16 @@
 	
 		"inventory": [{
 			"transform": "forge:default-block"
-		}]
+		}],
+
+		"facing": {
+			"north": { },
+			
+			"east": {"y": 90},
+			
+			"south": {"y": 180},
+			
+			"west": {"y": 270}
+		}
     }
 }

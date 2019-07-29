@@ -5,6 +5,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -70,6 +71,9 @@ public class Travellers {
 		
 		@SubscribeEvent
 		public static void registerModels(ModelRegistryEvent event) {
+			
+			ModelLoader.setCustomStateMapper(ModBlocks.databank_common, ModBlocks.databank_common.stateMapper);
+			
 			ModItems.registerModels();
 			ModBlocks.registerModels();
 		}

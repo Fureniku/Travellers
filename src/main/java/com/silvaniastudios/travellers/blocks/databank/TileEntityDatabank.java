@@ -8,7 +8,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.Constants;
 
 public class TileEntityDatabank extends TileEntity {
@@ -21,37 +20,16 @@ public class TileEntityDatabank extends TileEntity {
 	}
 
 	public boolean beScannedBy (EntityPlayer player) {
+		
+		if (this.isScannedBy(player)) {
+			return false;
+		}
+		
 		this.scannedBy.add(player.getUniqueID());
 		markDirty();
 		this.part = this.world.getBlockState(this.pos).getValue(BlockDatabank.PART);
 		
-		if (this.part == DatabankPartEnum.UPPER) {
-			BlockPos blockBelow = new BlockPos(this.getPos().getX(), this.getPos().getY() - 1, this.getPos().getZ());
-			TileEntity tileEntityBelow = this.getWorld().getTileEntity(blockBelow);
-			
-			if (tileEntityBelow instanceof TileEntityDatabank) {
-				if (((TileEntityDatabank) tileEntityBelow).isScannedBy(player)) {
-					return false;
-				} else {
-					((TileEntityDatabank) tileEntityBelow).beScannedBy(player);
-					return true;
-				}
-			}
-		} else if (this.part == DatabankPartEnum.LOWER) {
-			BlockPos blockAbove = new BlockPos(this.getPos().getX(), this.getPos().getY() + 1, this.getPos().getZ());
-			TileEntity tileEntityAbove = this.getWorld().getTileEntity(blockAbove);
-			
-			if (tileEntityAbove instanceof TileEntityDatabank) {
-				if ( ((TileEntityDatabank) tileEntityAbove).isScannedBy(player)) {
-					return false;
-				} else {
-					((TileEntityDatabank) tileEntityAbove).beScannedBy(player);
-					return true;
-				}
-			}			
-		}
-		
-		return false;
+		return true;
 	}
 	
 	public boolean isScannedBy (EntityPlayer player) {
