@@ -20,8 +20,6 @@ import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.statemap.IStateMapper;
-import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -57,8 +55,6 @@ public class BlockDatabank extends BlockBasic implements ITileEntityProvider {
 	protected static final AxisAlignedBB DATABANK_INVERSED_AABB = new AxisAlignedBB(0.0D, -1.0D, 0.0D, 1.0D, 1.0D, 1.0D);
 
 	private DatabankRarityEnum rarity;
-	
-	public IStateMapper stateMapper;
 
 	public BlockDatabank(String name, DatabankRarityEnum rarity) {
 		super(name, Material.IRON);
@@ -67,11 +63,6 @@ public class BlockDatabank extends BlockBasic implements ITileEntityProvider {
 		this.setCreativeTab(Travellers.tabTravellers);
 		this.rarity = rarity;
 		this.hasTileEntity = true;
-		
-		StateMap.Builder stateBuilder = new StateMap.Builder();
-		stateBuilder.withName(PART);
-		stateBuilder.withSuffix(String.format("_%s_databank", rarity.toString()));
-		stateMapper = stateBuilder.build();
 
 		ModBlocks.block_databanks.add(this);
 		ModBlocks.item_databanks.add(new ItemBlock(this).setRegistryName(this.getRegistryName()));
@@ -271,13 +262,6 @@ public class BlockDatabank extends BlockBasic implements ITileEntityProvider {
 	@Override
 	public BlockRenderLayer getBlockLayer() {
 		return BlockRenderLayer.CUTOUT;
-	}
-
-	/*
-	 * Register method
-	 */
-	public void registerModels() {
-		Travellers.proxy.registerItemRenderer(Item.getItemFromBlock(this), 9, this.name);
 	}
 
 	/*

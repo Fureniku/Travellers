@@ -149,7 +149,8 @@ public class ModBlocks {
 		platinum_ore.initModel();
 
 		for (BlockDatabank block : block_databanks) {
-			block.registerModels();
+
+			block.initModel();
 		}
 		
 		block_shipyard_core.initModel();

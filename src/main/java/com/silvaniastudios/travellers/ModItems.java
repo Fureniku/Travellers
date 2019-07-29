@@ -2,6 +2,7 @@ package com.silvaniastudios.travellers;
 
 import com.silvaniastudios.travellers.items.ItemAssembler;
 import com.silvaniastudios.travellers.items.ItemBasic;
+import com.silvaniastudios.travellers.items.ItemSchematic;
 import com.silvaniastudios.travellers.items.ItemScrapMetal;
 import com.silvaniastudios.travellers.items.ItemShipyard;
 import com.silvaniastudios.travellers.items.ItemWoodPlanks;
@@ -63,12 +64,11 @@ public class ModItems {
 	public static ItemShipyard shipyard = new ItemShipyard("shipyard");
 	public static ItemAssembler assembling_station = new ItemAssembler("assembling_station");
 	
+	public static ItemSchematic default_schematic = new ItemSchematic("default_schematic");
+	
 	//Unregistered stub items
 	public static ItemBasic paint_barel = new ItemBasic("paint_barrel");
 	public static ItemBasic paint_bucket = new ItemBasic("paint_bucket");
-	
-	
-
 
 	public static void register(IForgeRegistry<Item> registry) {
 		registry.register(atlas_shard);
@@ -114,6 +114,8 @@ public class ModItems {
 		
 		registry.register(shipyard);
 		registry.register(assembling_station);
+		
+		registry.register(default_schematic);
 	}
 
 	public static void registerModels() {
@@ -161,6 +163,8 @@ public class ModItems {
 		
 		shipyard.registerItemModel();
 		assembling_station.registerItemModel();
+		
+		default_schematic.registerItemModel();
 	}
 
 }

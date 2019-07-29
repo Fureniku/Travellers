@@ -1,21 +1,56 @@
 {
 	"forge_marker": 1,
 	"defaults": {
+		"model": "travellers:databank_top",
 		"textures": {
-			"all": "travellers:blocks/databank_rare"
-		},
-		"model": "cube_all",
-		"uvlock": true
+			"0": "travellers:blocks/databank",
+			"particle": "travellers:blocks/databank"
+		}
 	},
     "variants": {
-		"part=upper": [{
-			"textures": {"all": "travellers:blocks/databank_rare_upper"}
-		}],
-		"part=lower": [{
-			"textures": {"all": "travellers:blocks/databank_rare_lower"}
-		}],
+	
 		"inventory": [{
 			"transform": "forge:default-block"
+		}],
+		
+		"facing=south,part=upper": [{
+			"model": "travellers:databank_top",
+			"y": 180
+		}],
+		
+		"facing=south,part=lower": [{
+			"model": "travellers:databank_bottom",
+			"y": 180
+		}],
+		
+		"facing=north,part=upper": [{
+			"model": "travellers:databank_top",
+			"y": 0
+		}],
+		
+		"facing=north,part=lower": [{
+			"model": "travellers:databank_bottom",
+			"y": 0
+		}],
+		
+		"facing=east,part=upper": [{
+			"model": "travellers:databank_top",
+			"y": 90
+		}],
+		
+		"facing=east,part=lower": [{
+			"model": "travellers:databank_bottom",
+			"y": 90
+		}],
+		
+		"facing=west,part=upper": [{
+			"model": "travellers:databank_top",
+			"y": 270
+		}],
+		
+		"facing=west,part=lower": [{
+			"model": "travellers:databank_bottom",
+			"y": 270
 		}]
     }
 }
