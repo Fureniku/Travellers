@@ -3,6 +3,8 @@ package com.silvaniastudios.travellers.capability.playerData;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.silvaniastudios.travellers.items.ItemSchematic;
+
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -13,8 +15,8 @@ public class PlayerData implements IPlayerData {
 	private boolean isMale;
 	private HashMap<String, Integer> knowledgeNodeUses;
 	private ArrayList<String> knownLorePieces;
-	
-	//TODO: private <T> shipDesignSchematics;
+	private ArrayList<ItemSchematic> schematicList;
+	private HashMap<String, ItemSchematic> shipDesignList;
 	
 	public PlayerData () {
 		this.knowledgeBalance = 0;
@@ -22,6 +24,9 @@ public class PlayerData implements IPlayerData {
 		this.isMale = true;
 		this.knowledgeNodeUses = new HashMap<String, Integer>();
 		this.knownLorePieces = new ArrayList<String>();
+		
+		this.schematicList = new ArrayList<ItemSchematic>();
+		this.shipDesignList = new HashMap<String, ItemSchematic>();
 	}
 
 	@Override
@@ -125,16 +130,6 @@ public class PlayerData implements IPlayerData {
 	}
 
 	@Override
-	public void getShipDesignSchematics() {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void editShipDesignSchematic(String designKey) {
-		// TODO Auto-generated method stub		
-	}
-
-	@Override
 	public NBTTagCompound toNBT() {
 		NBTTagCompound nbtTag = new NBTTagCompound();
 		nbtTag.setInteger("knowledge", this.getKnowledgeBalance());
@@ -152,9 +147,23 @@ public class PlayerData implements IPlayerData {
 			knownLorePieces.setInteger(key, index++);
 		}
 		
+		index = 0;
+		NBTTagCompound learntSchematics = new NBTTagCompound();
+		for (ItemSchematic schematic : this.schematicList) {
+			learntSchematics.setTag(String.format("Schematic%d", index++), schematic.toNBT());
+		}
+		
+		nbtTag.setTag("learntSchematicList", learntSchematics);
 		nbtTag.setTag("knowledgeTreeUses", knowledgeTreeUses);
 		nbtTag.setTag("knownLorePieces", knownLorePieces);
-		//TODO: ship schematics / schematic list in general
+		
+		NBTTagCompound shipDesigns = new NBTTagCompound();
+		for (String key : this.shipDesignList.keySet()) {
+			shipDesigns.setTag(key, this.shipDesignList.get(key).toNBT());
+		}
+		
+		nbtTag.setTag("shipDesignList", shipDesigns);
+		
 		return nbtTag;
 	}
 
@@ -175,8 +184,20 @@ public class PlayerData implements IPlayerData {
 			knownLorePieces.add(key);
 		}
 		
+		ArrayList<ItemSchematic> schematicList = new ArrayList<ItemSchematic>();
+		for (String key : nbtTag.getCompoundTag("learntSchematicList").getKeySet()) {
+			schematicList.add(ItemSchematic.fromNBT(nbtTag.getCompoundTag("learntSchematicList").getCompoundTag(key)));
+		}
+		
+		HashMap<String, ItemSchematic> designList = new HashMap<String, ItemSchematic>();
+		for (String key : nbtTag.getCompoundTag("shipDesignList").getKeySet()) {
+			designList.put(key, ItemSchematic.fromNBT(nbtTag.getCompoundTag("shipDesignList").getCompoundTag(key)));
+		}
+		
+		this.shipDesignList = designList;
+		this.schematicList = schematicList;
 		this.setKnownLorePieces(knownLorePieces);
-		//TODO: ship schematics / schematic list in general
+
 	}
 
 	@Override
@@ -185,16 +206,60 @@ public class PlayerData implements IPlayerData {
 		
 		this.setMale(capability.isMale());
 		
-		this.setShipyardVisitorCode(this.getShipyardVisitorCode());
+		this.setShipyardVisitorCode(capability.getShipyardVisitorCode());
 		
 		for (String key : capability.getKnowledgeNodeUses().keySet()) {
 			this.setKnowledgeNodeUses(key, capability.getKnowledgeNodeUses().get(key));
 		}
 		
-		this.setKnownLorePieces(capability.getKnownLorePieces());
-		//TODO: ship schematics / schematic list in general
+		this.schematicList = capability.getSchematicList();
 		
+		this.shipDesignList = capability.getShipDesignSchematics();
+		
+		this.setKnownLorePieces(capability.getKnownLorePieces());
 	}
 
+	@Override
+	public HashMap<String, ItemSchematic> getShipDesignSchematics() {
+		return this.shipDesignList;
+	}
+
+	@Override
+	public ItemSchematic editShipDesignSchematic(String designKey) {
+		return this.shipDesignList.get(designKey);
+	}
+
+	@Override
+	public boolean learnSchematic(ItemSchematic schematic) {
+		if (!hasLearntSchematic(schematic)) {
+			this.schematicList.add(schematic);
+			
+			return true;
+		}
+		
+		return false;
+	}
+
+	@Override
+	public ItemSchematic unlearnSchematic(ItemSchematic schematic) {
+		
+		return schematic;
+	}
+
+	@Override
+	public ArrayList<ItemSchematic> getSchematicList() {
+		return this.schematicList;
+	}
+	
+	@Override
+	public boolean hasLearntSchematic(ItemSchematic schematic) {
+		for (ItemSchematic i : this.schematicList) {
+			if (i == schematic) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
 
 }

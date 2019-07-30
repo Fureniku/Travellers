@@ -3,6 +3,8 @@ package com.silvaniastudios.travellers.capability.playerData;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.silvaniastudios.travellers.items.ItemSchematic;
+
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -58,10 +60,20 @@ public interface IPlayerData {
 	 * Ship schematics
 	 */
 	// TODO: <T> getShipDesignSchematics();
-	public void getShipDesignSchematics();
+	public HashMap<String, ItemSchematic> getShipDesignSchematics();
 	
-	public void editShipDesignSchematic(String designKey);
+	public ItemSchematic editShipDesignSchematic(String designKey);
 	
+	/*
+	 * Schematic List
+	 */
+	public boolean learnSchematic(ItemSchematic schematic);
+	
+	public ItemSchematic unlearnSchematic(ItemSchematic schematic);
+	
+	public ArrayList<ItemSchematic> getSchematicList();
+	
+	public boolean hasLearntSchematic(ItemSchematic schematic);
 	
 	/*
 	 * General

@@ -61,13 +61,20 @@ item.gauntlet_repair_tool.name=Repair Gauntlet
 item.gauntlet_shipyard_tool.name=Shipbuilding Tool
 item.gauntlet_scanner.name=Scanner
 
+item.torch_schematic.name=Torch Schematic
+item.default_schematic.name=Blank Schematic
+
+item.codex_piece.name=Codex Piece
 
 item.shipyard.name=Shipyard
 
 itemGroup.travellers=Travellers
+itemGroup.schematics=Schematics
+itemGroup.lore=Codex Pieces
 
 travellers.config.title_world=Travellers Config
 
+travellers.tooltip.null=The purpose of this item is unknown.
 travellers.tooltip.metal.aluminium=Extremely light and resistant to stress.
 travellers.tooltip.metal.titanium=Very light for such a strong metal but a terrible conductor.
 travellers.tooltip.metal.tin=Hard and durable, a balanced material.
@@ -150,3 +157,5 @@ travellers.gui.shipyard.owner=Owner:
 travellers.gui.shipyard.schematics_list=SHIP SCHEMATICS
 travellers.gui.shipyard.beams=Beams
 travellers.gui.shipyard.decks=Decks
+
+codex.b24214e0b5e4b8e67e5a66ba5fbb089f=Hello, Enna again. Feeling sick now, but it's the skyship, it gives me nausea. I can't imagine what Coriola would have thought on that maiden flight! The height always puts me off the Apotheon you know. Not very godly am I? \n\nI know you're down there on leave, somewhere green. If I get time off, can I come to your farm? I want to lie on real grass. Our foundations, firm ground, it's so much more exciting don't you think? It's no floating bubble like Momoros - it's real. It's as if the only real people live down there, even if life isn't perfect. That's why I like you, you feel real."

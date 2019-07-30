@@ -7,7 +7,7 @@
   "mcversion": "${mcversion}",
   "url": "http://www.silvaniastudios.com/mods/",
   "updateUrl": "http://www.silvaniastudios.com/mods/update/worlds-acraft.json",
-  "authorList": ["Fureniku", "JamesM2W", "Node"],
+  "authorList": ["Fureniku", "jamesm2w", "Node"],
   "credits": "Bossa Studios & the Worlds Adrift team, the Worlds Adrift community (discord.gg/worldsadrift)",
   "logoFile": "",
   "screenshots": [],

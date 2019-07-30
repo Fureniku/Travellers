@@ -1,7 +1,11 @@
 package com.silvaniastudios.travellers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.silvaniastudios.travellers.items.ItemAssembler;
 import com.silvaniastudios.travellers.items.ItemBasic;
+import com.silvaniastudios.travellers.items.ItemCodex;
 import com.silvaniastudios.travellers.items.ItemSchematic;
 import com.silvaniastudios.travellers.items.ItemScrapMetal;
 import com.silvaniastudios.travellers.items.ItemShipyard;
@@ -18,10 +22,21 @@ import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.registries.IForgeRegistry;
 
 public class ModItems {
-	
-	public static final ToolMaterial ANCIENT_SALVAGER = EnumHelper.addToolMaterial("ANCIENT_SALVAGER", 3, 2000, 20.0F, 5.0F, 0);
-	
+
+	public static final ToolMaterial ANCIENT_SALVAGER = EnumHelper.addToolMaterial("ANCIENT_SALVAGER", 3, 2000, 20.0F,
+			5.0F, 0);
+
 	public static ItemBasic atlas_shard = new ItemBasic("shard_atlas");
+
+	public static List<ItemSchematic> schematics = new ArrayList<ItemSchematic>();
+	public static ItemSchematic default_schematic = new ItemSchematic("default_schematic");
+	public static ItemSchematic schematic_torch = new ItemSchematic("torch_schematic", 0, "gauntlet", new String[] { "utility" },
+			"utility.torch", true, "", 25, 20);
+
+	public static List<ItemCodex> codices = new ArrayList<ItemCodex>();
+	public static ItemCodex default_codex = new ItemCodex("default_codex");
+	public static ItemCodex codex_a = new ItemCodex("b24214e0b5e4b8e67e5a66ba5fbb089f", 0,
+			"<Document Labelled \"Skywoman Puglio, Personal\">", 50, "Saborian");
 
 	public static ItemScrapMetal aluminium_scrap = new ItemScrapMetal("scrap_aluminium");
 	public static ItemScrapMetal titanium_scrap = new ItemScrapMetal("scrap_titanium");
@@ -41,7 +56,7 @@ public class ModItems {
 	public static ItemScrapMetal magnesium_scrap = new ItemScrapMetal("scrap_magnesium");
 	public static ItemScrapMetal palladium_scrap = new ItemScrapMetal("scrap_palladium");
 	public static ItemScrapMetal platinum_scrap = new ItemScrapMetal("scrap_platinum");
-	
+
 	public static ItemWoodPlanks cedar_planks = new ItemWoodPlanks("planks_cedar");
 	public static ItemWoodPlanks hemlock_planks = new ItemWoodPlanks("planks_hemlock");
 	public static ItemWoodPlanks chestnut_planks = new ItemWoodPlanks("planks_chestnut");
@@ -54,19 +69,17 @@ public class ModItems {
 	public static ItemWoodPlanks ironwood_planks = new ItemWoodPlanks("planks_ironwood");
 	public static ItemWoodPlanks mahogony_planks = new ItemWoodPlanks("planks_mahogony");
 	public static ItemWoodPlanks maple_planks = new ItemWoodPlanks("planks_maple");
-	
+
 	public static ItemGrapple grapple = new ItemGrapple("grapple");
 	public static ItemSalvager salvager = new ItemSalvager("gauntlet_salvager");
 	public static ItemRepairTool repair_tool = new ItemRepairTool("gauntlet_repair_tool");
 	public static ItemShipyardTool shipyard_tool = new ItemShipyardTool("gauntlet_shipyard_tool");
 	public static ItemScanner scanner = new ItemScanner("gauntlet_scanner");
-	
+
 	public static ItemShipyard shipyard = new ItemShipyard("shipyard");
 	public static ItemAssembler assembling_station = new ItemAssembler("assembling_station");
-	
-	public static ItemSchematic default_schematic = new ItemSchematic("default_schematic");
-	
-	//Unregistered stub items
+
+	// Unregistered stub items
 	public static ItemBasic paint_barel = new ItemBasic("paint_barrel");
 	public static ItemBasic paint_bucket = new ItemBasic("paint_bucket");
 
@@ -88,11 +101,11 @@ public class ModItems {
 		registry.register(silver_scrap);
 		registry.register(tungsten_scrap);
 		registry.register(gold_scrap);
-		
+
 		registry.register(magnesium_scrap);
 		registry.register(palladium_scrap);
 		registry.register(platinum_scrap);
-		
+
 		registry.register(cedar_planks);
 		registry.register(hemlock_planks);
 		registry.register(chestnut_planks);
@@ -105,22 +118,23 @@ public class ModItems {
 		registry.register(ironwood_planks);
 		registry.register(mahogony_planks);
 		registry.register(maple_planks);
-		
+
 		registry.register(grapple);
 		registry.register(salvager);
 		registry.register(repair_tool);
 		registry.register(shipyard_tool);
 		registry.register(scanner);
-		
+
 		registry.register(shipyard);
 		registry.register(assembling_station);
-		
-		registry.register(default_schematic);
+
+		registry.registerAll(schematics.toArray(new Item[] {}));
+		registry.registerAll(codices.toArray(new Item[] {}));
 	}
 
 	public static void registerModels() {
 		atlas_shard.registerItemModel();
-		
+
 		aluminium_scrap.registerItemModel();
 		titanium_scrap.registerItemModel();
 		tin_scrap.registerItemModel();
@@ -136,11 +150,11 @@ public class ModItems {
 		silver_scrap.registerItemModel();
 		tungsten_scrap.registerItemModel();
 		gold_scrap.registerItemModel();
-		
+
 		magnesium_scrap.registerItemModel();
 		palladium_scrap.registerItemModel();
 		platinum_scrap.registerItemModel();
-		
+
 		cedar_planks.registerItemModel();
 		hemlock_planks.registerItemModel();
 		chestnut_planks.registerItemModel();
@@ -149,22 +163,28 @@ public class ModItems {
 		ash_planks.registerItemModel();
 		oak_planks.registerItemModel();
 		palm_planks.registerItemModel();
-		
+
 		ebony_planks.registerItemModel();
 		ironwood_planks.registerItemModel();
 		mahogony_planks.registerItemModel();
 		maple_planks.registerItemModel();
-		
+
 		grapple.registerItemModel();
 		salvager.registerItemModel();
 		repair_tool.registerItemModel();
 		shipyard_tool.registerItemModel();
 		scanner.registerItemModel();
-		
+
 		shipyard.registerItemModel();
 		assembling_station.registerItemModel();
+
+		for (ItemSchematic schem : schematics) {
+			schem.registerItemModel();
+		}
 		
-		default_schematic.registerItemModel();
+		for (ItemCodex codex : codices) {
+			codex.registerItemModel();
+		}
 	}
 
 }

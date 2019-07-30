@@ -37,6 +37,19 @@ public class Travellers {
 		}
 	};
 	
+	public static final CreativeTabs tabSchematics = new CreativeTabs("schematics") {
+		public ItemStack getTabIconItem() {
+			return new ItemStack(ModItems.default_schematic, 1, 0);
+		}
+	};
+	
+	public static final CreativeTabs tabLore = new CreativeTabs("lore") {
+		@Override
+		public ItemStack getTabIconItem() {
+			return new ItemStack(ModItems.default_codex, 1, 0);
+		}
+	};
+	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		//TODO GameRegistry.registerWorldGenerator(new WorldGen(), 3);
