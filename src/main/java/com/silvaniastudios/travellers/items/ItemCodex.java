@@ -42,7 +42,6 @@ public class ItemCodex extends ItemBasic {
 		text = I18n.format("codex."+uuid);
 		this.setCreativeTab(Travellers.tabLore);
 		this.setUnlocalizedName("codex_piece");
-		ModItems.codices.add(this);
 	}
 	
 	@Override
@@ -116,5 +115,4 @@ public class ItemCodex extends ItemBasic {
 	public void setKnowledge(int knowledge) {
 		this.knowledge = knowledge;
 	}
-
 }

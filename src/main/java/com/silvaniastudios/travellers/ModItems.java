@@ -3,6 +3,7 @@ package com.silvaniastudios.travellers;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.silvaniastudios.travellers.items.CodexItems;
 import com.silvaniastudios.travellers.items.ItemAssembler;
 import com.silvaniastudios.travellers.items.ItemBasic;
 import com.silvaniastudios.travellers.items.ItemCodex;
@@ -32,11 +33,9 @@ public class ModItems {
 	public static ItemSchematic default_schematic = new ItemSchematic("default_schematic");
 	public static ItemSchematic schematic_torch = new ItemSchematic("torch_schematic", 0, "gauntlet", new String[] { "utility" },
 			"utility.torch", true, "", 25, 20);
-
-	public static List<ItemCodex> codices = new ArrayList<ItemCodex>();
+	
+	public static List<ItemCodex> codices = new CodexItems().generateItems();
 	public static ItemCodex default_codex = new ItemCodex("default_codex");
-	public static ItemCodex codex_a = new ItemCodex("b24214e0b5e4b8e67e5a66ba5fbb089f", 0,
-			"<Document Labelled \"Skywoman Puglio, Personal\">", 50, "Saborian");
 
 	public static ItemScrapMetal aluminium_scrap = new ItemScrapMetal("scrap_aluminium");
 	public static ItemScrapMetal titanium_scrap = new ItemScrapMetal("scrap_titanium");
