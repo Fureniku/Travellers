@@ -1,7 +1,7 @@
 {
 	"forge_marker": 1,
 	"defaults": {
-		"model": "travellers:databank_top",
+		"model": "travellers:databank",
 		"textures": {
 			"0": "travellers:blocks/databank",
 			"particle": "travellers:blocks/databank"

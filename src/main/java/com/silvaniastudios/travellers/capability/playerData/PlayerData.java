@@ -3,6 +3,7 @@ package com.silvaniastudios.travellers.capability.playerData;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.silvaniastudios.travellers.ModItems;
 import com.silvaniastudios.travellers.items.ItemSchematic;
 
 import net.minecraft.nbt.NBTBase;
@@ -121,6 +122,8 @@ public class PlayerData implements IPlayerData {
 	@Override
 	public void learnLorePiece(String loreID) {
 		this.knownLorePieces.add(loreID);
+		
+		this.incrementKnowledgeBalance(ModItems.parsed_codex.codexMapped.get(loreID).knowledge);
 	}
 
 	@Override

@@ -34,7 +34,8 @@ public class ModItems {
 	public static ItemSchematic schematic_torch = new ItemSchematic("torch_schematic", 0, "gauntlet", new String[] { "utility" },
 			"utility.torch", true, "", 25, 20);
 	
-	public static List<ItemCodex> codices = new CodexItems().generateItems();
+	public static CodexItems parsed_codex = new CodexItems();
+	public static List<ItemCodex> codices = parsed_codex.generateItems();
 	public static ItemCodex default_codex = new ItemCodex("default_codex");
 
 	public static ItemScrapMetal aluminium_scrap = new ItemScrapMetal("scrap_aluminium");

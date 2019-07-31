@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.google.gson.Gson;
 import com.silvaniastudios.travellers.Travellers;
@@ -17,8 +18,11 @@ public class CodexItems {
 	private ResourceLocation loreJson = new ResourceLocation(Travellers.MODID, "lore_pieces.json");
 
 	public LoreCodex codex;
+	
+	public HashMap<String, CodexPiece> codexMapped;
 
 	public CodexItems() {
+		codexMapped = new HashMap<String, CodexPiece>();
 		try {
 			InputStream file = Minecraft.getMinecraft().getResourceManager().getResource(loreJson).getInputStream();
 
@@ -39,6 +43,8 @@ public class CodexItems {
 				items.add(
 						new ItemCodex(piece.guid, piece.pieceIndex, piece.parentName, piece.knowledge, piece.language)
 				);
+				
+				codexMapped.put(piece.guid, piece);
 			}
 		}
 

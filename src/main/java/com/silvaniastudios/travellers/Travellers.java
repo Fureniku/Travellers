@@ -48,7 +48,11 @@ public class Travellers {
 		public ItemStack getTabIconItem() {
 			return new ItemStack(ModItems.default_codex, 1, 0);
 		}
-	};
+		
+		public boolean hasSearchBar() {
+			return true;
+		};
+	}.setBackgroundImageName("item_search.png");
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
