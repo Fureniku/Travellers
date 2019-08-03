@@ -4,6 +4,9 @@ import com.silvaniastudios.travellers.capability.CapabilityHandler;
 import com.silvaniastudios.travellers.capability.playerData.IPlayerData;
 import com.silvaniastudios.travellers.capability.playerData.PlayerData;
 import com.silvaniastudios.travellers.capability.playerData.PlayerDataStorage;
+import com.silvaniastudios.travellers.capability.schematicData.ISchematicData;
+import com.silvaniastudios.travellers.capability.schematicData.SchematicData;
+import com.silvaniastudios.travellers.capability.schematicData.SchematicDataStorage;
 
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
@@ -29,6 +32,7 @@ public class CommonProxy {
 		//OreDictionary.registerOre(CopperConfig.oredict.nuggetOreDict, ModItems.nuggetCopper);
 
 		CapabilityManager.INSTANCE.register(IPlayerData.class, new PlayerDataStorage(), PlayerData.class);
+		CapabilityManager.INSTANCE.register(ISchematicData.class, new SchematicDataStorage(), SchematicData.class);
 		
 		MinecraftForge.EVENT_BUS.register(new CapabilityHandler());
 		MinecraftForge.EVENT_BUS.register(new EventHandler());

@@ -7,7 +7,6 @@ import com.silvaniastudios.travellers.items.CodexItems;
 import com.silvaniastudios.travellers.items.ItemAssembler;
 import com.silvaniastudios.travellers.items.ItemBasic;
 import com.silvaniastudios.travellers.items.ItemCodex;
-import com.silvaniastudios.travellers.items.ItemSchematic;
 import com.silvaniastudios.travellers.items.ItemScrapMetal;
 import com.silvaniastudios.travellers.items.ItemShipyard;
 import com.silvaniastudios.travellers.items.ItemWoodPlanks;
@@ -16,6 +15,9 @@ import com.silvaniastudios.travellers.items.tools.ItemRepairTool;
 import com.silvaniastudios.travellers.items.tools.ItemSalvager;
 import com.silvaniastudios.travellers.items.tools.ItemScanner;
 import com.silvaniastudios.travellers.items.tools.ItemShipyardTool;
+import com.silvaniastudios.travellers.schematic.ItemSchematic;
+import com.silvaniastudios.travellers.schematic.SchematicRarityEnum;
+import com.silvaniastudios.travellers.schematic.SchematicTypeEnum;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
@@ -31,9 +33,56 @@ public class ModItems {
 
 	public static List<ItemSchematic> schematics = new ArrayList<ItemSchematic>();
 	public static ItemSchematic default_schematic = new ItemSchematic("default_schematic");
-	public static ItemSchematic schematic_torch = new ItemSchematic("torch_schematic", 0, "gauntlet", new String[] { "utility" },
-			"utility.torch", true, "", 25, 20);
+	public static ItemSchematic schematic_torch = new ItemSchematic("utility.torch", SchematicRarityEnum.COMMON, true);
+
+	public static ItemSchematic common_engine = new ItemSchematic("engine.common", SchematicRarityEnum.COMMON,
+			SchematicTypeEnum.ENGINE, new String[] {}, true, "schematic_default");
+
+	public static ItemSchematic uncommon_engine = new ItemSchematic("engine.uncommon", SchematicRarityEnum.UNCOMMON,
+			SchematicTypeEnum.ENGINE, new String[] {}, true, "schematic_default");
+
+	public static ItemSchematic rare_engine = new ItemSchematic("engine.rare", SchematicRarityEnum.RARE,
+			SchematicTypeEnum.ENGINE, new String[] {}, true, "schematic_default");
+
+	public static ItemSchematic exotic_engine = new ItemSchematic("engine.exotic", SchematicRarityEnum.EXOTIC,
+			SchematicTypeEnum.ENGINE, new String[] {}, true, "schematic_default");
+
+	public static ItemSchematic common_wing = new ItemSchematic("wing.common", SchematicRarityEnum.COMMON,
+			SchematicTypeEnum.WING, new String[] {}, true, "schematic_default");
 	
+	public static ItemSchematic uncommon_wing = new ItemSchematic("wing.uncommon", SchematicRarityEnum.UNCOMMON,
+			SchematicTypeEnum.WING, new String[] {}, true, "schematic_default");
+	
+	public static ItemSchematic rare_wing = new ItemSchematic("wing.rare", SchematicRarityEnum.RARE,
+			SchematicTypeEnum.WING, new String[] {}, true, "schematic_default");
+	
+	public static ItemSchematic exotic_wing = new ItemSchematic("wing.exotic", SchematicRarityEnum.EXOTIC,
+			SchematicTypeEnum.WING, new String[] {}, true, "schematic_default");
+	
+	public static ItemSchematic common_cannon = new ItemSchematic("cannon.common", SchematicRarityEnum.COMMON,
+			SchematicTypeEnum.CANNON, new String[] {}, true, "schematic_default");
+	
+	public static ItemSchematic uncommon_cannon = new ItemSchematic("cannon.uncommon", SchematicRarityEnum.UNCOMMON,
+			SchematicTypeEnum.CANNON, new String[] {}, true, "schematic_default");
+	
+	public static ItemSchematic rare_cannon = new ItemSchematic("cannon.rare", SchematicRarityEnum.RARE,
+			SchematicTypeEnum.CANNON, new String[] {}, true, "schematic_default");
+	
+	public static ItemSchematic exotic_cannon = new ItemSchematic("cannon.exotic", SchematicRarityEnum.EXOTIC,
+			SchematicTypeEnum.CANNON, new String[] {}, true, "schematic_default");
+	
+	public static ItemSchematic common_swivel = new ItemSchematic("swivel.common", SchematicRarityEnum.COMMON,
+			SchematicTypeEnum.SWIVELCANNON, new String[] {}, true, "schematic_default");
+	
+	public static ItemSchematic uncommon_swivel = new ItemSchematic("swivel.uncommon", SchematicRarityEnum.UNCOMMON,
+			SchematicTypeEnum.SWIVELCANNON, new String[] {}, true, "schematic_default");
+	
+	public static ItemSchematic rare_swivel = new ItemSchematic("swivel.rare", SchematicRarityEnum.RARE,
+			SchematicTypeEnum.SWIVELCANNON, new String[] {}, true, "schematic_default");
+	
+	public static ItemSchematic exotic_swivel = new ItemSchematic("swivel.exotic", SchematicRarityEnum.EXOTIC,
+			SchematicTypeEnum.SWIVELCANNON, new String[] {}, true, "schematic_default");
+
 	public static CodexItems parsed_codex = new CodexItems();
 	public static List<ItemCodex> codices = parsed_codex.generateItems();
 	public static ItemCodex default_codex = new ItemCodex("default_codex");
@@ -181,7 +230,7 @@ public class ModItems {
 		for (ItemSchematic schem : schematics) {
 			schem.registerItemModel();
 		}
-		
+
 		for (ItemCodex codex : codices) {
 			codex.registerItemModel();
 		}

@@ -10,7 +10,12 @@
     "variants": {
 	
 		"inventory": [{
-			"transform": "forge:default-block"
+			"model": "travellers:databank"
+		}],
+		
+		"normal": [{
+			"model": "travellers:databank",
+			"y": 0
 		}],
 		
 		"facing=south,part=upper": [{

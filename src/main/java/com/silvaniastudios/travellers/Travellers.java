@@ -1,5 +1,7 @@
 package com.silvaniastudios.travellers;
 
+import com.silvaniastudios.travellers.commands.SchematicDataViewer;
+
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -74,6 +76,7 @@ public class Travellers {
     @EventHandler
     public void serverStarting(FMLServerStartingEvent event) {
     	// commands
+    	event.registerServerCommand(new SchematicDataViewer());
     }
 	
 	@Mod.EventBusSubscriber

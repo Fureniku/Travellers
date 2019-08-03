@@ -61,8 +61,36 @@ item.gauntlet_repair_tool.name=Repair Gauntlet
 item.gauntlet_shipyard_tool.name=Shipbuilding Tool
 item.gauntlet_scanner.name=Scanner
 
-item.torch_schematic.name=Torch Schematic
 item.default_schematic.name=Blank Schematic
+item.utility.torch.name=Torch Schematic
+
+item.engine.common.name=T1 Procedural Engine
+item.engine.uncommon.name=T2 Procedural Engine
+item.engine.rare.name=T3 Procedural Engine
+item.engine.exotic.name=T4 Procedural Engine
+item.engine.pristine.name=T5 Procedural Engine
+item.engine.legendary.name=T6 Procedural Engine
+
+item.wing.common.name=T1 Procedural Wing
+item.wing.uncommon.name=T2 Procedural Wing
+item.wing.rare.name=T3 Procedural Wing
+item.wing.exotic.name=T4 Procedural Wing
+item.wing.pristine.name=T5 Procedural Wing
+item.wing.legendary.name=T6 Procedural Wing
+
+item.cannon.common.name=T1 Procedural Cannon
+item.cannon.uncommon.name=T2 Procedural Cannon
+item.cannon.rare.name=T3 Procedural Cannon
+item.cannon.exotic.name=T4 Procedural Cannon
+item.cannon.pristine.name=T5 Procedural Cannon
+item.cannon.legendary.name=T6 Procedural Cannon
+
+item.swivel.common.name=T1 Procedural Swivel
+item.swivel.uncommon.name=T2 Procedural Swivel
+item.swivel.rare.name=T3 Procedural Swivel
+item.swivel.exotic.name=T4 Procedural Swivel
+item.swivel.pristine.name=T5 Procedural Swivel
+item.swivel.legendary.name=T6 Procedural Swivel
 
 item.codex_piece.name=Codex Piece
 
@@ -126,7 +154,7 @@ travellers.tooltip.clothing.dye_teal=Teal colored pigment. People seem to feel h
 travellers.tooltip.clothing.maeshift_cloth=Makeshift cloth made from plant fibers. A crafting component that can be used as a fabric in many schematics.
 
 travellers.tooltip.utility.hip_lantern=Small lantern, which can be attached to a belt strap to light the way. The default key to turn on and off is Y.
-travellers.tooltip.utility.torch=Flaming torch, which can be held aloft to light dark areas.
+travellers.tooltip.utility.torch=Flaming torch, which can be held aloft to light dark areas. na na na na extra text cause kittco is gonna try and break this
 travellers.tooltip.utility.makeshift_storage=A makeshift container for storing items on land or leaving them for fellow travellers.
 travellers.tooltip.utility.scanner_tool=A traveller's best friend; used to gain insight and knowledge from the world around you.
 
@@ -157,6 +185,20 @@ travellers.gui.shipyard.owner=Owner:
 travellers.gui.shipyard.schematics_list=SHIP SCHEMATICS
 travellers.gui.shipyard.beams=Beams
 travellers.gui.shipyard.decks=Decks
+
+travellers.stat.resilience.name=Resilience
+travellers.stat.power.name=Power
+travellers.stat.boost.name=Boost
+travellers.stat.fueleff.name=Fuel Efficiency
+travellers.stat.ohl.name=Overheat Limit
+
+travellers.stat.airbrake.name=Air Brake
+travellers.stat.wingpower.name=Power
+
+travellers.stat.range.name=Range
+travellers.stat.frag.name=Fragmentation
+travellers.stat.cannonohl.name=Overheat Limit
+travellers.stat.rof.name=Rate Of Fire
 
 codex.b24214e0b5e4b8e67e5a66ba5fbb089f=Hello, Enna again. Feeling sick now, but it's the skyship, it gives me nausea. I can't imagine what Coriola would have thought on that maiden flight! The height always puts me off the Apotheon you know. Not very godly am I? \n\nI know you're down there on leave, somewhere green. If I get time off, can I come to your farm? I want to lie on real grass. Our foundations, firm ground, it's so much more exciting don't you think? It's no floating bubble like Momoros - it's real. It's as if the only real people live down there, even if life isn't perfect. That's why I like you, you feel real.
 codex.d7208aae429a1c4af5f5081cf6464683=The Elaine took down another today. It was a victory, I think.. The Elaine is a better ship than ours. I want you to know though, if you felt even the tiniest bit of remorse those Mellifluans died, so did I. Theirs was a woeful broken thing. \n\nI had a beer with our captain afterwards, and she and I ended up talking. I kept thinking of you. She and I are good enough friends, and I wanted to tell her about us so much. But I promise I didn't say anything. She says, \"we women ought to stick together\". It reminded me of what you said, that you always feel happier with us in charge.
