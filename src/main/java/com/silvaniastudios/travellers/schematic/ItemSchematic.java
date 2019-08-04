@@ -80,8 +80,11 @@ public class ItemSchematic extends ItemBasic {
 				schemData.setTags(this.tags);
 				schemData.setUnlearnable(this.unlearnable);
 				schemData.setStatAmount(this.type.statNo);
-				schemData.generateRandomBaseStats();
 				
+				if (this.type != SchematicTypeEnum.FIXED) {
+					schemData.generateRandomBaseStats();
+				}
+
 				schemData.setDefault(false);
 			}
 			

@@ -42,7 +42,7 @@ public class SchematicDataViewer extends CommandBase {
 			sender.sendMessage(new TextComponentString(schemdata.getTooltip()));
 			sender.sendMessage(new TextComponentString(schemdata.getRarity().name));
 			sender.sendMessage(new TextComponentString(schemdata.getType().name));
-			sender.sendMessage(new TextComponentString(schemdata.getTags().toString()));
+			sender.sendMessage(new TextComponentString(Arrays.toString(schemdata.getTags())));
 			sender.sendMessage(new TextComponentString(String.format("%b", schemdata.isUnlearnable())));
 			sender.sendMessage(new TextComponentString(schemdata.getIconRef()));
 			sender.sendMessage(new TextComponentString(Arrays.toString(schemdata.getBaseStats())));

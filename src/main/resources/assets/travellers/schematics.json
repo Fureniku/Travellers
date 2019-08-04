@@ -1,0 +1,9 @@
+{
+	"schematics": [
+		{
+			"name": "utility.torch",
+			"rarity": "common",
+			"unlearnable": true
+		}
+	]
+}

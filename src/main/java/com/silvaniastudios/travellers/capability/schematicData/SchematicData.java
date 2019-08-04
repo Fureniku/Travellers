@@ -21,14 +21,14 @@ public class SchematicData implements ISchematicData {
 	private float[] baseStats;
 	private int statAmount;
 	
-	private boolean isDefault;
+	private boolean isDefault = true;
 	
 	public SchematicData () {
 		setUUID(UUID.randomUUID());
 		setRarity(SchematicRarityEnum.COMMON);
 		setType(SchematicTypeEnum.FIXED);
 		setName("blank.schematic");
-		setTooltip("blank.schematic");
+		setTooltip("default_schematic");
 		setIconRef("schematic_default");
 		setTags(new String[]{});
 		setUnlearnable(false);

@@ -6,7 +6,6 @@ import com.silvaniastudios.travellers.PacketHandler;
 import com.silvaniastudios.travellers.capability.playerData.PlayerDataProvider;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -59,7 +58,7 @@ public class LearnSchematicMessage implements IMessage {
 					.println(player.getCapability(PlayerDataProvider.PLAYER_DATA, null).getSchematicList().toString());
 
 			String response = String.format("§eLearnt §r%s",
-					I18n.format(message.schematic.getUnlocalizedName() + ".name"));
+					message.schematic.getDisplayName());
 			player.sendMessage(new TextComponentString(response));
 
 			PacketHandler.INSTANCE.sendTo(

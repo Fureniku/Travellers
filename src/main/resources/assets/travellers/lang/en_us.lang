@@ -102,6 +102,27 @@ itemGroup.lore=Codex Pieces
 
 travellers.config.title_world=Travellers Config
 
+travellers.tooltip.engine.common=Common Engine
+travellers.tooltip.engine.uncommon=Uncommon Engine
+travellers.tooltip.engine.rare=Rare Engine
+travellers.tooltip.engine.exotic=Exotic Engine
+
+travellers.tooltip.wing.common=Common Wing
+travellers.tooltip.wing.uncommon=Uncommon Wing
+travellers.tooltip.wing.rare=Rare Wing
+travellers.tooltip.wing.exotic=Exotic Wing
+
+travellers.tooltip.cannon.common=Common Cannon
+travellers.tooltip.cannon.uncommon=Uncommon Cannon
+travellers.tooltip.cannon.rare=Rare Cannon
+travellers.tooltip.cannon.exotic=Exotic Cannon
+
+travellers.tooltip.swivel.common=Common Swivel
+travellers.tooltip.swivel.uncommon=Uncommon Swivel
+travellers.tooltip.swivel.rare=Rare Swivel
+travellers.tooltip.swivel.exotic=Exotic Swivel
+
+travellers.tooltip.default_schematic=The writing on this schematic is faded
 travellers.tooltip.null=The purpose of this item is unknown.
 travellers.tooltip.metal.aluminium=Extremely light and resistant to stress.
 travellers.tooltip.metal.titanium=Very light for such a strong metal but a terrible conductor.

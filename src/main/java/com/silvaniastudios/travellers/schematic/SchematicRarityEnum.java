@@ -46,6 +46,21 @@ public enum SchematicRarityEnum {
 		}
 	}
 	
+	public static SchematicRarityEnum fromString(String str) {
+		switch (str) {
+		case "common":
+			return COMMON;
+		case "uncommon":
+			return UNCOMMON;
+		case "rare":
+			return RARE;
+		case "exotic":
+			return EXOTIC;
+		default:
+			return COMMON;
+		}
+	}
+	
 	public static String color(SchematicRarityEnum rarity) {
 		switch(rarity) {
 		case COMMON:
