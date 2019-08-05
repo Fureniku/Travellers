@@ -3,7 +3,8 @@
 		{
 			"name": "utility.torch",
 			"rarity": "common",
-			"unlearnable": true
+			"unlearnable": true,
+			"baseHp": 20
 		}
 	]
 }

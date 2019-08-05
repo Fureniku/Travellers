@@ -22,7 +22,7 @@ public enum SchematicTypeEnum {
 		case "swivel":
 			return SWIVELCANNON;
 		default:
-			return ENGINE;
+			return FIXED;
 		}
 	}
 

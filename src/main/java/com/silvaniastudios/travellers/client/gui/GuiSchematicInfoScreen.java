@@ -31,11 +31,6 @@ public class GuiSchematicInfoScreen extends GuiScreen {
 	private int xSize;
 	private int ySize;
 
-	private int xSize2;
-	private int ySize2;
-	private int window2Left;
-	private int window2Top;
-
 	private int bottomSection;
 	private int middleSection;
 	private int middleRepeat;
@@ -59,13 +54,10 @@ public class GuiSchematicInfoScreen extends GuiScreen {
 			this.xSize = 150;
 			this.ySize = 100;
 
-			this.xSize2 = 100;
-			this.ySize2 = 100;
-
 			this.bottomSection = 64;
 			this.middleSection = 31;
 
-			this.descText = I18n.format("travellers.tooltip." + this.schem.getTooltip());
+			this.descText = I18n.format(this.schem.getTooltip());
 
 			this.player = Minecraft.getMinecraft().player;
 			this.mc = Minecraft.getMinecraft();
@@ -86,9 +78,6 @@ public class GuiSchematicInfoScreen extends GuiScreen {
 
 		this.guiLeft = (width - xSize) / 2;
 		this.guiTop = (height - ySize) / 2;
-
-		this.window2Left = guiLeft + 45;
-		this.window2Top = this.guiTop;
 
 		this.buttonList.add(new GuiButton(0, this.guiLeft + 8, this.guiTop + bottomSectionStart + 8, 60, 20, "Learn"));
 		this.buttonList
@@ -120,13 +109,9 @@ public class GuiSchematicInfoScreen extends GuiScreen {
 
 		this.drawTexturedModalRect(this.guiLeft, this.guiTop + bottomSectionStart, 0, bottomSection, 150, 100);
 		
-		this.drawTexturedModalRect(this.guiLeft + 160, this.guiTop, 150, 0, 100, 100);
-		/*if (stack.getCapability(SchematicDataProvider.SCHEMATIC_DATA, null).getType() != SchematicTypeEnum.FIXED) {
-			
-			this.mc.renderEngine.bindTexture(TEXTURE);
-			this.drawTexturedModalRect(this.guiLeft + 150, this.guiTop, 150, 0, 216, 100);
-
-		}*/
+		if (this.schem.getBaseStats().length > 0) {
+			this.drawTexturedModalRect(this.guiLeft + 160, this.guiTop, 150, 0, 106, 108);
+		}
 	}
 
 	@Override
@@ -139,26 +124,24 @@ public class GuiSchematicInfoScreen extends GuiScreen {
 
 		this.fontRenderer.drawString(stack.getDisplayName(), this.guiLeft + 38, this.guiTop + 12, 5592405);
 
-		this.fontRenderer.drawSplitString(I18n.format("travellers.tooltip." + this.schem.getTooltip()),
+		this.fontRenderer.drawSplitString(I18n.format(this.schem.getTooltip()),
 				this.guiLeft + 8, this.guiTop + 40, xSize - 16, 5592405);
 
-		if (stack.getCapability(SchematicDataProvider.SCHEMATIC_DATA, null).getType() != SchematicTypeEnum.FIXED) {
+		if (this.schem.getType() != SchematicTypeEnum.FIXED && this.schem.getBaseStats().length > 0) {
 
 			String[] statNames = SchematicTypeEnum
-					.getStatNames(stack.getCapability(SchematicDataProvider.SCHEMATIC_DATA, null).getType());
-
+					.getStatNames(this.schem.getType());
+			
+			int[] stats = this.schem.getRoundedStats();
 			for (int i = 0; i < statNames.length; i++) {
 				String stat = statNames[i];
 
-				this.fontRenderer.drawString(I18n.format(stat), this.guiLeft + xSize + 14, this.window2Top + 8 + (17 * i), 5592405);
-				//System.out.println(this.fontRenderer.getStringWidth(I18n.format(stat)));
+				this.fontRenderer.drawString(I18n.format(stat), this.guiLeft + xSize + 14, this.guiTop + 8 + (18 * i), 5592405);
 				
-				int strLength = this.fontRenderer.getStringWidth(String.valueOf(100));
 				
-				this.fontRenderer.drawString(String.valueOf(100), this.guiLeft + xSize + 108 - strLength, this.window2Top + 8 + (17 * i), 5592405);
+				int strLength = this.fontRenderer.getStringWidth(String.valueOf(stats[i]));				
+				this.fontRenderer.drawString(String.valueOf(stats[i]), this.guiLeft + xSize + 108 - strLength, this.guiTop + 8 + (18 * i), 5592405);
 			}
-
-			// System.out.println(this.fontRenderer.FONT_HEIGHT);
 		}
 
 	}

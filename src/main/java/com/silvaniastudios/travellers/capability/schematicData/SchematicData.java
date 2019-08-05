@@ -213,8 +213,8 @@ public class SchematicData implements ISchematicData {
 		nbt.setUniqueId("uuid", getUUID());
 		nbt.setInteger("rarity", getRarity().tier);
 		nbt.setString("type", getType().name);
-		nbt.setString("name", getName());
-		nbt.setString("tooltip", getTooltip());
+		nbt.setString("name", this.name);
+		nbt.setString("tooltip", this.tooltip);
 		nbt.setString("iconRef", getIconRef());
 
 		NBTTagCompound tags = new NBTTagCompound();
@@ -244,7 +244,7 @@ public class SchematicData implements ISchematicData {
 		setRarity(SchematicRarityEnum.fromTier(nbtTag.getInteger("rarity")));
 		setType(SchematicTypeEnum.fromString(nbtTag.getString("type")));
 		setName(nbtTag.getString("name"));
-		setName(nbtTag.getString("tooltip"));
+		setTooltip(nbtTag.getString("tooltip"));
 		setIconRef(nbtTag.getString("iconRef"));
 		
 		NBTTagCompound tags = nbtTag.getCompoundTag("tags");

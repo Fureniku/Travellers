@@ -1,6 +1,7 @@
 package com.silvaniastudios.travellers.schematic;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.silvaniastudios.travellers.ModItems;
 import com.silvaniastudios.travellers.Travellers;
@@ -20,7 +21,6 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 public class ItemSchematic extends ItemBasic {
 
@@ -29,19 +29,24 @@ public class ItemSchematic extends ItemBasic {
 	String[] tags;
 	boolean unlearnable;
 	String iconRef;
+	
+	float baseHp;
+	UUID uuid;
 
 	/*
 	 * Empty Schematic
 	 */
 	public ItemSchematic(String name) {
-		this(name, SchematicRarityEnum.COMMON, false);
+		this(name, SchematicRarityEnum.COMMON, false, 0F);
 	}
 
 	/*
 	 * Fixed Schematic
 	 */
-	public ItemSchematic(String name, SchematicRarityEnum rarity, boolean unlearnable) {
+	public ItemSchematic(String name, SchematicRarityEnum rarity, boolean unlearnable, float baseHp) {
 		this(name, rarity, SchematicTypeEnum.FIXED, new String[] {}, unlearnable, "schematic_default");
+		this.uuid = UUID.randomUUID();
+		this.baseHp = baseHp;
 	}
 
 	/*
@@ -74,7 +79,8 @@ public class ItemSchematic extends ItemBasic {
 			if (schemData.isDefault()) {
 				schemData.setRarity(this.rarity);
 				schemData.setType(this.type);
-				schemData.setName(this.name);
+				
+				schemData.setName(this.getUnlocalizedName());
 				schemData.setTooltip("travellers.tooltip." + this.name);
 				schemData.setIconRef(iconRef);
 				schemData.setTags(this.tags);
@@ -83,6 +89,10 @@ public class ItemSchematic extends ItemBasic {
 				
 				if (this.type != SchematicTypeEnum.FIXED) {
 					schemData.generateRandomBaseStats();
+				} else {
+					schemData.setUUID(uuid);
+					schemData.setBaseStats(new float[] {baseHp});
+					schemData.setStatAmount(1);
 				}
 
 				schemData.setDefault(false);
@@ -137,11 +147,6 @@ public class ItemSchematic extends ItemBasic {
 			capabilityTag.merge(super.getNBTShareTag(stack));
 		}
 		return capabilityTag;
-	}
-	
-	@Override
-	public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
-		return super.initCapabilities(stack, nbt);
 	}
 	
 }

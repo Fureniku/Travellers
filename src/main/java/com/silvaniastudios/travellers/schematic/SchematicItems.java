@@ -43,7 +43,7 @@ public class SchematicItems {
 
 		for (Schematic schematic : list.schematics) {
 			ModItems.schematics.add(new ItemSchematic(schematic.name, SchematicRarityEnum.fromString(schematic.rarity),
-					schematic.unlearnable));
+					schematic.unlearnable, schematic.baseHp));
 		}
 	}
 
@@ -60,11 +60,13 @@ public class SchematicItems {
 		public String name;
 		public String rarity;
 		public boolean unlearnable;
+		public float baseHp;
 
-		public Schematic(String name, String rarity, boolean unlearnable) {
+		public Schematic(String name, String rarity, boolean unlearnable, float baseHp) {
 			this.name = name;
 			this.rarity = rarity;
 			this.unlearnable = unlearnable;
+			this.baseHp = baseHp;
 		}
 
 	}
