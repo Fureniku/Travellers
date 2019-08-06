@@ -131,12 +131,12 @@ public class GuiSchematicInfoScreen extends GuiScreen {
 
 		itemRender.renderItemIntoGUI(stack, this.guiLeft + 8, this.guiTop + 12);
 
-		this.fontRenderer.drawString(stack.getDisplayName(), this.guiLeft + 38, this.guiTop + 12, 5592405);
+		this.fontRenderer.drawSplitString(stack.getDisplayName(), this.guiLeft + 38, this.guiTop + 12, 104, 5592405);
 
 		this.fontRenderer.drawSplitString(I18n.format(this.schem.getTooltip()),
 				this.guiLeft + 8, this.guiTop + 40, xSize - 16, 5592405);
 
-		if (this.schem.getType() != SchematicTypeEnum.FIXED && this.schem.getBaseStats().length > 0) {
+		if (this.schem.getBaseStats().length > 0) {
 
 			String[] statNames = SchematicTypeEnum
 					.getStatNames(this.schem.getType());

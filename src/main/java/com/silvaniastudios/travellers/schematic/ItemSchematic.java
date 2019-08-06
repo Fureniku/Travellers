@@ -8,13 +8,13 @@ import com.silvaniastudios.travellers.Travellers;
 import com.silvaniastudios.travellers.capability.schematicData.ISchematicData;
 import com.silvaniastudios.travellers.capability.schematicData.SchematicDataProvider;
 import com.silvaniastudios.travellers.client.gui.GuiSchematicInfoScreen;
-import com.silvaniastudios.travellers.items.ItemBasic;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.client.util.ITooltipFlag.TooltipFlags;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
@@ -22,7 +22,9 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
-public class ItemSchematic extends ItemBasic {
+public class ItemSchematic extends Item {
+	
+	String name;
 
 	SchematicRarityEnum rarity;
 	SchematicTypeEnum type;
@@ -32,29 +34,36 @@ public class ItemSchematic extends ItemBasic {
 	
 	float baseHp;
 	UUID uuid;
+	
+	boolean listInCreativeTab = true;
 
 	/*
 	 * Empty Schematic
 	 */
 	public ItemSchematic(String name) {
-		this(name, SchematicRarityEnum.COMMON, false, 0F);
+		this(name, SchematicRarityEnum.COMMON, false, 0F, false);
 	}
 
 	/*
 	 * Fixed Schematic
 	 */
-	public ItemSchematic(String name, SchematicRarityEnum rarity, boolean unlearnable, float baseHp) {
-		this(name, rarity, SchematicTypeEnum.FIXED, new String[] {}, unlearnable, "schematic_default");
+	public ItemSchematic(String name, SchematicRarityEnum rarity, boolean unlearnable, float baseHp, boolean list) {
+		this(name, rarity, SchematicTypeEnum.FIXED, new String[] {}, unlearnable, "schematic_default", list);
+		
 		this.uuid = UUID.randomUUID();
 		this.baseHp = baseHp;
+		this.listInCreativeTab = list;
 	}
 
 	/*
 	 * Proc Schematic
 	 */
 	public ItemSchematic(String name, SchematicRarityEnum rarity, SchematicTypeEnum type, String[] tags,
-			boolean unlearnable, String iconRef) {
-		super(name);
+			boolean unlearnable, String iconRef, boolean list) {
+		
+		this.name = name;
+		this.setUnlocalizedName(name);
+		this.setRegistryName(name);
 		
 		this.rarity = rarity;
 		this.type = type;
@@ -63,8 +72,13 @@ public class ItemSchematic extends ItemBasic {
 		} : tags;
 		this.unlearnable = unlearnable;
 		this.iconRef = iconRef;
-
-		this.setCreativeTab(Travellers.tabSchematics);
+		
+		this.listInCreativeTab = list;
+		
+		if (this.listInCreativeTab) {
+			this.setCreativeTab(Travellers.tabSchematics);
+		}
+		
 		this.setMaxStackSize(1);
 		ModItems.schematics.add(this);
 	}
@@ -91,8 +105,10 @@ public class ItemSchematic extends ItemBasic {
 					schemData.generateRandomBaseStats();
 				} else {
 					schemData.setUUID(uuid);
-					schemData.setBaseStats(new float[] {baseHp});
-					schemData.setStatAmount(1);
+					if (baseHp != 0) {
+						schemData.setBaseStats(new float[] {baseHp});
+						schemData.setStatAmount(1);
+					}
 				}
 
 				schemData.setDefault(false);
@@ -131,7 +147,6 @@ public class ItemSchematic extends ItemBasic {
 		return new ActionResult<ItemStack>(EnumActionResult.PASS, playerIn.getHeldItem(handIn));
 	}
 
-	@Override
 	public void registerItemModel() {
 		Travellers.proxy.registerItemRenderer(this, 0, iconRef);
 	}

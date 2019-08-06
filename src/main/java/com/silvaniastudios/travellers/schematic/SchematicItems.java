@@ -43,7 +43,7 @@ public class SchematicItems {
 
 		for (Schematic schematic : list.schematics) {
 			ModItems.schematics.add(new ItemSchematic(schematic.name, SchematicRarityEnum.fromString(schematic.rarity),
-					schematic.unlearnable, schematic.baseHp));
+					schematic.unlearnable, schematic.baseHp, true));
 		}
 	}
 
