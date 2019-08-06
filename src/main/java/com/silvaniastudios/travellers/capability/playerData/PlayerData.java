@@ -1,12 +1,10 @@
 package com.silvaniastudios.travellers.capability.playerData;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.UUID;
 
 import com.silvaniastudios.travellers.ModItems;
-import com.silvaniastudios.travellers.capability.schematicData.ISchematicData;
 import com.silvaniastudios.travellers.capability.schematicData.SchematicDataProvider;
 
 import net.minecraft.item.ItemStack;
@@ -245,9 +243,9 @@ public class PlayerData implements IPlayerData {
 		if (!hasLearntSchematic(schematic)) {
 			this.schematicList.add(schematic);
 			
-			ISchematicData schemdata = schematic.getCapability(SchematicDataProvider.SCHEMATIC_DATA, null);
+			//ISchematicData schemdata = schematic.getCapability(SchematicDataProvider.SCHEMATIC_DATA, null);
 			
-			System.out.println("UUID: " + schemdata.getUUID().toString());
+			/*System.out.println("UUID: " + schemdata.getUUID().toString());
 			System.out.println("Name: " + schemdata.getName());
 			System.out.println("Tooltip: " + schemdata.getTooltip());
 			System.out.println("Rarity: " + schemdata.getRarity().name);
@@ -257,7 +255,7 @@ public class PlayerData implements IPlayerData {
 			System.out.println("Iconref: " + schemdata.getIconRef());
 			System.out.println("Stats: " + Arrays.toString(schemdata.getBaseStats()));
 			System.out.println("StatAmount: " + String.valueOf(schemdata.getStatAmount()));
-			System.out.println("isDefault" + String.format("%b", schemdata.isDefault()));
+			System.out.println("isDefault" + String.format("%b", schemdata.isDefault()));*/
 
 			return true;
 		}
@@ -285,9 +283,9 @@ public class PlayerData implements IPlayerData {
 			
 			UUID currentItemUUID = item.getCapability(SchematicDataProvider.SCHEMATIC_DATA, null).getUUID();
 			
-			System.out.println(String.valueOf(schematicUUID.compareTo(currentItemUUID)));
-			System.out.println("Schematic: " + schematicUUID.toString());
-			System.out.println("Current I: " + currentItemUUID.toString());
+			//System.out.println(String.valueOf(schematicUUID.compareTo(currentItemUUID)));
+			//System.out.println("Schematic: " + schematicUUID.toString());
+			//System.out.println("Current I: " + currentItemUUID.toString());
 			if (schematicUUID.compareTo(currentItemUUID) == 0) {
 				return true;
 			}
