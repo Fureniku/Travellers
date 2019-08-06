@@ -1,5 +1,6 @@
 package com.silvaniastudios.travellers.schematic;
 
+import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.UUID;
 
@@ -50,7 +51,7 @@ public class ItemSchematic extends Item {
 	public ItemSchematic(String name, SchematicRarityEnum rarity, boolean unlearnable, float baseHp, boolean list) {
 		this(name, rarity, SchematicTypeEnum.FIXED, new String[] {}, unlearnable, "schematic_default", list);
 		
-		this.uuid = UUID.randomUUID();
+		this.uuid = UUID.nameUUIDFromBytes(this.name.getBytes());
 		this.baseHp = baseHp;
 		this.listInCreativeTab = list;
 	}
@@ -102,6 +103,8 @@ public class ItemSchematic extends Item {
 				schemData.setStatAmount(this.type.statNo);
 				
 				if (this.type != SchematicTypeEnum.FIXED) {
+					byte[] byteArray = floatArray2ByteArray(schemData.getBaseStats());
+					schemData.setUUID(UUID.nameUUIDFromBytes(byteArray));
 					schemData.generateRandomBaseStats();
 				} else {
 					schemData.setUUID(uuid);
@@ -162,6 +165,17 @@ public class ItemSchematic extends Item {
 			capabilityTag.merge(super.getNBTShareTag(stack));
 		}
 		return capabilityTag;
+	}
+	
+	// No shame copied from StackOverflow
+	public static byte[] floatArray2ByteArray(float[] values){
+	    ByteBuffer buffer = ByteBuffer.allocate(4 * values.length);
+
+	    for (float value : values){
+	        buffer.putFloat(value);
+	    }
+
+	    return buffer.array();
 	}
 	
 }

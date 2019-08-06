@@ -22,6 +22,7 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class GuiSchematicInfoScreen extends GuiScreen {
 
@@ -107,19 +108,20 @@ public class GuiSchematicInfoScreen extends GuiScreen {
 					bottomSection);
 		}
 
-		this.drawTexturedModalRect(this.guiLeft, this.guiTop + bottomSectionStart, 0, bottomSection, 150, 100-bottomSection);
-		
+		this.drawTexturedModalRect(this.guiLeft, this.guiTop + bottomSectionStart, 0, bottomSection, 150,
+				100 - bottomSection);
+
 		if (this.schem.getBaseStats().length > 0) {
 			this.drawTexturedModalRect(this.guiLeft + 160, this.guiTop, 150, 0, 106, 108);
-			
-			String[] statNames = SchematicTypeEnum
-					.getStatNames(this.schem.getType());
+
+			String[] statNames = SchematicTypeEnum.getStatNames(this.schem.getType());
 			int[] stats = this.schem.getRoundedStats();
 			for (int i = 0; i < statNames.length; i++) {
 				this.mc.renderEngine.bindTexture(TEXTURE);
-				this.drawTexturedModalRect(this.guiLeft + xSize + 13, this.guiTop + 19 + (19 * i), 0, 100, stats[i], 104);
+				this.drawTexturedModalRect(this.guiLeft + xSize + 13, this.guiTop + 19 + (19 * i), 0, 100, stats[i],
+						104);
 			}
-			
+
 		}
 	}
 
@@ -133,24 +135,24 @@ public class GuiSchematicInfoScreen extends GuiScreen {
 
 		this.fontRenderer.drawSplitString(stack.getDisplayName(), this.guiLeft + 38, this.guiTop + 12, 104, 5592405);
 
-		this.fontRenderer.drawSplitString(I18n.format(this.schem.getTooltip()),
-				this.guiLeft + 8, this.guiTop + 40, xSize - 16, 5592405);
+		this.fontRenderer.drawSplitString(I18n.format(this.schem.getTooltip()), this.guiLeft + 8, this.guiTop + 40,
+				xSize - 16, 5592405);
 
 		if (this.schem.getBaseStats().length > 0) {
 
-			String[] statNames = SchematicTypeEnum
-					.getStatNames(this.schem.getType());
-			
+			String[] statNames = SchematicTypeEnum.getStatNames(this.schem.getType());
+
 			int[] stats = this.schem.getRoundedStats();
 			for (int i = 0; i < statNames.length; i++) {
 				String stat = statNames[i];
 
-				this.fontRenderer.drawString(I18n.format(stat), this.guiLeft + xSize + 14, this.guiTop + 8 + (19 * i), 5592405);
-				
-				
-				int strLength = this.fontRenderer.getStringWidth(String.valueOf(stats[i]));				
-				this.fontRenderer.drawString(String.valueOf(stats[i]), this.guiLeft + xSize + 108 - strLength, this.guiTop + 8 + (19 * i), 5592405);
-				
+				this.fontRenderer.drawString(I18n.format(stat), this.guiLeft + xSize + 14, this.guiTop + 8 + (19 * i),
+						5592405);
+
+				int strLength = this.fontRenderer.getStringWidth(String.valueOf(stats[i]));
+				this.fontRenderer.drawString(String.valueOf(stats[i]), this.guiLeft + xSize + 108 - strLength,
+						this.guiTop + 8 + (19 * i), 5592405);
+
 			}
 		}
 
@@ -170,6 +172,10 @@ public class GuiSchematicInfoScreen extends GuiScreen {
 
 		player.setHeldItem(EnumHand.MAIN_HAND, ItemStack.EMPTY);
 		player.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, ItemStack.EMPTY);
+		FMLCommonHandler.instance().getMinecraftServerInstance().addScheduledTask(() -> {
+			FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList()
+					.getPlayerByUUID(player.getUniqueID()).setHeldItem(EnumHand.MAIN_HAND, ItemStack.EMPTY);
+		});
 		this.itemRemoved = true;
 		player.closeScreen();
 	}
@@ -180,6 +186,10 @@ public class GuiSchematicInfoScreen extends GuiScreen {
 
 		if (!this.itemRemoved) {
 			player.setHeldItem(EnumHand.MAIN_HAND, stack);
+			FMLCommonHandler.instance().getMinecraftServerInstance().addScheduledTask(() -> {
+				FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList()
+						.getPlayerByUUID(player.getUniqueID()).setHeldItem(EnumHand.MAIN_HAND, stack);
+			});
 		}
 	}
 

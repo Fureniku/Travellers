@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import com.silvaniastudios.travellers.PacketHandler;
 import com.silvaniastudios.travellers.capability.playerData.PlayerDataProvider;
+import com.silvaniastudios.travellers.capability.schematicData.SchematicDataProvider;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
@@ -35,6 +36,7 @@ public class LearnSchematicMessage implements IMessage {
 
 		this.schematic = ByteBufUtils.readItemStack(buf);
 		this.uuid = UUID.fromString(ByteBufUtils.readUTF8String(buf));
+		this.schematic.getCapability(SchematicDataProvider.SCHEMATIC_DATA, null).fromNBT(ByteBufUtils.readTag(buf));
 	}
 
 	@Override
@@ -42,6 +44,7 @@ public class LearnSchematicMessage implements IMessage {
 
 		ByteBufUtils.writeItemStack(buf, schematic);
 		ByteBufUtils.writeUTF8String(buf, this.uuid.toString());
+		ByteBufUtils.writeTag(buf, schematic.getCapability(SchematicDataProvider.SCHEMATIC_DATA, null).toNBT());
 	}
 
 	public static class SLearnSchematicMessageHandler implements IMessageHandler<LearnSchematicMessage, IMessage> {
