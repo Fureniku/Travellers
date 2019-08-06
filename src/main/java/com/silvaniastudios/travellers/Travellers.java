@@ -1,13 +1,14 @@
 package com.silvaniastudios.travellers;
 
-import com.silvaniastudios.travellers.commands.CommandGetKnowledge;
-import com.silvaniastudios.travellers.commands.CommandSetKnowledge;
+import com.silvaniastudios.travellers.commands.SchematicDataViewer;
+import com.silvaniastudios.travellers.commands.SchematicListViewer;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -39,9 +40,27 @@ public class Travellers {
 		}
 	};
 	
+	public static final CreativeTabs tabSchematics = new CreativeTabs("schematics") {
+		public ItemStack getTabIconItem() {
+			return new ItemStack(ModItems.default_schematic, 1, 0);
+		}
+	};
+	
+	public static final CreativeTabs tabLore = new CreativeTabs("lore") {
+		@Override
+		public ItemStack getTabIconItem() {
+			return new ItemStack(ModItems.default_codex, 1, 0);
+		}
+		
+		public boolean hasSearchBar() {
+			return true;
+		};
+	}.setBackgroundImageName("item_search.png");
+	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		//TODO GameRegistry.registerWorldGenerator(new WorldGen(), 3);
+		proxy.preInit(event);
 	}
 	    
 	@EventHandler
@@ -52,12 +71,14 @@ public class Travellers {
 	
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
+		MinecraftForge.EVENT_BUS.register(new GuiHandler());
 	}
 	
     @EventHandler
     public void serverStarting(FMLServerStartingEvent event) {
-    	event.registerServerCommand(new CommandGetKnowledge());
-    	event.registerServerCommand(new CommandSetKnowledge());
+    	// commands
+    	event.registerServerCommand(new SchematicDataViewer());
+    	event.registerServerCommand(new SchematicListViewer());
     }
 	
 	@Mod.EventBusSubscriber

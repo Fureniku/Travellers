@@ -1,25 +1,33 @@
 package com.silvaniastudios.travellers;
 
-import com.silvaniastudios.travellers.capability.knowledge.IKnowledge;
-import com.silvaniastudios.travellers.capability.knowledge.KnowledgeProvider;
+import com.silvaniastudios.travellers.capability.playerData.IPlayerData;
+import com.silvaniastudios.travellers.capability.playerData.PlayerDataProvider;
+import com.silvaniastudios.travellers.network.PlayerDataSyncMessage;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
 
 public class EventHandler {
 	@SubscribeEvent
 	public void onPlayerLogsIn(PlayerLoggedInEvent event) {
 		EntityPlayer player = event.player;
-		IKnowledge knowledge = player.getCapability(KnowledgeProvider.KNOWLEDGE, null);
-
-		String message = String.format("§eYou have %d knowledge§r", knowledge.getKnowledge());
+		//IKnowledge knowledge = player.getCapability(KnowledgeProvider.KNOWLEDGE, null);
+		
+		IPlayerData playerData = player.getCapability(PlayerDataProvider.PLAYER_DATA, null);
+		
+		String message = String.format("§eYou have %d knowledge§r", playerData.getKnowledgeBalance());
 		player.sendMessage(new TextComponentString(message));
 		
-		String message1 = String.format("§e You are entity {%s}§r", player.getUniqueID().toString());
+		String message1 = String.format("§eYou are entity {%s}§r", player.getUniqueID().toString());
 		player.sendMessage(new TextComponentString(message1));
+		
+		PacketHandler.INSTANCE.sendTo(new PlayerDataSyncMessage(playerData),
+				(EntityPlayerMP) player);
 	}
 
 	/**
@@ -28,9 +36,20 @@ public class EventHandler {
 	@SubscribeEvent
 	public void onPlayerClone(PlayerEvent.Clone event) {
 		EntityPlayer player = event.getEntityPlayer();
-		IKnowledge knowledge = player.getCapability(KnowledgeProvider.KNOWLEDGE, null);
-		IKnowledge oldKnowledge = event.getOriginal().getCapability(KnowledgeProvider.KNOWLEDGE, null);
+		
+		IPlayerData playerData = player.getCapability(PlayerDataProvider.PLAYER_DATA, null);
+		IPlayerData oldPlayerData = event.getOriginal().getCapability(PlayerDataProvider.PLAYER_DATA, null);
 
-		knowledge.setKnowledge(oldKnowledge.getKnowledge());
+		playerData.copyData(oldPlayerData);
+		
+	}
+	
+	@SubscribeEvent
+	public void onPlayerRespawn(PlayerRespawnEvent event) {
+		
+		IPlayerData playerData = event.player.getCapability(PlayerDataProvider.PLAYER_DATA, null);
+
+		PacketHandler.INSTANCE.sendTo(new PlayerDataSyncMessage(playerData),
+				(EntityPlayerMP) event.player);
 	}
 }
