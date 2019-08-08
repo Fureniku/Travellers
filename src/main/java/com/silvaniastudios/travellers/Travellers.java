@@ -2,11 +2,13 @@ package com.silvaniastudios.travellers;
 
 import com.silvaniastudios.travellers.commands.SchematicDataViewer;
 import com.silvaniastudios.travellers.commands.SchematicListViewer;
+import com.silvaniastudios.travellers.entity.EntityScannerLine;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
@@ -20,6 +22,8 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.registry.EntityEntry;
+import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
 
 @Mod(modid = Travellers.MODID, version = Travellers.VERSION, updateJSON = "http://www.silvaniastudios.com/mods/update/travellers.json")
 public class Travellers {
@@ -100,6 +104,15 @@ public class Travellers {
 		public static void registerBlocks(RegistryEvent.Register<Block> event) {
 			ModBlocks.register(event.getRegistry());
 			ModBlocks.registerTileEntities();
+		}
+		
+		@SubscribeEvent
+		public static void registerEntities(RegistryEvent.Register<EntityEntry> event) {
+			int id = 0;
+			EntityEntry SCANNERLINE = EntityEntryBuilder.create().entity(EntityScannerLine.class).id(new ResourceLocation(Travellers.MODID), id++).tracker(64, 20, true).name("scanner_line").build();
+			
+			event.getRegistry().register(SCANNERLINE);
+			
 		}
 	}
 }
