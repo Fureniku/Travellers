@@ -13,7 +13,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
 
-public class ItemSalvager extends ItemTool {
+public class ItemSalvager extends ItemTool implements ITravellerTool{
 	
 	String name;
 	

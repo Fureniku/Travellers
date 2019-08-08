@@ -5,6 +5,7 @@ import com.silvaniastudios.travellers.blocks.tileentity.assembler.AssemblerEntit
 import com.silvaniastudios.travellers.blocks.tileentity.shipyard.ShipyardContainer;
 import com.silvaniastudios.travellers.blocks.tileentity.shipyard.ShipyardEntity;
 import com.silvaniastudios.travellers.client.gui.GuiAssembler;
+import com.silvaniastudios.travellers.client.gui.GuiCrosshair;
 import com.silvaniastudios.travellers.client.gui.GuiKnowledgeOverlay;
 import com.silvaniastudios.travellers.client.gui.GuiShipyard;
 
@@ -20,13 +21,28 @@ import net.minecraftforge.fml.common.network.IGuiHandler;
 public class GuiHandler implements IGuiHandler {
 	
 	public static final GuiKnowledgeOverlay knowledge_overlay = new GuiKnowledgeOverlay();
+	public static final GuiCrosshair crosshair_overlay = new GuiCrosshair();
 	
 	@SubscribeEvent
 	public void onRenderGui(RenderGameOverlayEvent.Post event) {
-		if (event.getType() != ElementType.EXPERIENCE) return;
-		knowledge_overlay.draw();
+		if (event.getType() == ElementType.EXPERIENCE) {
+			knowledge_overlay.draw();
+		}
+		
+		return;
 	}
-
+	
+	@SubscribeEvent
+	public void onRenderCrossHair(RenderGameOverlayEvent.Pre e) {
+		if (e.getType() == ElementType.CROSSHAIRS) {
+			if (crosshair_overlay.draw(e.getPartialTicks())) {
+				e.setCanceled(true);
+			}
+		}
+		
+		return;
+	}
+	
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
