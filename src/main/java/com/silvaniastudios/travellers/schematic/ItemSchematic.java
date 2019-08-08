@@ -103,9 +103,10 @@ public class ItemSchematic extends Item {
 				schemData.setStatAmount(this.type.statNo);
 				
 				if (this.type != SchematicTypeEnum.FIXED) {
+					schemData.generateRandomBaseStats();
 					byte[] byteArray = floatArray2ByteArray(schemData.getBaseStats());
 					schemData.setUUID(UUID.nameUUIDFromBytes(byteArray));
-					schemData.generateRandomBaseStats();
+					
 				} else {
 					schemData.setUUID(uuid);
 					if (baseHp != 0) {

@@ -2,6 +2,7 @@ package com.silvaniastudios.travellers.commands;
 
 import com.silvaniastudios.travellers.capability.playerData.IPlayerData;
 import com.silvaniastudios.travellers.capability.playerData.PlayerDataProvider;
+import com.silvaniastudios.travellers.capability.schematicData.SchematicDataProvider;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
@@ -32,7 +33,7 @@ public class SchematicListViewer extends CommandBase {
 			IPlayerData playerData = player.getCapability(PlayerDataProvider.PLAYER_DATA, null);
 			
 			for (ItemStack stack : playerData.getSchematicList()) {
-				sender.sendMessage(new TextComponentString(stack.getDisplayName()));
+				sender.sendMessage(new TextComponentString(stack.getDisplayName() + " UUID {" + stack.getCapability(SchematicDataProvider.SCHEMATIC_DATA, null).getUUID() + "}"));
 			}
 		}
 		
