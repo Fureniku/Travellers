@@ -1,19 +1,22 @@
 package com.silvaniastudios.travellers.entity;
 
+import com.silvaniastudios.travellers.PacketHandler;
 import com.silvaniastudios.travellers.blocks.databank.BlockDatabank;
+import com.silvaniastudios.travellers.capability.playerData.IPlayerData;
+import com.silvaniastudios.travellers.capability.playerData.PlayerDataProvider;
 import com.silvaniastudios.travellers.items.tools.ItemScanner;
+import com.silvaniastudios.travellers.network.PlayerDataSyncMessage;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.MoverType;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -57,52 +60,23 @@ public class EntityScannerLine extends Entity {
 	}
 
 	private void shoot() {
-		/*
-		 * float f = this.player.prevRotationPitch + (this.player.rotationPitch
-		 * - this.player.prevRotationPitch); float f1 =
-		 * this.player.prevRotationYaw + (this.player.rotationYaw -
-		 * this.player.prevRotationYaw); float f2 = MathHelper.cos(-f1 *
-		 * 0.017453292F - (float) Math.PI); float f3 = MathHelper.sin(-f1 *
-		 * 0.017453292F - (float) Math.PI); float f4 = -MathHelper.cos(-f *
-		 * 0.017453292F); float f5 = MathHelper.sin(-f * 0.017453292F); double
-		 * d0 = this.player.prevPosX + (this.player.posX - this.player.prevPosX)
-		 * - (double) f3 * 0.3D; double d1 = this.player.prevPosY +
-		 * (this.player.posY - this.player.prevPosY) + (double)
-		 * this.player.getEyeHeight(); double d2 = this.player.prevPosZ +
-		 * (this.player.posZ - this.player.prevPosZ) - (double) f2 * 0.3D;
-		 * this.setLocationAndAngles(d0, d1, d2, f1, f); this.motionX = (double)
-		 * (-f3); this.motionY = (double) MathHelper.clamp(-(f5 / f4), -5.0F,
-		 * 5.0F); this.motionZ = (double) (-f2); float f6 = MathHelper
-		 * .sqrt(this.motionX * this.motionX + this.motionY * this.motionY +
-		 * this.motionZ * this.motionZ); this.motionX *= 0.6D / (double) f6 +
-		 * 0.5D + this.rand.nextGaussian() * 0.0045D; this.motionY *= 0.6D /
-		 * (double) f6 + 0.5D + this.rand.nextGaussian() * 0.0045D; this.motionZ
-		 * *= 0.6D / (double) f6 + 0.5D + this.rand.nextGaussian() * 0.0045D;
-		 * float f7 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ
-		 * * this.motionZ); this.rotationYaw = (float)
-		 * (MathHelper.atan2(this.motionX, this.motionZ) * (180D / Math.PI));
-		 * this.rotationPitch = (float) (MathHelper.atan2(this.motionY, (double)
-		 * f7) * (180D / Math.PI)); this.prevRotationYaw = this.rotationYaw;
-		 * this.prevRotationPitch = this.rotationPitch;
-		 */
 		float f = this.player.prevRotationPitch + (this.player.rotationPitch - this.player.prevRotationPitch);
 		float f1 = this.player.prevRotationYaw + (this.player.rotationYaw - this.player.prevRotationYaw);
 
 		RayTraceResult res = player.rayTrace(20.0F, 0);
 		if (res.typeOfHit == RayTraceResult.Type.BLOCK) {
 			BlockPos pos = res.getBlockPos();
-			
+
 			if (world.getBlockState(pos).getBlock() instanceof BlockDatabank) {
 				this.setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), f1, f);
 			} else {
-				this.setDead();
+				this.handleKill();
 			}
-			
-			
+
 		} else {
-			this.setDead();
+			this.handleKill();
 		}
-		
+
 	}
 
 	@Override
@@ -120,17 +94,18 @@ public class EntityScannerLine extends Entity {
 				++this.ticksNotInScannable;
 
 				if (ticksNotInScannable >= 600) {
-					this.setDead();
+					this.handleKill();
 					return;
 				}
 			}
 
-			//this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
+			// this.move(MoverType.SELF, this.motionX, this.motionY,
+			// this.motionZ);
 			this.updateRotation();
 
-			//this.motionX *= 0.92D;
-			//this.motionY *= 0.92D;
-			//this.motionZ *= 0.92D;
+			// this.motionX *= 0.92D;
+			// this.motionY *= 0.92D;
+			// this.motionZ *= 0.92D;
 			this.setPosition(this.posX, this.posY, this.posZ);
 		}
 	}
@@ -141,11 +116,16 @@ public class EntityScannerLine extends Entity {
 		boolean flag = itemstack.getItem() instanceof ItemScanner;
 		boolean flag1 = itemstack1.getItem() instanceof ItemScanner;
 
+		boolean isConnected = this.player.getCapability(PlayerDataProvider.PLAYER_DATA, null).isScanning();
+
 		if (!this.player.isDead && this.player.isEntityAlive() && (flag || flag1)
-				&& this.getDistanceSq(this.player) <= 1024.0D) {
+				&& this.getDistanceSq(this.player) <= 1024.0D && isConnected) {
 			return false;
+		} else if (!flag && !flag1) {
+			this.handleKill();
+			return true;
 		} else {
-			this.setDead();
+			this.handleKill();
 			return true;
 		}
 	}
@@ -174,6 +154,17 @@ public class EntityScannerLine extends Entity {
 
 		this.rotationPitch = this.prevRotationPitch + (this.rotationPitch - this.prevRotationPitch) * 0.2F;
 		this.rotationYaw = this.prevRotationYaw + (this.rotationYaw - this.prevRotationYaw) * 0.2F;
+	}
+
+	public void handleKill() {
+		if (!world.isRemote && this.player != null) {
+			this.setDead();
+			IPlayerData playerData = this.player.getCapability(PlayerDataProvider.PLAYER_DATA, null);
+			playerData.setScanning(null);
+			
+			PacketHandler.INSTANCE.sendTo(new PlayerDataSyncMessage(playerData), (EntityPlayerMP) player);
+
+		}
 	}
 
 	@Override

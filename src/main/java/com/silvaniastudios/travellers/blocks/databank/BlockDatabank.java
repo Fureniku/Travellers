@@ -9,6 +9,8 @@ import com.silvaniastudios.travellers.Travellers;
 import com.silvaniastudios.travellers.blocks.BlockBasic;
 import com.silvaniastudios.travellers.capability.playerData.IPlayerData;
 import com.silvaniastudios.travellers.capability.playerData.PlayerDataProvider;
+import com.silvaniastudios.travellers.entity.EntityScannerLine;
+import com.silvaniastudios.travellers.items.tools.ItemScanner;
 import com.silvaniastudios.travellers.network.PlayerDataSyncMessage;
 
 import net.minecraft.block.Block;
@@ -51,8 +53,9 @@ public class BlockDatabank extends BlockBasic implements ITileEntityProvider {
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
 	protected static final AxisAlignedBB DATABANK_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 2.0D, 1.0D);
-	
-	protected static final AxisAlignedBB DATABANK_INVERSED_AABB = new AxisAlignedBB(0.0D, -1.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+
+	protected static final AxisAlignedBB DATABANK_INVERSED_AABB = new AxisAlignedBB(0.0D, -1.0D, 0.0D, 1.0D, 1.0D,
+			1.0D);
 
 	private DatabankRarityEnum rarity;
 
@@ -74,6 +77,32 @@ public class BlockDatabank extends BlockBasic implements ITileEntityProvider {
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
 			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 
+		IPlayerData playerData = playerIn.getCapability(PlayerDataProvider.PLAYER_DATA, null);
+
+		if (playerIn.getHeldItem(hand).getItem() instanceof ItemScanner) {
+
+			if (playerData.getScanningEntity() != null) {
+				playerData.getScanningEntity().handleKill();
+				playerIn.swingArm(hand);
+			} else {
+
+				if (!worldIn.isRemote) {
+					EntityScannerLine scanner = new EntityScannerLine(worldIn, playerIn);
+					worldIn.spawnEntity(scanner);
+					playerData.setScanning(scanner);
+
+					PacketHandler.INSTANCE.sendTo(new PlayerDataSyncMessage(playerData), (EntityPlayerMP) playerIn);
+
+				}
+				
+				EntityScannerLine scanner = new EntityScannerLine(worldIn, playerIn);
+				worldIn.spawnEntity(scanner);
+
+				playerIn.swingArm(hand);
+			}
+
+		}
+
 		if (worldIn.isRemote) { // If client
 			return true;
 
@@ -83,14 +112,14 @@ public class BlockDatabank extends BlockBasic implements ITileEntityProvider {
 		} else if (playerIn.getHeldItem(hand).getItem() == ModItems.scanner) {
 			// If player holds a scanner item
 
-			if (state.getValue(PART) != DatabankPartEnum.LOWER) { 
+			if (state.getValue(PART) != DatabankPartEnum.LOWER) {
 				// If not the lowerpart of a databank (i.e. upper)
 
-				pos = pos.offset(EnumFacing.DOWN); 
+				pos = pos.offset(EnumFacing.DOWN);
 				// Move the pos down one block to the LOWER part
 				state = worldIn.getBlockState(pos);
 
-				if (state.getBlock() != this) { 
+				if (state.getBlock() != this) {
 					// if the block is not a databank
 					return true;
 				}
@@ -114,7 +143,7 @@ public class BlockDatabank extends BlockBasic implements ITileEntityProvider {
 						return true;
 					}
 
-					IPlayerData playerData = playerIn.getCapability(PlayerDataProvider.PLAYER_DATA, null);
+					playerData = playerIn.getCapability(PlayerDataProvider.PLAYER_DATA, null);
 					playerData.incrementKnowledgeBalance(rarity.getKnowledgeBoost());
 
 					String rarityString = String.format("%s%s", DatabankRarityEnum.color(rarity),
@@ -139,14 +168,14 @@ public class BlockDatabank extends BlockBasic implements ITileEntityProvider {
 	@Override
 	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
 
-		if (state.getValue(PART) != DatabankPartEnum.LOWER) { 
+		if (state.getValue(PART) != DatabankPartEnum.LOWER) {
 			// i.e. we're the upper part
-			if (worldIn.getBlockState(pos.offset(EnumFacing.DOWN)).getBlock() != this) { 
+			if (worldIn.getBlockState(pos.offset(EnumFacing.DOWN)).getBlock() != this) {
 				// look below
-				worldIn.setBlockToAir(pos); 
+				worldIn.setBlockToAir(pos);
 				// if the upper part has no lower part below destroy itself
 			}
-		} else if (worldIn.getBlockState(pos.offset(EnumFacing.UP)).getBlock() != this) { 
+		} else if (worldIn.getBlockState(pos.offset(EnumFacing.UP)).getBlock() != this) {
 			// or look up
 			if (!worldIn.isRemote) {
 				this.dropBlockAsItem(worldIn, pos, state, 0);
@@ -222,7 +251,7 @@ public class BlockDatabank extends BlockBasic implements ITileEntityProvider {
 			NBTTagCompound nbttagcompound1 = new NBTTagCompound();
 			nbttagcompound.setTag("BlockEntityTag", ((TileEntityDatabank) te).writeToNBT(nbttagcompound1));
 			itemstack.setTagCompound(nbttagcompound);
-			
+
 			worldIn.setBlockToAir(pos.offset(EnumFacing.UP));
 
 			spawnAsEntity(worldIn, pos, itemstack);

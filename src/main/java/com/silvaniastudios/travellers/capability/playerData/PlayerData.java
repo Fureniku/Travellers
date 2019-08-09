@@ -6,7 +6,9 @@ import java.util.UUID;
 
 import com.silvaniastudios.travellers.ModItems;
 import com.silvaniastudios.travellers.capability.schematicData.SchematicDataProvider;
+import com.silvaniastudios.travellers.entity.EntityScannerLine;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -15,7 +17,8 @@ public class PlayerData implements IPlayerData {
 
 	private int knowledgeBalance;
 	private String shipyardVisitorCode;
-	private boolean isMale;
+	private boolean isDev;
+	private EntityScannerLine entityScanning;
 	private HashMap<String, Integer> knowledgeNodeUses;
 	private ArrayList<String> knownLorePieces;
 	private ArrayList<ItemStack> schematicList;
@@ -24,7 +27,8 @@ public class PlayerData implements IPlayerData {
 	public PlayerData() {
 		this.knowledgeBalance = 0;
 		this.shipyardVisitorCode = "1234";
-		this.isMale = true;
+		this.isDev = false;
+		this.entityScanning = null;
 		this.knowledgeNodeUses = new HashMap<String, Integer>();
 		this.knownLorePieces = new ArrayList<String>();
 
@@ -65,7 +69,7 @@ public class PlayerData implements IPlayerData {
 	}
 
 	/*
-	 * isMale
+	 * isDev
 	 * 
 	 * 
 	 * (non-Javadoc)
@@ -75,13 +79,30 @@ public class PlayerData implements IPlayerData {
 	 */
 
 	@Override
-	public boolean isMale() {
-		return this.isMale;
+	public boolean isDev() {
+		return this.isDev;
 	}
 
 	@Override
-	public void setMale(boolean isMale) {
-		this.isMale = isMale;
+	public void setDev(boolean isDev) {
+		this.isDev = isDev;
+	}
+	
+
+	
+	@Override
+	public boolean isScanning() {
+		return this.entityScanning != null;
+	}
+	
+	@Override
+	public EntityScannerLine getScanningEntity() {
+		return this.entityScanning;
+	}
+	
+	@Override
+	public void setScanning(EntityScannerLine scanning) {
+		this.entityScanning = scanning;
 	}
 
 	/*
@@ -141,7 +162,12 @@ public class PlayerData implements IPlayerData {
 	public NBTTagCompound toNBT() {
 		NBTTagCompound nbtTag = new NBTTagCompound();
 		nbtTag.setInteger("knowledge", this.getKnowledgeBalance());
-		nbtTag.setBoolean("isMale", this.isMale());
+		nbtTag.setBoolean("isDev", this.isDev());
+		
+		if (this.entityScanning != null) {
+			nbtTag.setTag("entityScanning", this.entityScanning.serializeNBT());
+		}
+	
 		nbtTag.setString("shipyardVisitorCode", this.getShipyardVisitorCode());
 
 		NBTTagCompound knowledgeTreeUses = new NBTTagCompound();
@@ -180,7 +206,14 @@ public class PlayerData implements IPlayerData {
 		NBTTagCompound nbtTag = (NBTTagCompound) nbt;
 
 		this.setKnowledgeBalance(nbtTag.getInteger("knowledge"));
-		this.setMale(nbtTag.getBoolean("isMale"));
+		this.setDev(nbtTag.getBoolean("isDev"));
+		
+		if (nbtTag.hasKey("entityScanning")) {
+			this.entityScanning = new EntityScannerLine(Minecraft.getMinecraft().world);
+			this.entityScanning.deserializeNBT(nbtTag.getCompoundTag("entityScanning"));
+		}
+		
+		
 		this.setShipyardVisitorCode(nbtTag.getString("shipyardVisitorCode"));
 
 		for (String key : ((NBTTagCompound) nbtTag.getCompoundTag("knowledgeTreeUses")).getKeySet()) {
@@ -213,7 +246,9 @@ public class PlayerData implements IPlayerData {
 	public void copyData(IPlayerData capability) {
 		this.setKnowledgeBalance(capability.getKnowledgeBalance());
 
-		this.setMale(capability.isMale());
+		this.setDev(capability.isDev());
+		
+		this.setScanning(capability.getScanningEntity());
 
 		this.setShipyardVisitorCode(capability.getShipyardVisitorCode());
 

@@ -3,6 +3,8 @@ package com.silvaniastudios.travellers.capability.playerData;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.silvaniastudios.travellers.entity.EntityScannerLine;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -30,9 +32,19 @@ public interface IPlayerData {
 	/*
 	 * Character
 	 */
-	public boolean isMale();
+	public boolean isDev();
 	
-	public void setMale(boolean isMale);
+	public void setDev(boolean isDev);
+	
+	/*
+	 * Scanning Entity
+	 */
+	
+	public boolean isScanning();
+	
+	public EntityScannerLine getScanningEntity();
+	
+	public void setScanning(EntityScannerLine scanning);
 	
 	/*
 	 * Knowledge Tree
