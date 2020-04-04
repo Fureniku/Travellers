@@ -209,7 +209,7 @@ public class PlayerData implements IPlayerData {
 		this.setDev(nbtTag.getBoolean("isDev"));
 		
 		if (nbtTag.hasKey("entityScanning")) {
-			this.entityScanning = new EntityScannerLine(Minecraft.getMinecraft().world);
+			this.entityScanning = new EntityScannerLine(Minecraft.getMinecraft().world, Minecraft.getMinecraft().player);
 			this.entityScanning.deserializeNBT(nbtTag.getCompoundTag("entityScanning"));
 		}
 		

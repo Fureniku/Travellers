@@ -28,20 +28,23 @@ public class EntityScannerLine extends Entity {
 
 	public EntityScannerLine(World worldIn) {
 		super(worldIn);
+		System.out.println("scanner line created only with worldin. why??????");
 	}
 
 	public EntityScannerLine(World worldIn, EntityPlayer player) {
 		super(worldIn);
+		System.out.println("scanner line created via worldin and playerin");
 		this.player = player;
 		this.init(player);
 		this.shoot();
 	}
 
 	@SideOnly(Side.CLIENT)
-	public EntityScannerLine(World worldIn, double x, double y, double z) {
+	public EntityScannerLine(World worldIn, EntityPlayer playerIn, double x, double y, double z) {
 		super(worldIn);
-		player = Minecraft.getMinecraft().player;
-		this.init(player);
+		System.out.println("scanner line created via worldin, playerIn and x,y,z");
+		//player = Minecraft.getMinecraft().player;
+		this.init(playerIn);
 		this.setPosition(x, y, z);
 		this.prevPosX = this.posX;
 		this.prevPosY = this.posY;
@@ -60,40 +63,43 @@ public class EntityScannerLine extends Entity {
 	}
 
 	private void shoot() {
-		float f = this.player.prevRotationPitch + (this.player.rotationPitch - this.player.prevRotationPitch);
-		float f1 = this.player.prevRotationYaw + (this.player.rotationYaw - this.player.prevRotationYaw);
-
+		float rotationPitch = this.player.rotationPitch;// + (this.player.rotationPitch - this.player.prevRotationPitch);
+		float rotationYaw = this.player.rotationYaw;// + (this.player.rotationYaw - this.player.prevRotationYaw);
+		// Not sure why the above isn't just this.player.rotationPitch 
+		// since its doing U[x-1] + (U[x] - U[x-1])
+		System.out.println("Shooting scaner_line");
 		RayTraceResult res = player.rayTrace(20.0F, 0);
 		if (res.typeOfHit == RayTraceResult.Type.BLOCK) {
 			BlockPos pos = res.getBlockPos();
 
-			if (world.getBlockState(pos).getBlock() instanceof BlockDatabank) {
-				this.setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), f1, f);
-			} else {
-				this.handleKill();
-			}
+			//if (world.getBlockState(pos).getBlock() instanceof BlockDatabank) { // If raytrace hits a databank block
+				System.out.println(res.toString());
+				this.setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), this.player.rotationYaw, this.player.rotationPitch);
+				
+			//}
 
-		} else {
-			this.handleKill();
 		}
-
+		
 	}
 
 	@Override
 	public void onUpdate() {
 		super.onUpdate();
-
+		
+		boolean shouldDestroy = this.shouldDestroy();
+		System.out.println(shouldDestroy);
 		if (this.player == null) {
-			this.setDead();
-		} else if (this.world.isRemote || !this.shouldDestroy()) {
+			this.handleKill();
+			
+		} else if (this.world.isRemote || !shouldDestroy) {
 
-			BlockPos blockpos = new BlockPos(this);
-			IBlockState iblockstate = this.world.getBlockState(blockpos);
+			BlockPos blockpos = new BlockPos(this); // Gets block where scanner currently is
+			IBlockState scannedBlockState = this.world.getBlockState(blockpos);
 
-			if (!(iblockstate.getBlock() instanceof BlockDatabank)) {
+			if (!(scannedBlockState.getBlock() instanceof BlockDatabank)) {
 				++this.ticksNotInScannable;
 
-				if (ticksNotInScannable >= 600) {
+				if (ticksNotInScannable >= 600) { // Kills self if not in a scannable block for 600 ticks
 					this.handleKill();
 					return;
 				}
@@ -110,27 +116,34 @@ public class EntityScannerLine extends Entity {
 		}
 	}
 
-	private boolean shouldDestroy() {
-		ItemStack itemstack = this.player.getHeldItemMainhand();
-		ItemStack itemstack1 = this.player.getHeldItemOffhand();
-		boolean flag = itemstack.getItem() instanceof ItemScanner;
-		boolean flag1 = itemstack1.getItem() instanceof ItemScanner;
+	private boolean shouldDestroy() { // Returns whether the scanner line entity should be killed
+		
+		if (this.player == null) {
+			System.out.println("Can't find a player attached to scanner line");
+			return true;
+		}
+		
+		ItemStack mainHandStack = this.getPlayer().getHeldItemMainhand();
+		ItemStack offHandStack = this.getPlayer().getHeldItemOffhand();
+		boolean mainHandIsScanner = mainHandStack.getItem() instanceof ItemScanner;
+		boolean offHandIsScanner = offHandStack.getItem() instanceof ItemScanner;
+		//System.out.println(mainHandIsScanner);
+		boolean isConnected = this.getPlayer().getCapability(PlayerDataProvider.PLAYER_DATA, null).isScanning();
 
-		boolean isConnected = this.player.getCapability(PlayerDataProvider.PLAYER_DATA, null).isScanning();
-
-		if (!this.player.isDead && this.player.isEntityAlive() && (flag || flag1)
-				&& this.getDistanceSq(this.player) <= 1024.0D && isConnected) {
+		if (!this.getPlayer().isDead && this.getPlayer().isEntityAlive() && (mainHandIsScanner || offHandIsScanner)
+				&& this.getDistanceSq(this.getPlayer()) <= 400.0D && isConnected) {
+			
 			return false;
-		} else if (!flag && !flag1) {
-			this.handleKill();
+		} else if (!mainHandIsScanner && !offHandIsScanner) {
+			
 			return true;
 		} else {
-			this.handleKill();
+			
 			return true;
 		}
 	}
 
-	private void updateRotation() {
+	private void updateRotation() { // Some magic
 		float f = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
 		this.rotationYaw = (float) (MathHelper.atan2(this.motionX, this.motionZ) * (180D / Math.PI));
 
@@ -157,8 +170,10 @@ public class EntityScannerLine extends Entity {
 	}
 
 	public void handleKill() {
-		if (!world.isRemote && this.player != null) {
-			this.setDead();
+		System.out.println("Killing scanner_line");
+		super.setDead(); // Will remove entity on the next tick
+		
+		if (!world.isRemote && this.player != null) { // Updates player capability to mention no longer scanning
 			IPlayerData playerData = this.player.getCapability(PlayerDataProvider.PLAYER_DATA, null);
 			playerData.setScanning(null);
 			
@@ -169,20 +184,15 @@ public class EntityScannerLine extends Entity {
 
 	@Override
 	protected void readEntityFromNBT(NBTTagCompound compound) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	protected void writeEntityToNBT(NBTTagCompound compound) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	protected void entityInit() {
-		// TODO Auto-generated method stub
-
+		
 	}
 
 	public EntityPlayer getPlayer() {
@@ -191,6 +201,13 @@ public class EntityScannerLine extends Entity {
 
 	public void setPlayer(EntityPlayer player) {
 		this.player = player;
+	}
+	
+	public static class EntityScannerFactory {
+		@SideOnly(Side.CLIENT)
+		public static Entity createEntityScanner (World worldIn) {
+			return new EntityScannerLine(worldIn, Minecraft.getMinecraft().player);
+		}
 	}
 
 }
