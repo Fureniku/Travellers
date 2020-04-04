@@ -14,14 +14,17 @@ public class PacketHandler {
 
 	public static void registerPacketsClient() {
 		int id = 0;
-		
+
 		INSTANCE.registerMessage(PlayerDataSyncMessage.CPlayerDataSyncMessageHandler.class, PlayerDataSyncMessage.class,
 				id++, Side.CLIENT);
-		
+
+		INSTANCE.registerMessage(PlayerDataSyncMessage.SPlayerDataSyncMessageHandler.class, PlayerDataSyncMessage.class,
+				id++, Side.SERVER);
+
 		INSTANCE.registerMessage(LearnSchematicMessage.SLearnSchematicMessageHandler.class, LearnSchematicMessage.class,
 				id++, Side.SERVER);
-		
-		INSTANCE.registerMessage(KnowledgeIncreaseMessage.SKnowledgeIncreaseMessage.class, KnowledgeIncreaseMessage.class,
-				id++, Side.SERVER);
+
+		INSTANCE.registerMessage(KnowledgeIncreaseMessage.SKnowledgeIncreaseMessage.class,
+				KnowledgeIncreaseMessage.class, id++, Side.SERVER);
 	}
 }

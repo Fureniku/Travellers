@@ -8,7 +8,6 @@ import com.silvaniastudios.travellers.items.ItemBasic;
 import com.silvaniastudios.travellers.network.PlayerDataSyncMessage;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
@@ -29,21 +28,19 @@ public class ItemScanner extends ItemBasic implements ITravellerTool {
 		IPlayerData playerData = playerIn.getCapability(PlayerDataProvider.PLAYER_DATA, null);
 
 		if (playerData.getScanningEntity() != null) {
+			//System.out.println("scanner_line being used to scan so killing " + playerData.getScanningEntity().getUniqueID().toString());
 			playerData.getScanningEntity().handleKill();
 			playerIn.swingArm(handIn);
 		} else {
 
-			if (!worldIn.isRemote) {
+			if (worldIn.isRemote) { //if client
 				EntityScannerLine scanner = new EntityScannerLine(worldIn, playerIn);
-				worldIn.spawnEntity(scanner);
+				
 				playerData.setScanning(scanner);
-				PacketHandler.INSTANCE.sendTo(new PlayerDataSyncMessage(playerData), (EntityPlayerMP) playerIn);
-
+				PacketHandler.INSTANCE.sendToServer(new PlayerDataSyncMessage(playerData, playerIn.getUniqueID()));
+				
+				worldIn.spawnEntity(scanner);
 			}
-			
-			EntityScannerLine scanner = new EntityScannerLine(worldIn, playerIn);
-			worldIn.spawnEntity(scanner);
-
 			playerIn.swingArm(handIn);
 		}
 

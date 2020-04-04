@@ -6,11 +6,9 @@ import com.silvaniastudios.travellers.ModBlocks;
 import com.silvaniastudios.travellers.ModItems;
 import com.silvaniastudios.travellers.PacketHandler;
 import com.silvaniastudios.travellers.Travellers;
-import com.silvaniastudios.travellers.blocks.BlockBasic;
+import com.silvaniastudios.travellers.blocks.BlockScannable;
 import com.silvaniastudios.travellers.capability.playerData.IPlayerData;
 import com.silvaniastudios.travellers.capability.playerData.PlayerDataProvider;
-import com.silvaniastudios.travellers.entity.EntityScannerLine;
-import com.silvaniastudios.travellers.items.tools.ItemScanner;
 import com.silvaniastudios.travellers.network.PlayerDataSyncMessage;
 
 import net.minecraft.block.Block;
@@ -45,7 +43,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockDatabank extends BlockBasic implements ITileEntityProvider {
+public class BlockDatabank extends BlockScannable implements ITileEntityProvider {
 
 	public static final PropertyEnum<DatabankPartEnum> PART = PropertyEnum.<DatabankPartEnum> create("part",
 			DatabankPartEnum.class);
@@ -76,32 +74,11 @@ public class BlockDatabank extends BlockBasic implements ITileEntityProvider {
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
 			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-
+		
+		// Does the scanner_line spawning
+		super.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
+		
 		IPlayerData playerData = playerIn.getCapability(PlayerDataProvider.PLAYER_DATA, null);
-
-		if (playerIn.getHeldItem(hand).getItem() instanceof ItemScanner) {
-
-			if (playerData.getScanningEntity() != null) {
-				playerData.getScanningEntity().handleKill();
-				playerIn.swingArm(hand);
-			} else {
-
-				if (!worldIn.isRemote) {
-					EntityScannerLine scanner = new EntityScannerLine(worldIn, playerIn);
-					worldIn.spawnEntity(scanner);
-					playerData.setScanning(scanner);
-
-					PacketHandler.INSTANCE.sendTo(new PlayerDataSyncMessage(playerData), (EntityPlayerMP) playerIn);
-
-				}
-				
-				EntityScannerLine scanner = new EntityScannerLine(worldIn, playerIn);
-				worldIn.spawnEntity(scanner);
-
-				playerIn.swingArm(hand);
-			}
-
-		}
 
 		if (worldIn.isRemote) { // If client
 			return true;

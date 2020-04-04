@@ -11,13 +11,13 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -28,10 +28,13 @@ public class EntityScannerLine extends Entity {
 
 	public EntityScannerLine(World worldIn) {
 		super(worldIn);
+		//System.out.println("scanner line created (via worldin) " + this.entityUniqueID.toString());
 	}
 
 	public EntityScannerLine(World worldIn, EntityPlayer player) {
 		super(worldIn);
+		//System.out.println("scanner line created (via worldin, player) "  + this.entityUniqueID.toString());
+		//System.out.println("player given to " + this.entityUniqueID.toString() + " is " + player.getUniqueID().toString());
 		this.player = player;
 		this.init(player);
 		this.shoot();
@@ -40,6 +43,7 @@ public class EntityScannerLine extends Entity {
 	@SideOnly(Side.CLIENT)
 	public EntityScannerLine(World worldIn, double x, double y, double z) {
 		super(worldIn);
+		//System.out.println("scanner line created (via world, x,y,z) "  + this.entityUniqueID.toString());
 		player = Minecraft.getMinecraft().player;
 		this.init(player);
 		this.setPosition(x, y, z);
@@ -51,6 +55,7 @@ public class EntityScannerLine extends Entity {
 	public void init(EntityPlayer player) {
 		this.setSize(0.25F, 0.25F);
 		this.player = player;
+		this.ticksNotInScannable = 0;
 		this.ignoreFrustumCheck = true;
 	}
 
@@ -60,20 +65,18 @@ public class EntityScannerLine extends Entity {
 	}
 
 	private void shoot() {
-		float f = this.player.prevRotationPitch + (this.player.rotationPitch - this.player.prevRotationPitch);
-		float f1 = this.player.prevRotationYaw + (this.player.rotationYaw - this.player.prevRotationYaw);
+		float pitch = this.player.prevRotationPitch + (this.player.rotationPitch - this.player.prevRotationPitch);
+		float yaw = this.player.prevRotationYaw + (this.player.rotationYaw - this.player.prevRotationYaw);
 
 		RayTraceResult res = player.rayTrace(20.0F, 0);
+		//System.out.println("Shooting scanner_line " + this.entityUniqueID.toString());
+		//System.out.println(res.toString());
 		if (res.typeOfHit == RayTraceResult.Type.BLOCK) {
-			BlockPos pos = res.getBlockPos();
 
-			if (world.getBlockState(pos).getBlock() instanceof BlockDatabank) {
-				this.setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), f1, f);
-			} else {
-				this.handleKill();
-			}
+			this.setLocationAndAngles(res.hitVec.x, res.hitVec.y, res.hitVec.z, yaw, pitch);
 
 		} else {
+			//System.out.println("scanner_line didnt hit a block so killing " + this.entityUniqueID.toString());
 			this.handleKill();
 		}
 
@@ -84,49 +87,46 @@ public class EntityScannerLine extends Entity {
 		super.onUpdate();
 
 		if (this.player == null) {
-			this.setDead();
-		} else if (this.world.isRemote || !this.shouldDestroy()) {
-
-			BlockPos blockpos = new BlockPos(this);
-			IBlockState iblockstate = this.world.getBlockState(blockpos);
-
-			if (!(iblockstate.getBlock() instanceof BlockDatabank)) {
-				++this.ticksNotInScannable;
-
-				if (ticksNotInScannable >= 600) {
-					this.handleKill();
-					return;
+			//System.out.println("scanner_line not attached to a player so killing " + this.entityUniqueID.toString());
+			this.handleKill();
+		} else {
+			boolean shouldDestroy = this.shouldDestroy();
+			if (this.world.isRemote && !shouldDestroy) {
+			
+				BlockPos blockpos = new BlockPos(this);
+				IBlockState iblockstate = this.world.getBlockState(blockpos);
+				
+				this.updateRotation();
+				
+				if (!(iblockstate.getBlock() instanceof BlockDatabank)) {
+					++this.ticksNotInScannable;
+	
+					if (ticksNotInScannable >= 600) {
+						this.handleKill();
+					}
 				}
+			} else if (shouldDestroy) {
+				//System.out.println("scanner_line marked for destruction " + this.entityUniqueID.toString());
+				this.handleKill();
 			}
-
-			// this.move(MoverType.SELF, this.motionX, this.motionY,
-			// this.motionZ);
-			this.updateRotation();
-
-			// this.motionX *= 0.92D;
-			// this.motionY *= 0.92D;
-			// this.motionZ *= 0.92D;
-			this.setPosition(this.posX, this.posY, this.posZ);
 		}
 	}
 
 	private boolean shouldDestroy() {
-		ItemStack itemstack = this.player.getHeldItemMainhand();
-		ItemStack itemstack1 = this.player.getHeldItemOffhand();
-		boolean flag = itemstack.getItem() instanceof ItemScanner;
-		boolean flag1 = itemstack1.getItem() instanceof ItemScanner;
-
+		ItemStack heldItemMainhand = this.player.getHeldItemMainhand();
+		ItemStack heldItemOffhand = this.player.getHeldItemOffhand();
+		boolean mainhandHolding = heldItemMainhand.getItem() instanceof ItemScanner;
+		boolean offhandHolding = heldItemOffhand.getItem() instanceof ItemScanner;
+		
+		boolean notHoldingScanner = !mainhandHolding && !offhandHolding;
+		
 		boolean isConnected = this.player.getCapability(PlayerDataProvider.PLAYER_DATA, null).isScanning();
-
-		if (!this.player.isDead && this.player.isEntityAlive() && (flag || flag1)
-				&& this.getDistanceSq(this.player) <= 1024.0D && isConnected) {
-			return false;
-		} else if (!flag && !flag1) {
-			this.handleKill();
+		
+		if (notHoldingScanner || !isConnected || (this.getDistance(this.player) >= 10.0D)
+				|| (this.player.isDead && !this.player.isEntityAlive())) {
 			return true;
 		} else {
-			this.handleKill();
-			return true;
+			return false;
 		}
 	}
 
@@ -157,32 +157,29 @@ public class EntityScannerLine extends Entity {
 	}
 
 	public void handleKill() {
-		if (!world.isRemote && this.player != null) {
-			this.setDead();
+		this.setDead();
+		//System.out.println("Killing scanner_line " + this.entityUniqueID.toString());
+		if (world.isRemote && this.player != null) {
+			
 			IPlayerData playerData = this.player.getCapability(PlayerDataProvider.PLAYER_DATA, null);
 			playerData.setScanning(null);
 			
-			PacketHandler.INSTANCE.sendTo(new PlayerDataSyncMessage(playerData), (EntityPlayerMP) player);
-
+			PacketHandler.INSTANCE.sendToServer(new PlayerDataSyncMessage(playerData, player.getUniqueID()));
 		}
 	}
 
 	@Override
 	protected void readEntityFromNBT(NBTTagCompound compound) {
-		// TODO Auto-generated method stub
-
+		this.player = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerByUUID(compound.getUniqueId("player"));
 	}
 
 	@Override
 	protected void writeEntityToNBT(NBTTagCompound compound) {
-		// TODO Auto-generated method stub
-
+		compound.setUniqueId("player", this.player.getUniqueID());
 	}
 
 	@Override
 	protected void entityInit() {
-		// TODO Auto-generated method stub
-
 	}
 
 	public EntityPlayer getPlayer() {
