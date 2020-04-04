@@ -10,7 +10,6 @@ import com.silvaniastudios.travellers.capability.schematicData.SchematicDataStor
 import com.silvaniastudios.travellers.client.render.RenderScannerLine;
 import com.silvaniastudios.travellers.entity.EntityScannerLine;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.item.Item;
@@ -31,6 +30,13 @@ public class CommonProxy {
 	
 	public void preInit(FMLPreInitializationEvent event) {
 		
+		RenderingRegistry.registerEntityRenderingHandler(EntityScannerLine.class, new IRenderFactory<EntityScannerLine> () {
+			@Override
+			public Render<? super EntityScannerLine> createRenderFor(RenderManager manager) {
+				return new RenderScannerLine(manager);
+			}
+		});
+
 	}
 
 	@SuppressWarnings("deprecation")

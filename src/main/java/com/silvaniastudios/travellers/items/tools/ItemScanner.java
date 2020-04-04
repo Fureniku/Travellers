@@ -27,22 +27,22 @@ public class ItemScanner extends ItemBasic implements ITravellerTool {
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
 		ItemStack itemstack = playerIn.getHeldItem(handIn);
 		IPlayerData playerData = playerIn.getCapability(PlayerDataProvider.PLAYER_DATA, null);
-		System.out.println("Scanner item right clicked");
-		
+
 		if (playerData.getScanningEntity() != null) {
-			
 			playerData.getScanningEntity().handleKill();
 			playerIn.swingArm(handIn);
 		} else {
 
 			if (!worldIn.isRemote) {
 				EntityScannerLine scanner = new EntityScannerLine(worldIn, playerIn);
-				
+				worldIn.spawnEntity(scanner);
 				playerData.setScanning(scanner);
 				PacketHandler.INSTANCE.sendTo(new PlayerDataSyncMessage(playerData), (EntityPlayerMP) playerIn);
-				
-				worldIn.spawnEntity(scanner);
+
 			}
+			
+			EntityScannerLine scanner = new EntityScannerLine(worldIn, playerIn);
+			worldIn.spawnEntity(scanner);
 
 			playerIn.swingArm(handIn);
 		}
