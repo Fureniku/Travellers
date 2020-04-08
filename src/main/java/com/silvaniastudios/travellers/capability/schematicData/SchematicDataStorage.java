@@ -6,6 +6,10 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.Capability.IStorage;
 
+/**
+ * 
+ * @author jamesm2w
+ */
 public class SchematicDataStorage implements IStorage<ISchematicData> {
 
 	@Override

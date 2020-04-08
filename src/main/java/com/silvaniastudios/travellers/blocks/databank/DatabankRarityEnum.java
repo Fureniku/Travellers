@@ -1,5 +1,15 @@
 package com.silvaniastudios.travellers.blocks.databank;
 
+import net.minecraft.util.text.TextFormatting;
+
+/**
+ * Common - 25 kn
+ * Uncommon - 30 kn
+ * Rare - 35 kn
+ * Exotic - 40 kn
+ * 
+ * @author jamesm2w
+ */
 public enum DatabankRarityEnum {
 	COMMON(25), UNCOMMON(30), RARE(35), EXOTIC(40);
 
@@ -13,18 +23,18 @@ public enum DatabankRarityEnum {
 		return knowledgeBoost;
 	}
 
-	public static String color(DatabankRarityEnum rarity) {
+	public static TextFormatting color(DatabankRarityEnum rarity) {
 		switch(rarity) {
 		case COMMON:
-			return "§f";
+			return TextFormatting.WHITE;
 		case UNCOMMON:
-			return "§2";
+			return TextFormatting.GREEN;
 		case RARE:
-			return "§1";
+			return TextFormatting.DARK_AQUA;
 		case EXOTIC:
-			return "§e";
+			return TextFormatting.YELLOW;
 		default:
-			return "§r";
+			return TextFormatting.RESET;
 		}
 	}
 }

@@ -13,6 +13,11 @@ import com.silvaniastudios.travellers.Travellers;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 
+/**
+ * Helper to load and generate the lore piece items
+ * 
+ * @author jamesm2w
+ */
 public class CodexItems {
 
 	private ResourceLocation loreJson = new ResourceLocation(Travellers.MODID, "lore_pieces.json");

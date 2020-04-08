@@ -10,15 +10,32 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.Constants;
 
+/**
+ * Tile Entity of the Databank
+ * 
+ * @author jamesm2w
+ */
 public class TileEntityDatabank extends TileEntity {
 
+	/**
+	 * List of Entity UUIDs which have scanned this databank
+	 */
 	private List<UUID> scannedBy = new ArrayList<UUID>(); // Array of Entity IDs which scanned the databank
 	
+	/**
+	 * Which part of the databank this tile enttiy represents (should be lower)
+	 */
 	protected DatabankPartEnum part;
 	
 	public TileEntityDatabank() {
 	}
 
+	/**
+	 * Tries to scan the databank and add player to the scanned UUIDs, returns whether successful
+	 * 
+	 * @param player Player which is scanning the databank
+	 * @return boolean whether successful scan
+	 */
 	public boolean beScannedBy (EntityPlayer player) {
 		
 		if (this.isScannedBy(player)) {
@@ -32,10 +49,21 @@ public class TileEntityDatabank extends TileEntity {
 		return true;
 	}
 	
+	/**
+	 * Checks if scanned list contains this player's UUID
+	 * 
+	 * @param player player to test
+	 * @return boolean whether the player has scanned this databank
+	 */
 	public boolean isScannedBy (EntityPlayer player) {
 		return this.scannedBy.contains(player.getUniqueID());
 	}
 
+	/**
+	 * Parses NBT data into the UUID list
+	 * 
+	 * @see net.minecraft.tileentity.TileEntity#readFromNBT(net.minecraft.nbt.NBTTagCompound)
+	 */
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
 		
@@ -50,6 +78,11 @@ public class TileEntityDatabank extends TileEntity {
 		super.readFromNBT(compound); //move on with your life!
 	}
 
+	/**
+	 * Transforms the scanned list into NBT format
+	 * 
+	 * @see net.minecraft.tileentity.TileEntity#writeToNBT(net.minecraft.nbt.NBTTagCompound)
+	 */
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		NBTTagList tagList = new NBTTagList();

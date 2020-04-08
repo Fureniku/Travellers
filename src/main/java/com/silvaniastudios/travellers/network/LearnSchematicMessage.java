@@ -18,6 +18,11 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
+/**
+ * Informs server that a player client has learned a schematic
+ * 
+ * @author james_pntzyfo
+ */
 public class LearnSchematicMessage implements IMessage {
 
 	private ItemStack schematic;

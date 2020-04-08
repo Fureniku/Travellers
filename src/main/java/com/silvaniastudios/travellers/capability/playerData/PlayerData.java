@@ -12,7 +12,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 
+/**
+ * 
+ * @author jamesm2w
+ */
 public class PlayerData implements IPlayerData {
 
 	private int knowledgeBalance;
@@ -208,10 +213,27 @@ public class PlayerData implements IPlayerData {
 		this.setKnowledgeBalance(nbtTag.getInteger("knowledge"));
 		this.setDev(nbtTag.getBoolean("isDev"));
 		
-		if (nbtTag.hasKey("entityScanning")) {
-			this.entityScanning = new EntityScannerLine(Minecraft.getMinecraft().world);
+		if (nbtTag.hasKey("entityScanning") && nbtTag.getTag("entityScanning") != null) {
+			
+			NBTTagCompound entityTag = nbtTag.getCompoundTag("entityScanning");
+			
+			//System.out.println("NBT recieved from PlayerData sync packet: " + nbtTag.getCompoundTag("entityScanning").toString());
+			//System.out.println("Player UUID from NBT: " + nbtTag.getCompoundTag("entityScanning").getUniqueId("player").toString());
+			
+			World world = Minecraft.getMinecraft().world;
+			UUID player = entityTag.getUniqueId("player");
+			
+			this.entityScanning = new EntityScannerLine(world, player); // WHAT A MEME
+			
 			//System.out.println("Creating scanner_line from nbt " + this.entityScanning.getUniqueID().toString());
+			
 			this.entityScanning.deserializeNBT(nbtTag.getCompoundTag("entityScanning"));
+			
+			//System.out.println("NBT scanner_line is now " + this.entityScanning.getUniqueID().toString() + " was " + this.entityScanning.initialUUID);
+
+			//Minecraft.getMinecraft().world.spawnEntity(this.entityScanning);
+		} else {
+			this.entityScanning = null;
 		}
 		
 		

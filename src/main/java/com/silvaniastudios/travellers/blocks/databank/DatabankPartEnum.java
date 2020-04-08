@@ -2,6 +2,11 @@ package com.silvaniastudios.travellers.blocks.databank;
 
 import net.minecraft.util.IStringSerializable;
 
+/**
+ * Represents a Lower or Upper databank block
+ * 
+ * @author jamesm2w
+ */
 public enum DatabankPartEnum implements IStringSerializable {
 	UPPER("upper"), LOWER("lower");
 

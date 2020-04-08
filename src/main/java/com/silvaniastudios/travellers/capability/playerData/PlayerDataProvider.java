@@ -6,6 +6,10 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 
+/**
+ * 
+ * @author jamesm2w
+ */
 public class PlayerDataProvider implements ICapabilitySerializable<NBTBase> {
 
 	@CapabilityInject(IPlayerData.class)

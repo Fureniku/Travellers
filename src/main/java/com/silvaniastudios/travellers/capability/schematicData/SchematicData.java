@@ -8,6 +8,10 @@ import com.silvaniastudios.travellers.schematic.SchematicTypeEnum;
 
 import net.minecraft.nbt.NBTTagCompound;
 
+/**
+ * 
+ * @author jamesm2w
+ */
 public class SchematicData implements ISchematicData {
 	
 	private UUID uuid;

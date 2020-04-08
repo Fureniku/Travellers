@@ -2,40 +2,41 @@ package com.silvaniastudios.travellers.schematic;
 
 public class ProcSchematicConfig {
 
-	public static String getEngineName(float[] stats, SchematicRarityEnum rarity) {	
+	public static String getEngineName(float[] stats, SchematicRarityEnum rarity) {
 		String casingName = "", mountType = "m", propMountName = "", powerNum = "", propType = "p", propName = "";
-		
+
 		for (int i = 0; i < EngineCasingList.length; i++) {
-	      EngineCasing currentCasing = EngineCasingList[i];
-	      if (currentCasing.tier <= rarity.tier && indexOfMax(stats) == indexOf(ENGINE_STAT_NAMES, currentCasing.stat)) {
-	        casingName = currentCasing.name;
-	        mountType = currentCasing.mountType;
-	      } 
-	    }
-		
-	    float power = stats[indexOf(ENGINE_STAT_NAMES, "travellers.stat.power.name")];
-	    for (int i = 0; i < EnginePropMountList.length; i++) {
-	      if (power > EnginePropMountList[i].minPower && EnginePropMountList[i].mountType.equals(mountType)) {
+			EngineCasing currentCasing = EngineCasingList[i];
+			if (currentCasing.tier <= rarity.tier
+					&& indexOfMax(stats) == indexOf(ENGINE_STAT_NAMES, currentCasing.stat)) {
+				casingName = currentCasing.name;
+				mountType = currentCasing.mountType;
+			}
+		}
 
-	        propMountName = EnginePropMountList[i].name;
-	        powerNum = String.valueOf(Math.round(power - EnginePropMountList[i].minPower));
-	        propType = EnginePropMountList[i].propType;
+		float power = stats[indexOf(ENGINE_STAT_NAMES, "travellers.stat.power.name")];
+		for (int i = 0; i < EnginePropMountList.length; i++) {
+			if (power > EnginePropMountList[i].minPower && EnginePropMountList[i].mountType.equals(mountType)) {
 
-	        break;
-	      }
-	    }
-	    
-	    float boost = stats[indexOf(ENGINE_STAT_NAMES, "travellers.stat.boost.name")];
-	    for (int i = 0; i < EnginePropList.length; i++) {
-	      if (boost >= EnginePropList[i].minBoost && EnginePropList[i].propType.equals(propType)) {
+				propMountName = EnginePropMountList[i].name;
+				powerNum = String.valueOf(Math.round(power - EnginePropMountList[i].minPower));
+				propType = EnginePropMountList[i].propType;
 
-	        propName = EnginePropList[i].letter;
-	        propType = EnginePropList[i].propType;
+				break;
+			}
+		}
 
-	        break;
-	      }
-	    }
-		
+		float boost = stats[indexOf(ENGINE_STAT_NAMES, "travellers.stat.boost.name")];
+		for (int i = 0; i < EnginePropList.length; i++) {
+			if (boost >= EnginePropList[i].minBoost && EnginePropList[i].propType.equals(propType)) {
+
+				propName = EnginePropList[i].letter;
+				propType = EnginePropList[i].propType;
+
+				break;
+			}
+		}
+
 		return casingName + " " + propMountName + " " + propName + powerNum;
 	}
 

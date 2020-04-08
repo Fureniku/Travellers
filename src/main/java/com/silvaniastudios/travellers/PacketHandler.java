@@ -3,6 +3,7 @@ package com.silvaniastudios.travellers;
 import com.silvaniastudios.travellers.network.KnowledgeIncreaseMessage;
 import com.silvaniastudios.travellers.network.LearnSchematicMessage;
 import com.silvaniastudios.travellers.network.PlayerDataSyncMessage;
+import com.silvaniastudios.travellers.network.ScannerLineSyncMessage;
 
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
@@ -26,5 +27,8 @@ public class PacketHandler {
 
 		INSTANCE.registerMessage(KnowledgeIncreaseMessage.SKnowledgeIncreaseMessage.class,
 				KnowledgeIncreaseMessage.class, id++, Side.SERVER);
+
+		INSTANCE.registerMessage(ScannerLineSyncMessage.CScannerLineSyncMessage.class, ScannerLineSyncMessage.class,
+				id++, Side.CLIENT);
 	}
 }

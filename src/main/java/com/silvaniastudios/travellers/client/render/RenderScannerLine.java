@@ -8,6 +8,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.culling.ICamera;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -18,6 +19,13 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
+/**
+ * Renders the scanner line entity to the world.
+ * Heavily borrowed from the vanilla Fishing Rod & bobber
+ * 
+ * @author james_pntzyfo
+ * 
+ */
 public class RenderScannerLine extends Render<EntityScannerLine> {
 
 	public static final ResourceLocation SCANNERLINE = new ResourceLocation(Travellers.MODID,
@@ -27,6 +35,13 @@ public class RenderScannerLine extends Render<EntityScannerLine> {
 		super(renderManager);
 	}
 
+	/** 
+	 * Renders Scanner Line entity in world from entity position to player position
+	 * This function is mainly copied from the obfuscated fishing rod example, I've done my best to try
+	 * decode how it works, but there are still some issues with the exact placement of the entity
+	 * 
+	 * @see net.minecraft.client.renderer.entity.Render#doRender(net.minecraft.entity.Entity, double, double, double, float, float)
+	 */
 	@Override
 	public void doRender(EntityScannerLine entity, double x, double y, double z, float entityYaw, float partialTicks) {
 		EntityPlayer entityplayer = entity.getPlayer();
@@ -52,9 +67,9 @@ public class RenderScannerLine extends Render<EntityScannerLine> {
 			float f8 = MathHelper.sin(MathHelper.sqrt(swingProgress) * (float) Math.PI);
 			float f9 = (entityplayer.prevRenderYawOffset
 					+ (entityplayer.renderYawOffset - entityplayer.prevRenderYawOffset) * partialTicks) * 0.017453292F;
-			double d0 = (double) MathHelper.sin(f9);
-			double d1 = (double) MathHelper.cos(f9);
-			double d2 = (double) k * 0.35D;
+			double yawSin = (double) MathHelper.sin(f9);
+			double yawCos = (double) MathHelper.cos(f9);
+			double handAdjustment = (double) k * 0.35D;
 			//double d3 = 0.8D;
 			double playerX;
 			double playerY;
@@ -75,17 +90,17 @@ public class RenderScannerLine extends Render<EntityScannerLine> {
 				playerX = entityplayer.prevPosX + (entityplayer.posX - entityplayer.prevPosX) * (double) partialTicks
 						+ vec3d.x;
 				playerY = entityplayer.prevPosY + (entityplayer.posY - entityplayer.prevPosY) * (double) partialTicks
-						+ vec3d.y + 0.25D;
+						+ vec3d.y;
 				playerZ = entityplayer.prevPosZ + (entityplayer.posZ - entityplayer.prevPosZ) * (double) partialTicks
 						+ vec3d.z;
 				eyeHeightAdjustment = (double) entityplayer.getEyeHeight();
 			} else {
 				playerX = entityplayer.prevPosX + (entityplayer.posX - entityplayer.prevPosX) * (double) partialTicks
-						- d1 * d2 - d0 * 0.8D;
+						- yawCos * handAdjustment - yawSin * 0.8D;
 				playerY = entityplayer.prevPosY + (double) entityplayer.getEyeHeight()
-						+ (entityplayer.posY - entityplayer.prevPosY) * (double) partialTicks - 0.45D;
+						+ (entityplayer.posY - entityplayer.prevPosY) * (double) partialTicks - 0.8D;
 				playerZ = entityplayer.prevPosZ + (entityplayer.posZ - entityplayer.prevPosZ) * (double) partialTicks
-						- d0 * d2 + d1 * 0.8D;
+						- yawSin * handAdjustment + yawCos * 0.4D;
 				eyeHeightAdjustment = entityplayer.isSneaking() ? -0.1875D : 0.0D;
 			}
 
@@ -113,6 +128,12 @@ public class RenderScannerLine extends Render<EntityScannerLine> {
 		}
 	}
 
+	/**
+	 * Returns resource location for the scanner line entity, this texture is not actually used, but this
+	 * exists to stop any errors from code which might try to find it (e.g. bind entity texture)
+	 * 
+	 * @see net.minecraft.client.renderer.entity.Render#getEntityTexture(net.minecraft.entity.Entity)
+	 */
 	@Override
 	protected ResourceLocation getEntityTexture(EntityScannerLine entity) {
 

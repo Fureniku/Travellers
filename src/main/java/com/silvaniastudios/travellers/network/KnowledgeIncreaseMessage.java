@@ -16,6 +16,11 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
+/**
+ * Informs the server that a client's knowledge has increased
+ * 
+ * @author jamesm2w
+ */
 public class KnowledgeIncreaseMessage implements IMessage {
 
 	private int amount;

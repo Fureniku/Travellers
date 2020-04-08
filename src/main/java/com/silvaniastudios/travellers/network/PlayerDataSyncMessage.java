@@ -4,7 +4,6 @@ import java.util.UUID;
 
 import com.silvaniastudios.travellers.capability.playerData.IPlayerData;
 import com.silvaniastudios.travellers.capability.playerData.PlayerDataProvider;
-import com.silvaniastudios.travellers.entity.EntityScannerLine;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
@@ -18,6 +17,11 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
+/**
+ * Syncs player's PlayerData capability from server to client
+ * 
+ * @author jamesm2w
+ */
 public class PlayerDataSyncMessage implements IMessage {
 
 	IPlayerData instance;
@@ -64,11 +68,11 @@ public class PlayerDataSyncMessage implements IMessage {
 				
 				//System.out.println("scanner_line read from nbt is " + entityScanning.getUniqueID().toString());
 				//Minecraft.getMinecraft().world.spawnEntity(entityScanning);
-				EntityScannerLine entityScanning = playerData.getScanningEntity();
-				if (entityScanning != null) {
+				//EntityScannerLine entityScanning = playerData.getScanningEntity();
+				//if (entityScanning != null) {
 					//System.out.println("scanner_line read from nbt is " + entityScanning.getUniqueID().toString());
-					Minecraft.getMinecraft().world.spawnEntity(entityScanning);
-				}
+				//	Minecraft.getMinecraft().world.spawnEntity(entityScanning);
+				//}
 			});
 
 			return null;

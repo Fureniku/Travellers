@@ -7,6 +7,10 @@ import com.silvaniastudios.travellers.schematic.SchematicTypeEnum;
 
 import net.minecraft.nbt.NBTTagCompound;
 
+/**
+ * 
+ * @author jamesm2w
+ */
 public interface ISchematicData {
 	
 	/*

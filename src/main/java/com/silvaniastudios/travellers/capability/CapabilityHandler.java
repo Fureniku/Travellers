@@ -12,6 +12,10 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+/**
+ * 
+ * @author jamesm2w
+ */
 public class CapabilityHandler {
 
 	public static final ResourceLocation PLAYER_DATA = new ResourceLocation(Travellers.MODID, "playerData");

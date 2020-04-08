@@ -9,6 +9,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 
+/**
+ * 
+ * @author jamesm2w
+ */
 public interface IPlayerData {
 	
 	/*
