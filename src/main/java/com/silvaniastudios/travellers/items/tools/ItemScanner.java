@@ -42,10 +42,12 @@ public class ItemScanner extends ItemBasic implements ITravellerTool {
 
 		if (!worldIn.isRemote) { //if server
 			
-			if (playerData.getScanningEntity() != null) {
+			//System.out.println(playerData.getScanningEntity().getPlayer());
+			
+			if (playerData.getScanningEntity() != null || (playerData.getScanningEntity() != null && playerData.getScanningEntity().getPlayer() == null)) {
 				//System.out.println("scanner_line being used to scan so killing " + playerData.getScanningEntity().getUniqueID().toString());
 				playerData.getScanningEntity().handleKill();
-				
+				playerData.setScanning(null);
 				PacketHandler.INSTANCE.sendTo(new PlayerDataSyncMessage(playerData), (EntityPlayerMP) playerIn);
 				
 				playerIn.swingArm(handIn);

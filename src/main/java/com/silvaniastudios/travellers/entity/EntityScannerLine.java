@@ -63,6 +63,7 @@ public class EntityScannerLine extends Entity {
 		//System.out.println("scanner line created (via worldin) " + this.entityUniqueID.toString());
 		initialUUID = this.entityUniqueID;
 		deleteImmediately = false;
+		this.ignoreFrustumCheck = true;
 	}
 	
 	public EntityScannerLine(World worldIn, UUID playerUUID) {
@@ -273,7 +274,7 @@ public class EntityScannerLine extends Entity {
 	@Override
 	protected void readEntityFromNBT(NBTTagCompound compound) {
 		
-		//System.out.println(getUniqueID().toString() + " read nbt: " + String.valueOf(compound.hasUniqueId("player")));
+		System.out.println(getUniqueID().toString() + " read nbt: " + String.valueOf(compound.hasUniqueId("player")));
 		
 		if (compound.hasUniqueId("player")) {
 			this.player = this.world.getPlayerEntityByUUID(compound.getUniqueId("player"));

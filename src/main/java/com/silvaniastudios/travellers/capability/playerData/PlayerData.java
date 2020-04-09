@@ -13,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 /**
  * 
@@ -220,18 +221,35 @@ public class PlayerData implements IPlayerData {
 			//System.out.println("NBT recieved from PlayerData sync packet: " + nbtTag.getCompoundTag("entityScanning").toString());
 			//System.out.println("Player UUID from NBT: " + nbtTag.getCompoundTag("entityScanning").getUniqueId("player").toString());
 			
-			World world = Minecraft.getMinecraft().world;
+			World world;
+			
+			world = Minecraft.getMinecraft().world;
+			
+			if (world == null) {
+				world = FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld();
+			}
+			
+			//System.out.println(world);
+			
 			UUID player = entityTag.getUniqueId("player");
+			//System.out.println(world.toString());
+			//System.out.println(player.toString());
 			
-			this.entityScanning = new EntityScannerLine(world, player); // WHAT A MEME
+			if (player.toString().contentEquals("00000000-0000-0000-0000-000000000000")) {
+				//System.out.println("player uuid is all 0");
+				this.entityScanning = null;
+			} else {
 			
-			//System.out.println("Creating scanner_line from nbt " + this.entityScanning.getUniqueID().toString());
+				this.entityScanning = new EntityScannerLine(world, player); // WHAT A MEME
 			
-			this.entityScanning.deserializeNBT(nbtTag.getCompoundTag("entityScanning"));
+				//System.out.println("Creating scanner_line from nbt " + this.entityScanning.getUniqueID().toString());
 			
-			//System.out.println("NBT scanner_line is now " + this.entityScanning.getUniqueID().toString() + " was " + this.entityScanning.initialUUID);
+				this.entityScanning.deserializeNBT(nbtTag.getCompoundTag("entityScanning"));
+			
+				//System.out.println("NBT scanner_line is now " + this.entityScanning.getUniqueID().toString() + " was " + this.entityScanning.initialUUID);
 
-			//Minecraft.getMinecraft().world.spawnEntity(this.entityScanning);
+				//Minecraft.getMinecraft().world.spawnEntity(this.entityScanning);
+			}
 		} else {
 			this.entityScanning = null;
 		}
