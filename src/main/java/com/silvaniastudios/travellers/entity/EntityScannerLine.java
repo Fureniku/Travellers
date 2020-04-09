@@ -274,7 +274,7 @@ public class EntityScannerLine extends Entity {
 	@Override
 	protected void readEntityFromNBT(NBTTagCompound compound) {
 		
-		System.out.println(getUniqueID().toString() + " read nbt: " + String.valueOf(compound.hasUniqueId("player")));
+		//System.out.println(getUniqueID().toString() + " read nbt: " + String.valueOf(compound.hasUniqueId("player")));
 		
 		if (compound.hasUniqueId("player")) {
 			this.player = this.world.getPlayerEntityByUUID(compound.getUniqueId("player"));

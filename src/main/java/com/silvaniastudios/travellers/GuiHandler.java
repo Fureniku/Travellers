@@ -7,6 +7,7 @@ import com.silvaniastudios.travellers.blocks.tileentity.shipyard.ShipyardEntity;
 import com.silvaniastudios.travellers.client.gui.GuiAssembler;
 import com.silvaniastudios.travellers.client.gui.GuiCrosshair;
 import com.silvaniastudios.travellers.client.gui.GuiKnowledgeOverlay;
+import com.silvaniastudios.travellers.client.gui.GuiScannerInformation;
 import com.silvaniastudios.travellers.client.gui.GuiShipyard;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,11 +23,13 @@ public class GuiHandler implements IGuiHandler {
 	
 	public static final GuiKnowledgeOverlay knowledge_overlay = new GuiKnowledgeOverlay();
 	public static final GuiCrosshair crosshair_overlay = new GuiCrosshair();
+	public static final GuiScannerInformation scanner_information = new GuiScannerInformation();
 	
 	@SubscribeEvent
 	public void onRenderGui(RenderGameOverlayEvent.Post event) {
 		if (event.getType() == ElementType.EXPERIENCE) {
 			knowledge_overlay.draw();
+			scanner_information.draw();
 		}
 		
 		return;

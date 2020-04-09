@@ -1,5 +1,6 @@
 package com.silvaniastudios.travellers.blocks.databank;
 
+import java.util.List;
 import java.util.Random;
 
 import com.silvaniastudios.travellers.ModBlocks;
@@ -20,6 +21,7 @@ import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -103,9 +105,27 @@ public class BlockDatabank extends BlockScannable implements ITileEntityProvider
 		this.hasTileEntity = true;
 
 		ModBlocks.block_databanks.add(this);
-		ModBlocks.item_databanks.add(new ItemBlock(this).setRegistryName(this.getRegistryName()));
+		ModBlocks.item_databanks.add(new ItemDatabankBlock(this, rarity.getKnowledgeBoost()).setRegistryName(this.getRegistryName()));
 
 		this.setDefaultState(this.blockState.getBaseState().withProperty(PART, DatabankPartEnum.LOWER));
+	}
+	
+	public static class ItemDatabankBlock extends ItemBlock {
+		
+		private int knowledgeGranted;
+		
+		public ItemDatabankBlock(Block block, int knowledge) {
+			super(block);
+			
+			knowledgeGranted = knowledge;
+		}
+		
+		@Override
+		public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+			tooltip.add("Grants " + String.valueOf(knowledgeGranted) + " knowledge");
+			super.addInformation(stack, worldIn, tooltip, flagIn);
+		}
+		
 	}
 
 	/**
@@ -125,8 +145,12 @@ public class BlockDatabank extends BlockScannable implements ITileEntityProvider
 			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 
 		// Does the scanner_line spawning
-		super.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
-
+		boolean result = super.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
+		
+		if (!result) {
+			return result;
+		}
+		
 		IPlayerData playerData = playerIn.getCapability(PlayerDataProvider.PLAYER_DATA, null);
 
 		if (worldIn.isRemote) { // If client

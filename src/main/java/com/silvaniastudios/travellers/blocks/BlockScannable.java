@@ -53,6 +53,8 @@ public class BlockScannable extends BlockBasic {
 					PacketHandler.INSTANCE.sendTo(new PlayerDataSyncMessage(playerData), (EntityPlayerMP) playerIn);
 					
 					playerIn.swingArm(hand);
+					
+					return false;
 				} else {
 					EntityScannerLine scanner = new EntityScannerLine(worldIn, playerIn);
 					
@@ -64,10 +66,12 @@ public class BlockScannable extends BlockBasic {
 				}
 			}
 			playerIn.swingArm(hand);
+			
+			
 
 		}
 		
-		return super.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
+		return true;
 	}
 
 }
