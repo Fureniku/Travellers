@@ -45,6 +45,8 @@ public class EntityScannerLine extends Entity {
 	
 	boolean deleteImmediately = false;
 	
+	private BlockPos hitBlockPos;
+	
 	/**
 	 * Mandatory constructor by Forge. THIS SHOULD NEVER BE USED.
 	 * 
@@ -132,6 +134,11 @@ public class EntityScannerLine extends Entity {
 	public boolean isInRangeToRenderDist(double distance) {
 		return distance < 4096.0D;
 	}
+	
+	@Override
+	public boolean canRenderOnFire() {
+		return false;
+	}
 
 	/**
 	 * Raytraces for a block within 20 blocks. This result will be the position of the entity
@@ -147,6 +154,8 @@ public class EntityScannerLine extends Entity {
 		if (res.typeOfHit == RayTraceResult.Type.BLOCK) {
 
 			this.setLocationAndAngles(res.hitVec.x, res.hitVec.y, res.hitVec.z, yaw, pitch);
+			this.setHitBlockPos(res.getBlockPos());
+			//System.out.println(res.getBlockPos().toString());
 
 		} else {
 			//System.out.println("scanner_line didnt hit a block so killing " + this.entityUniqueID.toString());
@@ -281,10 +290,13 @@ public class EntityScannerLine extends Entity {
 			this.player = this.world.getPlayerEntityByUUID(compound.getUniqueId("player"));
 			
 			//System.out.println(this.getUniqueID().toString() + " with player: " + this.player.getUniqueID().toString());
-		} else if (compound.hasKey("playerID")) {
-			this.player = this.world.getPlayerEntityByUUID(UUID.fromString(compound.getString("playerID")));
-		} else{
+		} else {
 			this.handleKill();
+		}
+		
+		if (compound.hasKey("hitPos")) {
+			int[] hitPos = compound.getIntArray("hitPos");
+			this.hitBlockPos = new BlockPos(hitPos[0], hitPos[1], hitPos[2]);
 		}
 		
 		this.deleteImmediately = true;
@@ -294,7 +306,7 @@ public class EntityScannerLine extends Entity {
 	protected void writeEntityToNBT(NBTTagCompound compound) {
 		if (this.player != null) {
 			compound.setUniqueId("player", this.player.getUniqueID());
-			compound.setString("playerID", this.player.getUniqueID().toString());
+			compound.setIntArray("hitPos", new int[]{hitBlockPos.getX(), hitBlockPos.getY(), hitBlockPos.getZ()});
 			//System.out.println(this.getUniqueID().toString() + " writing player to NBT: " + this.player.getUniqueID().toString());
 		}
 	}
@@ -311,6 +323,20 @@ public class EntityScannerLine extends Entity {
 		this.player = player;
 		
 		this.deleteImmediately = true;
+	}
+
+	/**
+	 * @return the hitBlockPos
+	 */
+	public BlockPos getHitBlockPos() {
+		return hitBlockPos;
+	}
+
+	/**
+	 * @param hitBlockPos the hitBlockPos to set
+	 */
+	public void setHitBlockPos(BlockPos hitBlockPos) {
+		this.hitBlockPos = hitBlockPos;
 	}
 
 }
