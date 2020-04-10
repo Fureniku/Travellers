@@ -143,6 +143,7 @@ public class EntityScannerLine extends Entity {
 		RayTraceResult res = player.rayTrace(20.0F, 0);
 		//System.out.println("Shooting scanner_line " + this.entityUniqueID.toString());
 		//System.out.println(res.toString());
+		
 		if (res.typeOfHit == RayTraceResult.Type.BLOCK) {
 
 			this.setLocationAndAngles(res.hitVec.x, res.hitVec.y, res.hitVec.z, yaw, pitch);

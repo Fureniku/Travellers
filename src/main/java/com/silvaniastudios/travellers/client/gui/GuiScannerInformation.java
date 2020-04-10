@@ -3,13 +3,18 @@
  */
 package com.silvaniastudios.travellers.client.gui;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mojang.authlib.GameProfile;
 import com.silvaniastudios.travellers.Travellers;
 import com.silvaniastudios.travellers.capability.playerData.PlayerDataProvider;
 import com.silvaniastudios.travellers.entity.EntityScannerLine;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockSkull;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
@@ -18,8 +23,11 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntitySkull;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
 /**
@@ -30,6 +38,8 @@ public class GuiScannerInformation extends Gui {
 	protected int width;
 	protected int height;
 
+	protected Minecraft minecraft;
+
 	protected EntityScannerLine scanner;
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation(Travellers.MODID,
@@ -39,6 +49,7 @@ public class GuiScannerInformation extends Gui {
 		ScaledResolution scaled = new ScaledResolution(Minecraft.getMinecraft());
 		this.width = scaled.getScaledWidth();
 		this.height = scaled.getScaledHeight();
+		this.minecraft = Minecraft.getMinecraft();
 
 	}
 
@@ -92,13 +103,76 @@ public class GuiScannerInformation extends Gui {
 					// scanner.posY + " z: " + scanner.posZ);
 				}
 
-				String blockName = Minecraft.getMinecraft().world.getBlockState(pos).getBlock().getLocalizedName();
+				Block targetBlock = minecraft.world.getBlockState(pos).getBlock();
 
-				String blockDescr = I18n
-						.format(Minecraft.getMinecraft().world.getBlockState(pos).getBlock().getUnlocalizedName()
-								+ ".description");
+				ItemStack pickStack = targetBlock.getPickBlock(minecraft.world.getBlockState(pos), null,
+						minecraft.world, pos, minecraft.player);
 
-				Minecraft.getMinecraft().getTextureManager().bindTexture(TEXTURE);
+				String targetBlockName = targetBlock.getLocalizedName();
+				String pickStackName = pickStack.getDisplayName();
+
+				String targetBlockDescr = I18n.format(targetBlock.getUnlocalizedName() + ".description");
+				String pickStackDescr = I18n.format(pickStack.getUnlocalizedName() + ".description");
+
+				String descr = targetBlockDescr;
+				String name = targetBlockName;
+
+				if (useItemStackBecauseOfSubBlocks(targetBlock)) {
+					// Force ItemStack use
+					name = pickStackName;
+					descr = pickStackDescr;
+				}
+
+				if (targetBlockDescr.startsWith("tile.") && !pickStackDescr.startsWith("item.")) {
+					descr = pickStackDescr;
+				}
+
+				if (targetBlockName.startsWith("tile.") && !pickStackName.startsWith("tile.")) {
+					name = pickStackName;
+				}
+
+				if (targetBlock.getUnlocalizedName().contentEquals("tile.null")) {
+					name = TextFormatting.OBFUSCATED + "NULL" + TextFormatting.RESET;
+				}
+
+				if (targetBlock instanceof BlockSkull) {
+					TileEntity teSkull = minecraft.world.getTileEntity(pos);
+
+					if (teSkull instanceof TileEntitySkull) {
+
+						TileEntitySkull skull = (TileEntitySkull) teSkull;
+						try {
+							Field skullTypeField = skull.getClass().getDeclaredField("skullType");
+
+							skullTypeField.setAccessible(true);
+
+							int skullType = (int) skullTypeField.get(skull);
+
+							if (skullType == 3) {
+
+								Method playerProfileGet = skull.getClass().getDeclaredMethod("getPlayerProfile",
+										(Class[]) null);
+								playerProfileGet.setAccessible(true);
+
+								GameProfile playerProfile = (GameProfile) playerProfileGet.invoke(skull,
+										(Object[]) null);
+
+								if (playerProfile != null) {
+									name = String.format("%s's Head", playerProfile.getName());
+									descr = String.format("A severed head belonging to %s", playerProfile.getName());
+								}
+
+							}
+
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+
+					}
+
+				}
+
+				minecraft.getTextureManager().bindTexture(TEXTURE);
 
 				int rectLeft = width - 100;
 				int rectTop = height - 113;
@@ -108,21 +182,11 @@ public class GuiScannerInformation extends Gui {
 
 				drawTexturedModalRect(rectLeft, rectTop, 0, 0, 100, 100);
 
-				drawString(fontRendererIn, blockName, rectLeft + 5, rectTop + 5, Integer.parseInt("FFFFFF", 16));
+				drawString(fontRendererIn, name, rectLeft + 5, rectTop + 5, Integer.parseInt("FFFFFF", 16));
 
-				fontRendererIn.drawSplitString(blockDescr, rectLeft + 5, rectTop + 18, 90, 5592405);
+				fontRendererIn.drawSplitString(descr, rectLeft + 5, rectTop + 18, 90, 5592405);
 
-				int descrHeight = fontRendererIn.getWordWrappedHeight(blockDescr, 90);
-
-				// @SuppressWarnings("deprecation")
-				// ItemStack pickStack =
-				// Minecraft.getMinecraft().world.getBlockState(pos).getBlock().getItem(
-				// Minecraft.getMinecraft().world, pos,
-				// Minecraft.getMinecraft().world.getBlockState(pos));
-
-				ItemStack pickStack = Minecraft.getMinecraft().world.getBlockState(pos).getBlock().getPickBlock(
-						Minecraft.getMinecraft().world.getBlockState(pos), null, Minecraft.getMinecraft().world, pos,
-						Minecraft.getMinecraft().player);
+				int descrHeight = fontRendererIn.getWordWrappedHeight(descr, 90);
 
 				List<String> tooltips = new ArrayList<String>();
 				pickStack.getItem().addInformation(pickStack, Minecraft.getMinecraft().world, tooltips,
@@ -134,7 +198,7 @@ public class GuiScannerInformation extends Gui {
 					if (tooltips != null) {
 						for (String tooltip : tooltips) {
 
-							if (tooltip.contentEquals(blockName)) {
+							if (tooltip.contentEquals(name)) {
 								continue;
 							}
 
@@ -161,4 +225,20 @@ public class GuiScannerInformation extends Gui {
 		return world.getBlockState(pos).getBlock() == Blocks.AIR;
 	}
 
+	private boolean useItemStackBecauseOfSubBlocks(Block block) {
+		String name = block.getUnlocalizedName();
+
+		String[] haveSubBlocks = new String[] { "tile.doublePlant", "tile.leaves", "tile.stainedGlass",
+				"tile.thinStainedGlass", "tile.cloth", "tile.log", "tile.sandStone", "tile.redSandStone", "tile.dirt",
+				"tile.stonebricksmooth", "tile.flower1", "tile.flower2", "tile.clayHardenedStained", "tile.wood",
+				"tile.stone", "tile.sand", "tile.sponge", "tile.skull" };
+
+		for (String entry : haveSubBlocks) {
+			if (name.contentEquals(entry)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
 }
