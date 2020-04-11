@@ -4,6 +4,7 @@ import com.silvaniastudios.travellers.PacketHandler;
 import com.silvaniastudios.travellers.capability.playerData.IPlayerData;
 import com.silvaniastudios.travellers.capability.playerData.PlayerDataProvider;
 import com.silvaniastudios.travellers.entity.EntityScannerLine;
+import com.silvaniastudios.travellers.entity.EntityScannerLine.EnumAttachmentType;
 import com.silvaniastudios.travellers.items.ItemBasic;
 import com.silvaniastudios.travellers.network.PlayerDataSyncMessage;
 import com.silvaniastudios.travellers.network.ScannerLineSyncMessage;
@@ -54,11 +55,17 @@ public class ItemScanner extends ItemBasic implements ITravellerTool {
 			} else {
 				EntityScannerLine scanner = new EntityScannerLine(worldIn, playerIn);
 				
-				playerData.setScanning(scanner);
-				PacketHandler.INSTANCE.sendTo(new PlayerDataSyncMessage(playerData), (EntityPlayerMP) playerIn);
+				if (scanner.attachmentType != EnumAttachmentType.NONE) {
+					playerData.setScanning(scanner);
+					PacketHandler.INSTANCE.sendTo(new PlayerDataSyncMessage(playerData), (EntityPlayerMP) playerIn);
+					
+					worldIn.spawnEntity(scanner);
+					PacketHandler.INSTANCE.sendToAllTracking(new ScannerLineSyncMessage(scanner), scanner);
+				} else {
+					scanner.handleKill();
+				}
 				
-				worldIn.spawnEntity(scanner);
-				PacketHandler.INSTANCE.sendToAllTracking(new ScannerLineSyncMessage(scanner), scanner);
+				
 			}
 		}
 		playerIn.swingArm(handIn);

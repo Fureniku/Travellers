@@ -110,7 +110,7 @@ public class Travellers {
 		public static void registerEntities(RegistryEvent.Register<EntityEntry> event) {
 			int id = 0;
 			EntityEntry SCANNERLINE = EntityEntryBuilder.create().entity(EntityScannerLine.class)
-					.id(new ResourceLocation(Travellers.MODID, "scanner_line"), id++).tracker(64, 20, false)
+					.id(new ResourceLocation(Travellers.MODID, "scanner_line"), id++).tracker(64, 1, false)
 					.name("scanner_line").build();
 
 			event.getRegistry().register(SCANNERLINE);

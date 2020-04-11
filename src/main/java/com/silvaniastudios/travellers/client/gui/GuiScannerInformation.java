@@ -26,14 +26,14 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.init.Blocks;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntitySkull;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.World;
 
 /**
  * @author jamesm2w
@@ -71,178 +71,35 @@ public class GuiScannerInformation extends Gui {
 
 			if (scanner != null) {
 
-				BlockPos pos = new BlockPos(scanner.posX, scanner.posY, scanner.posZ);
-
-				if (isBlockAir(pos)) {
-
-					if (Math.floor(scanner.posX) == scanner.posX) {
-						pos = pos.east();
-
-						if (isBlockAir(pos)) {
-							pos = pos.west(2);
-						}
-
-						// System.out.println("x(+): " + scanner.posX + " y: " +
-						// scanner.posY + " z: " + scanner.posZ);
-					} else if (Math.floor(scanner.posY) == scanner.posY) {
-						pos = pos.up();
-
-						if (isBlockAir(pos)) {
-							pos = pos.down(2);
-						}
-
-						// System.out.println("x: " + scanner.posX + " y(+): " +
-						// scanner.posY + " z: " + scanner.posZ);
-					} else if (Math.floor(scanner.posZ) == scanner.posZ) {
-						pos = pos.south();
-
-						if (isBlockAir(pos)) {
-							pos = pos.north(2);
-						}
-
-						// System.out.println("x: " + scanner.posX + " y: " +
-						// scanner.posY + " z(+): " + scanner.posZ);
-					}
-				} else {
-					// System.out.println("x: " + scanner.posX + " y: " +
-					// scanner.posY + " z: " + scanner.posZ);
+				List<String> tooltips = new ArrayList<String>();
+				ObjectInformation information;
+				
+				switch (scanner.attachmentType) {
+					case BLOCK:
+						BlockPos pos = scanner.getHitBlockPos();
+						information = getBlockInformation(pos, tooltips);
+						break;
+					case ENTITY:
+						Entity entity = scanner.getHitEntity();
+						information = getEntityInformation(entity, tooltips);
+						break;
+					default:
+						information = new ObjectInformation("Unknown", "It is unknown what this is");
+						break;
 				}
 				
-				pos = scanner.getHitBlockPos();
-
-				Block targetBlock = minecraft.world.getBlockState(pos).getBlock();
-				ItemStack pickStack = targetBlock.getPickBlock(minecraft.world.getBlockState(pos), null,
-						minecraft.world, pos, minecraft.player);
-
-				String targetBlockName = targetBlock.getLocalizedName();
-				String pickStackName = pickStack.getDisplayName();
-
-				String targetBlockDescr = I18n.format(targetBlock.getUnlocalizedName() + ".description");
-				String pickStackDescr = I18n.format(pickStack.getUnlocalizedName() + ".description");
-
-				List<String> tooltips = new ArrayList<String>();
-				pickStack.getItem().addInformation(pickStack, Minecraft.getMinecraft().world, tooltips,
-						ITooltipFlag.TooltipFlags.NORMAL);
-
-				String descr = targetBlockDescr;
-				String name = targetBlockName;
-
-				if (useItemStackBecauseOfSubBlocks(targetBlock)) {
-					// Force ItemStack use
-					name = pickStackName;
-					descr = pickStackDescr;
-				}
-
-				if (targetBlockDescr.startsWith("tile.") && !pickStackDescr.startsWith("item.")) {
-					descr = pickStackDescr;
-				}
-
-				if (targetBlockName.startsWith("tile.") && !pickStackName.startsWith("tile.")) {
-					name = pickStackName;
-				}
-
-				if (targetBlock.getUnlocalizedName().contentEquals("tile.null")) {
-					name = TextFormatting.OBFUSCATED + "NULL" + TextFormatting.RESET;
-				}
-
-				if (targetBlock instanceof BlockSkull) {
-					TileEntity teSkull = minecraft.world.getTileEntity(pos);
-
-					if (teSkull instanceof TileEntitySkull) {
-
-						TileEntitySkull skull = (TileEntitySkull) teSkull;
-						try {
-							Field skullTypeField = skull.getClass().getDeclaredField("skullType");
-
-							skullTypeField.setAccessible(true);
-
-							int skullType = (int) skullTypeField.get(skull);
-
-							if (skullType == 3) {
-
-								Method playerProfileGet = skull.getClass().getDeclaredMethod("getPlayerProfile",
-										(Class[]) null);
-								playerProfileGet.setAccessible(true);
-
-								GameProfile playerProfile = (GameProfile) playerProfileGet.invoke(skull,
-										(Object[]) null);
-
-								if (playerProfile != null) {
-									name = String.format("%s's Head", playerProfile.getName());
-									descr = String.format("A severed head belonging to %s", playerProfile.getName());
-
-									if (playerProfile.getName().contentEquals("jamesm2w")) {
-										tooltips.add(String.format("%sDeveloper%s", TextFormatting.GOLD, TextFormatting.RESET));
-										
-										tooltips.add(String.format("%sLong Live Godhand!%s", TextFormatting.BLUE,
-												TextFormatting.RESET));
-									} else if (playerProfile.getName().contentEquals("Fureniku")) {
-										tooltips.add(String.format("%sDeveloper%s", TextFormatting.BLUE, TextFormatting.RESET));
-									} else if (playerProfile.getName().contentEquals("kittco36")) {
-										tooltips.add(String.format("alinium btw"));
-									}
-
-								} else {
-									name = "Head";
-									descr = "A severed head.";
-								}
-
-							}
-
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-
-					}
-
-				}
-
-				if (targetBlock instanceof BlockCrops) {
-
-					IBlockState cropState = minecraft.world.getBlockState(pos);
-					BlockCrops cropBlock = (BlockCrops) targetBlock;
-					try {
-						Method getCropAge = BlockCrops.class.getDeclaredMethod("getAge", IBlockState.class);
-						getCropAge.setAccessible(true);
-
-						int currentGrowthState = (int) getCropAge.invoke(cropBlock, cropState);
-						int maxGrowthState = cropBlock.getMaxAge();
-
-						tooltips.add(String.format("%sGrowth: %.1f%%%s", TextFormatting.DARK_GREEN,
-								(double) (currentGrowthState / maxGrowthState * 100), TextFormatting.RESET));
-
-					} catch (NoSuchMethodException | SecurityException | IllegalAccessException
-							| IllegalArgumentException | InvocationTargetException e) {
-						e.printStackTrace();
-					}
-				} else if (targetBlock instanceof BlockNetherWart) {
-					IBlockState cropState = minecraft.world.getBlockState(pos);
-					int currentGrowthState = cropState.getValue(BlockNetherWart.AGE);
-					int maxGrowthState = 3;
-
-					tooltips.add(String.format("%sGrowth: %.1f%%%s", TextFormatting.DARK_GREEN,
-							(double) (currentGrowthState / maxGrowthState * 100), TextFormatting.RESET));
-				} else if (targetBlock instanceof BlockStem) {
-					IBlockState cropState = minecraft.world.getBlockState(pos);
-					int currentGrowthState = cropState.getValue(BlockStem.AGE);
-					int maxGrowthState = 3;
-
-					tooltips.add(String.format("%sGrowth: %.1f%%%s", TextFormatting.DARK_GREEN,
-							(double) (currentGrowthState / maxGrowthState * 100), TextFormatting.RESET));
-				}
-
 				minecraft.getTextureManager().bindTexture(TEXTURE);
 
 				int rectLeft = width - 124;
 				int rectTop = height - 167;
 
 				drawTexturedModalRect(rectLeft, rectTop, 0, 0, 124, 154);
-				fontRendererIn.drawSplitString(name, rectLeft + 6, rectTop + 6, 113, 5592405);
-				fontRendererIn.drawSplitString(name, rectLeft + 5, rectTop + 5, 113, Integer.parseInt("FFFFFF", 16));
+				fontRendererIn.drawSplitString(information.name, rectLeft + 6, rectTop + 6, 113, 5592405);
+				fontRendererIn.drawSplitString(information.name, rectLeft + 5, rectTop + 5, 113, Integer.parseInt("FFFFFF", 16));
 
-				int titleHeight = fontRendererIn.getWordWrappedHeight(name, 113);
-				fontRendererIn.drawSplitString(descr, rectLeft + 5, rectTop + 5 + titleHeight + 3, 113, 5592405);
-				int descrHeight = fontRendererIn.getWordWrappedHeight(descr, 113);
+				int titleHeight = fontRendererIn.getWordWrappedHeight(information.name, 113);
+				fontRendererIn.drawSplitString(information.description, rectLeft + 5, rectTop + 5 + titleHeight + 3, 113, 5592405);
+				int descrHeight = fontRendererIn.getWordWrappedHeight(information.description, 113);
 
 				if (tooltips != null && !tooltips.isEmpty()) {
 					int prevHeight = rectTop + 5 + titleHeight + 3 + descrHeight + 3;
@@ -250,7 +107,7 @@ public class GuiScannerInformation extends Gui {
 					if (tooltips != null) {
 						for (String tooltip : tooltips) {
 
-							if (tooltip.contentEquals(name)) {
+							if (tooltip.contentEquals(information.name)) {
 								continue;
 							}
 
@@ -269,12 +126,6 @@ public class GuiScannerInformation extends Gui {
 		}
 	}
 
-	private boolean isBlockAir(BlockPos pos) {
-		World world = Minecraft.getMinecraft().world;
-
-		return world.getBlockState(pos).getBlock() == Blocks.AIR;
-	}
-
 	private boolean useItemStackBecauseOfSubBlocks(Block block) {
 		String name = block.getUnlocalizedName();
 
@@ -290,5 +141,160 @@ public class GuiScannerInformation extends Gui {
 		}
 
 		return false;
+	}
+	
+	private ObjectInformation getBlockInformation (BlockPos pos, List<String> tooltips) {
+		
+		if (pos == null) {
+			return new ObjectInformation("No block", "No block position was passed");
+		}
+		
+		Block targetBlock = minecraft.world.getBlockState(pos).getBlock();
+		ItemStack pickStack = targetBlock.getPickBlock(minecraft.world.getBlockState(pos), null,
+				minecraft.world, pos, minecraft.player);
+
+		String targetBlockName = targetBlock.getLocalizedName();
+		String pickStackName = pickStack.getDisplayName();
+
+		String targetBlockDescr = I18n.format(targetBlock.getUnlocalizedName() + ".description");
+		String pickStackDescr = I18n.format(pickStack.getUnlocalizedName() + ".description");
+
+		pickStack.getItem().addInformation(pickStack, Minecraft.getMinecraft().world, tooltips,
+				ITooltipFlag.TooltipFlags.NORMAL);
+
+		String descr = targetBlockDescr;
+		String name = targetBlockName;
+
+		if (useItemStackBecauseOfSubBlocks(targetBlock)) {
+			// Force ItemStack use
+			name = pickStackName;
+			descr = pickStackDescr;
+		}
+
+		if (targetBlockDescr.startsWith("tile.") && !pickStackDescr.startsWith("item.")) {
+			descr = pickStackDescr;
+		}
+
+		if (targetBlockName.startsWith("tile.") && !pickStackName.startsWith("tile.")) {
+			name = pickStackName;
+		}
+
+		if (targetBlock.getUnlocalizedName().contentEquals("tile.null")) {
+			name = TextFormatting.OBFUSCATED + "NULL" + TextFormatting.RESET;
+		}
+
+		if (targetBlock instanceof BlockSkull) {
+			TileEntity teSkull = minecraft.world.getTileEntity(pos);
+
+			if (teSkull instanceof TileEntitySkull) {
+
+				TileEntitySkull skull = (TileEntitySkull) teSkull;
+				try {
+					Field skullTypeField = skull.getClass().getDeclaredField("skullType");
+
+					skullTypeField.setAccessible(true);
+
+					int skullType = (int) skullTypeField.get(skull);
+
+					if (skullType == 3) {
+
+						Method playerProfileGet = skull.getClass().getDeclaredMethod("getPlayerProfile",
+								(Class[]) null);
+						playerProfileGet.setAccessible(true);
+
+						GameProfile playerProfile = (GameProfile) playerProfileGet.invoke(skull,
+								(Object[]) null);
+
+						if (playerProfile != null) {
+							name = String.format("%s's Head", playerProfile.getName());
+							descr = String.format("A severed head belonging to %s", playerProfile.getName());
+
+							if (playerProfile.getName().contentEquals("jamesm2w")) {
+								tooltips.add(String.format("%sDeveloper%s", TextFormatting.GOLD, TextFormatting.RESET));
+								
+								tooltips.add(String.format("%sLong Live Godhand!%s", TextFormatting.BLUE,
+										TextFormatting.RESET));
+							} else if (playerProfile.getName().contentEquals("Fureniku")) {
+								tooltips.add(String.format("%sDeveloper%s", TextFormatting.BLUE, TextFormatting.RESET));
+							} else if (playerProfile.getName().contentEquals("kittco36")) {
+								tooltips.add(String.format("alinium btw"));
+							}
+
+						} else {
+							name = "Head";
+							descr = "A severed head.";
+						}
+
+					}
+
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+			}
+
+		}
+
+		if (targetBlock instanceof BlockCrops) {
+
+			IBlockState cropState = minecraft.world.getBlockState(pos);
+			BlockCrops cropBlock = (BlockCrops) targetBlock;
+			try {
+				Method getCropAge = BlockCrops.class.getDeclaredMethod("getAge", IBlockState.class);
+				getCropAge.setAccessible(true);
+
+				int currentGrowthState = (int) getCropAge.invoke(cropBlock, cropState);
+				int maxGrowthState = cropBlock.getMaxAge();
+
+				tooltips.add(String.format("%sGrowth: %.1f%%%s", TextFormatting.DARK_GREEN,
+						(double) (currentGrowthState / maxGrowthState * 100), TextFormatting.RESET));
+
+			} catch (NoSuchMethodException | SecurityException | IllegalAccessException
+					| IllegalArgumentException | InvocationTargetException e) {
+				e.printStackTrace();
+			}
+		} else if (targetBlock instanceof BlockNetherWart) {
+			IBlockState cropState = minecraft.world.getBlockState(pos);
+			int currentGrowthState = cropState.getValue(BlockNetherWart.AGE);
+			int maxGrowthState = 3;
+
+			tooltips.add(String.format("%sGrowth: %.1f%%%s", TextFormatting.DARK_GREEN,
+					(double) (currentGrowthState / maxGrowthState * 100), TextFormatting.RESET));
+		} else if (targetBlock instanceof BlockStem) {
+			IBlockState cropState = minecraft.world.getBlockState(pos);
+			int currentGrowthState = cropState.getValue(BlockStem.AGE);
+			int maxGrowthState = 3;
+
+			tooltips.add(String.format("%sGrowth: %.1f%%%s", TextFormatting.DARK_GREEN,
+					(double) (currentGrowthState / maxGrowthState * 100), TextFormatting.RESET));
+		}
+		
+		return new ObjectInformation(name, descr);
+	}
+	
+	private ObjectInformation getEntityInformation(Entity entity, List<String> tooltips) {
+
+		String name;
+		String descr;
+		
+		if (entity.hasCustomName()) {
+			name = entity.getCustomNameTag();
+		} else {
+			name = "entity." + EntityList.getEntityString(entity) + ".name";
+		}
+		
+		descr = "entity." + EntityList.getEntityString(entity) + ".description";
+		
+		return new ObjectInformation(I18n.format(name), I18n.format(descr));
+	}
+	
+	private static class ObjectInformation {
+		public String name;
+		public String description;
+		
+		public ObjectInformation (String n, String d) {
+			name = n;
+			description = d;
+		}
 	}
 }
