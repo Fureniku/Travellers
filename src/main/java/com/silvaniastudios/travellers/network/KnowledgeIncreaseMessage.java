@@ -10,6 +10,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -39,16 +40,16 @@ public class KnowledgeIncreaseMessage implements IMessage {
 
 		this.amount = buf.readInt();
 		this.uuid = UUID.fromString(ByteBufUtils.readUTF8String(buf));
-		
+
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf) {
-		
+
 		buf.writeInt(this.amount);
 		ByteBufUtils.writeUTF8String(buf, this.uuid.toString());
 	}
-	
+
 	public static class SKnowledgeIncreaseMessage implements IMessageHandler<KnowledgeIncreaseMessage, IMessage> {
 
 		@Override
@@ -58,8 +59,9 @@ public class KnowledgeIncreaseMessage implements IMessage {
 			EntityPlayer player = server.getPlayerList().getPlayerByUUID(message.uuid);
 
 			player.getCapability(PlayerDataProvider.PLAYER_DATA, null).incrementKnowledgeBalance(message.amount);
-			
-			String response = String.format("§eYou gained §r%d§e knowledge§r", message.amount);
+
+			String response = String.format("%sYou gained %s%d%s knowledge%s", TextFormatting.GOLD,
+					TextFormatting.RESET, message.amount, TextFormatting.GOLD, TextFormatting.RESET);
 			player.sendMessage(new TextComponentString(response));
 
 			PacketHandler.INSTANCE.sendTo(
@@ -67,7 +69,7 @@ public class KnowledgeIncreaseMessage implements IMessage {
 					(EntityPlayerMP) player);
 			return null;
 		}
-		
+
 	}
 
 }

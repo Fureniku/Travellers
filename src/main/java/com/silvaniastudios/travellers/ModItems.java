@@ -16,7 +16,6 @@ import com.silvaniastudios.travellers.items.tools.ItemSalvager;
 import com.silvaniastudios.travellers.items.tools.ItemScanner;
 import com.silvaniastudios.travellers.items.tools.ItemShipyardTool;
 import com.silvaniastudios.travellers.schematic.ItemSchematic;
-import com.silvaniastudios.travellers.schematic.SchematicItems;
 import com.silvaniastudios.travellers.schematic.SchematicRarityEnum;
 import com.silvaniastudios.travellers.schematic.SchematicTypeEnum;
 
@@ -33,7 +32,7 @@ public class ModItems {
 	public static ItemBasic atlas_shard = new ItemBasic("shard_atlas");
 
 	public static List<ItemSchematic> schematics = new ArrayList<ItemSchematic>();
-	public static SchematicItems parsed_schematics = new SchematicItems();
+	//public static SchematicItems parsed_schematics = new SchematicItems();
 
 	public static ItemSchematic default_schematic = new ItemSchematic("default_schematic");
 

@@ -91,6 +91,15 @@ public interface IPlayerData {
 	public boolean hasLearntSchematic(ItemStack schematic);
 	
 	/*
+	 * Scanned Things List
+	 */
+	public boolean scanObject(String unlocalizedString);
+	
+	public ArrayList<String> getScannedObjects();
+	
+	public boolean hasScannedObject(String unlocalizedString);
+	
+	/*
 	 * General
 	 */
 	public NBTTagCompound toNBT();

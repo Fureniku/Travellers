@@ -1,17 +1,13 @@
 package com.silvaniastudios.travellers.items;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.google.common.base.Charsets;
+import com.google.common.io.Resources;
 import com.google.gson.Gson;
 import com.silvaniastudios.travellers.Travellers;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.util.ResourceLocation;
 
 /**
  * Helper to load and generate the lore piece items
@@ -20,8 +16,10 @@ import net.minecraft.util.ResourceLocation;
  */
 public class CodexItems {
 
-	private ResourceLocation loreJson = new ResourceLocation(Travellers.MODID, "lore_pieces.json");
-
+	//private ResourceLocation loreJson = new ResourceLocation(Travellers.MODID, "lore_pieces.json");
+	
+	public static final String LORE_PIECES = "/assets/travellers/lore_pieces.json";
+	
 	public LoreCodex codex;
 	
 	public HashMap<String, CodexPiece> codexMapped;
@@ -29,11 +27,10 @@ public class CodexItems {
 	public CodexItems() {
 		codexMapped = new HashMap<String, CodexPiece>();
 		try {
-			InputStream file = Minecraft.getMinecraft().getResourceManager().getResource(loreJson).getInputStream();
 
-			Reader read = new InputStreamReader(file, "UTF-8");
+			String json = Resources.toString(Travellers.class.getResource(LORE_PIECES), Charsets.UTF_8);
 
-			codex = new Gson().fromJson(read, LoreCodex.class);
+			codex = new Gson().fromJson(json, LoreCodex.class);
 
 		} catch (IOException e) {
 			e.printStackTrace();

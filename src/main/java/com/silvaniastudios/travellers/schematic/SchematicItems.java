@@ -1,22 +1,18 @@
 package com.silvaniastudios.travellers.schematic;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.google.common.base.Charsets;
+import com.google.common.io.Resources;
 import com.google.gson.Gson;
 import com.silvaniastudios.travellers.ModItems;
 import com.silvaniastudios.travellers.Travellers;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.util.ResourceLocation;
-
 public class SchematicItems {
 
-	private ResourceLocation schematicJson = new ResourceLocation(Travellers.MODID, "schematics.json");
+	//private ResourceLocation schematicJson = new ResourceLocation(Travellers.MODID, "schematics.json");
 
 	public SchematicList list;
 
@@ -25,12 +21,9 @@ public class SchematicItems {
 	public SchematicItems() {
 		listMapped = new HashMap<String, Schematic>();
 		try {
-			InputStream file = Minecraft.getMinecraft().getResourceManager().getResource(schematicJson)
-					.getInputStream();
+			String json = Resources.toString(Travellers.class.getResource("/assets/travellers/schematics.json"), Charsets.UTF_8);
 
-			Reader read = new InputStreamReader(file, "UTF-8");
-
-			list = new Gson().fromJson(read, SchematicList.class);
+			list = new Gson().fromJson(json, SchematicList.class);
 			
 			generateItems();
 

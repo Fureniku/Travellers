@@ -29,6 +29,7 @@ public class PlayerData implements IPlayerData {
 	private ArrayList<String> knownLorePieces;
 	private ArrayList<ItemStack> schematicList;
 	private HashMap<String, ItemStack> shipDesignList;
+	private ArrayList<String> scannedObjects;
 
 	public PlayerData() {
 		this.knowledgeBalance = 0;
@@ -196,6 +197,14 @@ public class PlayerData implements IPlayerData {
 		nbtTag.setTag("learntSchematicList", learntSchematics);
 		nbtTag.setTag("knowledgeTreeUses", knowledgeTreeUses);
 		nbtTag.setTag("knownLorePieces", knownLorePieces);
+		
+		NBTTagCompound scannedObjects = new NBTTagCompound();
+		index = 0;
+		for (String object : this.scannedObjects) {
+			scannedObjects.setString(String.valueOf(index), object);
+		}
+		
+		nbtTag.setTag("scannedObjects", scannedObjects);
 
 		NBTTagCompound shipDesigns = new NBTTagCompound();
 		for (String key : this.shipDesignList.keySet()) {
@@ -217,38 +226,17 @@ public class PlayerData implements IPlayerData {
 		if (nbtTag.hasKey("entityScanning") && nbtTag.getTag("entityScanning") != null) {
 			
 			NBTTagCompound entityTag = nbtTag.getCompoundTag("entityScanning");
-			
-			//System.out.println("NBT recieved from PlayerData sync packet: " + nbtTag.getCompoundTag("entityScanning").toString());
-			//System.out.println("Player UUID from NBT: " + nbtTag.getCompoundTag("entityScanning").getUniqueId("player").toString());
-			
-			World world;
-			
-			world = Minecraft.getMinecraft().world;
-			
+			World world = Minecraft.getMinecraft().world;
 			if (world == null) {
 				world = FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld();
 			}
-			
-			//System.out.println(world);
-			
 			UUID player = entityTag.getUniqueId("player");
-			//System.out.println(world.toString());
-			//System.out.println(player.toString());
-			
+
 			if (player.toString().contentEquals("00000000-0000-0000-0000-000000000000")) {
-				//System.out.println("player uuid is all 0");
 				this.entityScanning = null;
 			} else {
-			
-				this.entityScanning = new EntityScannerLine(world, player); // WHAT A MEME
-			
-				//System.out.println("Creating scanner_line from nbt " + this.entityScanning.getUniqueID().toString());
-			
+				this.entityScanning = new EntityScannerLine(world, player);
 				this.entityScanning.deserializeNBT(nbtTag.getCompoundTag("entityScanning"));
-			
-				//System.out.println("NBT scanner_line is now " + this.entityScanning.getUniqueID().toString() + " was " + this.entityScanning.initialUUID);
-
-				//Minecraft.getMinecraft().world.spawnEntity(this.entityScanning);
 			}
 		} else {
 			this.entityScanning = null;
@@ -276,7 +264,13 @@ public class PlayerData implements IPlayerData {
 		for (String key : nbtTag.getCompoundTag("shipDesignList").getKeySet()) {
 			designList.put(key, new ItemStack(nbtTag.getCompoundTag("shipDesignList").getCompoundTag(key)));
 		}
-
+		
+		ArrayList<String> scannedObjects = new ArrayList<String>();
+		for (String key : nbtTag.getCompoundTag("scannedObjects").getKeySet()) {
+			scannedObjects.add(Integer.valueOf(key), nbtTag.getCompoundTag("scannedObjects").getString(key));
+		}
+		
+		this.scannedObjects = scannedObjects;
 		this.shipDesignList = designList;
 		this.schematicList = schematicList;
 		this.setKnownLorePieces(knownLorePieces);
@@ -368,6 +362,26 @@ public class PlayerData implements IPlayerData {
 		}
 
 		return false;
+	}
+
+	@Override
+	public boolean scanObject(String unlocalizedString) {
+		if (!hasScannedObject(unlocalizedString)) {
+			this.scannedObjects.add(unlocalizedString.toLowerCase());
+			return true;
+		}
+		
+		return false;
+	}
+
+	@Override
+	public ArrayList<String> getScannedObjects() {
+		return this.scannedObjects;
+	}
+
+	@Override
+	public boolean hasScannedObject(String unlocalizedString) {
+		return this.scannedObjects.contains(unlocalizedString.toLowerCase());
 	}
 
 }

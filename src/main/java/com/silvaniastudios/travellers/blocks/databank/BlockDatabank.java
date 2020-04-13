@@ -25,7 +25,6 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -252,7 +251,7 @@ public class BlockDatabank extends BlockScannable implements ITileEntityProvider
 	 *      java.util.Random, int)
 	 */
 	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-		return state.getValue(PART) == DatabankPartEnum.UPPER ? Items.AIR : Item.getItemFromBlock(this);
+		return /*state.getValue(PART) == DatabankPartEnum.UPPER ? Items.AIR :*/ Item.getItemFromBlock(this);
 	}
 
 	/**

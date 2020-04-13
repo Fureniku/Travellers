@@ -52,4 +52,5 @@ public class EventHandler {
 		PacketHandler.INSTANCE.sendTo(new PlayerDataSyncMessage(playerData),
 				(EntityPlayerMP) event.player);
 	}
+
 }

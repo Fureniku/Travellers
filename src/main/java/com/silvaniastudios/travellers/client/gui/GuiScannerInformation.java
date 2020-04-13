@@ -28,6 +28,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntitySkull;
@@ -73,32 +74,53 @@ public class GuiScannerInformation extends Gui {
 
 				List<String> tooltips = new ArrayList<String>();
 				ObjectInformation information;
-				
+
 				switch (scanner.attachmentType) {
-					case BLOCK:
-						BlockPos pos = scanner.getHitBlockPos();
-						information = getBlockInformation(pos, tooltips);
-						break;
-					case ENTITY:
-						Entity entity = scanner.getHitEntity();
-						information = getEntityInformation(entity, tooltips);
-						break;
-					default:
-						information = new ObjectInformation("Unknown", "It is unknown what this is");
-						break;
+				case BLOCK:
+					BlockPos pos = scanner.getHitBlockPos();
+					information = getBlockInformation(pos, tooltips);
+					break;
+				case ENTITY:
+					Entity entity = scanner.getHitEntity();
+					information = getEntityInformation(entity, tooltips);
+					break;
+				default:
+					information = new ObjectInformation(I18n.format("entity.generic.name"),
+							I18n.format("entity.generic.description"));
+					break;
 				}
+
+				int informationHeight = 3 + fontRendererIn.getWordWrappedHeight(information.name, 113)
+						+ fontRendererIn.getWordWrappedHeight(information.description, 113) + 3;
 				
+				if (tooltips != null && !tooltips.isEmpty()) {
+					for (String tooltip : tooltips) {
+						if (tooltip.contentEquals(information.name)) {
+							continue;
+						}
+						informationHeight += fontRendererIn.getWordWrappedHeight(tooltip, 113) + 2;
+					}
+				}
+
 				minecraft.getTextureManager().bindTexture(TEXTURE);
 
 				int rectLeft = width - 124;
-				int rectTop = height - 167;
+				int rectTop = height - informationHeight - 10 - 12;
 
-				drawTexturedModalRect(rectLeft, rectTop, 0, 0, 124, 154);
+				drawTexturedModalRect(rectLeft, rectTop, 0, 0, 124, 5);
+				for (int i = 0; i < informationHeight; i++) {
+					drawTexturedModalRect(rectLeft, rectTop + 5 + i, 0, 5, 124, 1);
+				}
+				drawTexturedModalRect(rectLeft, rectTop + informationHeight + 5, 0, 149, 124, 5);
+
+				
 				fontRendererIn.drawSplitString(information.name, rectLeft + 6, rectTop + 6, 113, 5592405);
-				fontRendererIn.drawSplitString(information.name, rectLeft + 5, rectTop + 5, 113, Integer.parseInt("FFFFFF", 16));
+				fontRendererIn.drawSplitString(information.name, rectLeft + 5, rectTop + 5, 113,
+						Integer.parseInt("FFFFFF", 16));
 
 				int titleHeight = fontRendererIn.getWordWrappedHeight(information.name, 113);
-				fontRendererIn.drawSplitString(information.description, rectLeft + 5, rectTop + 5 + titleHeight + 3, 113, 5592405);
+				fontRendererIn.drawSplitString(information.description, rectLeft + 5, rectTop + 5 + titleHeight + 3,
+						113, 5592405);
 				int descrHeight = fontRendererIn.getWordWrappedHeight(information.description, 113);
 
 				if (tooltips != null && !tooltips.isEmpty()) {
@@ -142,16 +164,16 @@ public class GuiScannerInformation extends Gui {
 
 		return false;
 	}
-	
-	private ObjectInformation getBlockInformation (BlockPos pos, List<String> tooltips) {
-		
+
+	private ObjectInformation getBlockInformation(BlockPos pos, List<String> tooltips) {
+
 		if (pos == null) {
 			return new ObjectInformation("No block", "No block position was passed");
 		}
-		
+
 		Block targetBlock = minecraft.world.getBlockState(pos).getBlock();
-		ItemStack pickStack = targetBlock.getPickBlock(minecraft.world.getBlockState(pos), null,
-				minecraft.world, pos, minecraft.player);
+		ItemStack pickStack = targetBlock.getPickBlock(minecraft.world.getBlockState(pos), null, minecraft.world, pos,
+				minecraft.player);
 
 		String targetBlockName = targetBlock.getLocalizedName();
 		String pickStackName = pickStack.getDisplayName();
@@ -202,8 +224,7 @@ public class GuiScannerInformation extends Gui {
 								(Class[]) null);
 						playerProfileGet.setAccessible(true);
 
-						GameProfile playerProfile = (GameProfile) playerProfileGet.invoke(skull,
-								(Object[]) null);
+						GameProfile playerProfile = (GameProfile) playerProfileGet.invoke(skull, (Object[]) null);
 
 						if (playerProfile != null) {
 							name = String.format("%s's Head", playerProfile.getName());
@@ -211,7 +232,7 @@ public class GuiScannerInformation extends Gui {
 
 							if (playerProfile.getName().contentEquals("jamesm2w")) {
 								tooltips.add(String.format("%sDeveloper%s", TextFormatting.GOLD, TextFormatting.RESET));
-								
+
 								tooltips.add(String.format("%sLong Live Godhand!%s", TextFormatting.BLUE,
 										TextFormatting.RESET));
 							} else if (playerProfile.getName().contentEquals("Fureniku")) {
@@ -249,8 +270,8 @@ public class GuiScannerInformation extends Gui {
 				tooltips.add(String.format("%sGrowth: %.1f%%%s", TextFormatting.DARK_GREEN,
 						(double) (currentGrowthState / maxGrowthState * 100), TextFormatting.RESET));
 
-			} catch (NoSuchMethodException | SecurityException | IllegalAccessException
-					| IllegalArgumentException | InvocationTargetException e) {
+			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException e) {
 				e.printStackTrace();
 			}
 		} else if (targetBlock instanceof BlockNetherWart) {
@@ -268,31 +289,38 @@ public class GuiScannerInformation extends Gui {
 			tooltips.add(String.format("%sGrowth: %.1f%%%s", TextFormatting.DARK_GREEN,
 					(double) (currentGrowthState / maxGrowthState * 100), TextFormatting.RESET));
 		}
-		
+
 		return new ObjectInformation(name, descr);
 	}
-	
+
 	private ObjectInformation getEntityInformation(Entity entity, List<String> tooltips) {
 
 		String name;
 		String descr;
-		
+
 		if (entity.hasCustomName()) {
-			name = entity.getCustomNameTag();
+			name = I18n.format(entity.getCustomNameTag());
 		} else {
-			name = "entity." + EntityList.getEntityString(entity) + ".name";
+			name = I18n.format("entity." + EntityList.getEntityString(entity) + ".name");
 		}
-		
-		descr = "entity." + EntityList.getEntityString(entity) + ".description";
-		
-		return new ObjectInformation(I18n.format(name), I18n.format(descr));
+
+		descr = I18n.format("entity." + EntityList.getEntityString(entity) + ".description");
+
+		if (entity instanceof EntityPlayer) {
+			EntityPlayer player = (EntityPlayer) entity;
+
+			name = player.getGameProfile().getName();
+			descr = "";
+		}
+
+		return new ObjectInformation(name, descr);
 	}
-	
+
 	private static class ObjectInformation {
 		public String name;
 		public String description;
-		
-		public ObjectInformation (String n, String d) {
+
+		public ObjectInformation(String n, String d) {
 			name = n;
 			description = d;
 		}
