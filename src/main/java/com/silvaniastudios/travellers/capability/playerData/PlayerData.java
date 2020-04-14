@@ -202,6 +202,7 @@ public class PlayerData implements IPlayerData {
 		index = 0;
 		for (String object : this.scannedObjects) {
 			scannedObjects.setString(String.valueOf(index), object);
+			index++;
 		}
 		
 		nbtTag.setTag("scannedObjects", scannedObjects);

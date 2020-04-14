@@ -32,6 +32,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -248,12 +249,20 @@ public class EntityScannerLine extends Entity {
 
 				if (knowledgeBonus != 0) {
 					playerData.incrementKnowledgeBalance(knowledgeBonus);
+
+					//new TextComponentTranslation("chat.message.knowledgeGained")
+					//		.setStyle(new Style().setColor(TextFormatting.GOLD))
+					//	.appendSibling(new TextComponentString(String.valueOf(knowledgeBonus)))
+					//		.setStyle(new Style().setColor(TextFormatting.RESET))
+					//	.appendSibling(new TextComponentTranslation(objectString))
+					//		.setStyle(new Style().setColor(TextFormatting.GOLD));
+
 					player.sendMessage(
-							new TextComponentString(String.format("%sYou gained %s%d%s knowledge from scanning %s%s",
+							new TextComponentString(String.format("%sYou gained %s%d%s knowledge from scanning %s",
 									TextFormatting.GOLD, TextFormatting.RESET, knowledgeBonus, TextFormatting.GOLD,
-									TextFormatting.RESET, objectString)));
-					
-					PacketHandler.INSTANCE.sendTo(new PlayerDataSyncMessage(playerData), (EntityPlayerMP)player);
+									TextFormatting.RESET)).appendSibling(new TextComponentTranslation(objectString)));
+
+					PacketHandler.INSTANCE.sendTo(new PlayerDataSyncMessage(playerData), (EntityPlayerMP) player);
 				}
 			}
 

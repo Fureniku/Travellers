@@ -1,5 +1,6 @@
 package com.silvaniastudios.travellers;
 
+import com.silvaniastudios.travellers.commands.PlayerDataViewer;
 import com.silvaniastudios.travellers.commands.SchematicDataViewer;
 import com.silvaniastudios.travellers.commands.SchematicListViewer;
 import com.silvaniastudios.travellers.data.LoreCodexData;
@@ -88,6 +89,7 @@ public class Travellers {
 		// commands
 		event.registerServerCommand(new SchematicDataViewer());
 		event.registerServerCommand(new SchematicListViewer());
+		event.registerServerCommand(new PlayerDataViewer());
 	}
 
 	@Mod.EventBusSubscriber

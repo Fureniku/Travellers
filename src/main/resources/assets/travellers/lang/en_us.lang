@@ -1571,6 +1571,101 @@ tile.grassPath.description=A neat path of flattened grass.
 
 tile.structureBlock.description=This strange device is said to hold whole structures within itself
 tile.null.description= ??? Who knows what the fuck this is.
+
+tile.diode.name=Redstone Repeater
+tile.comparator.name=Redstone Comparator
+
+tile.doorOak.description=A functional door made of Oak wood
+tile.doorSpruce.description=A functional door made of Spruce wood
+tile.doorBirch.description=A functional door made of Birch wood
+tile.doorJungle.description=A functional door made of Jungle wood
+tile.doorAcacia.description=A functional door made of Acacia wood
+tile.doorDarkOak.description=A functional door made of Dark Oak wood
+
+item.skull.creeper.description=The head of a creeper
+item.skull.dragon.description=The head of a dragon
+item.skull.skeleton.description=The head of a skeleton
+item.skull.wither.description=The head of a withered skeleton
+item.skull.zombie.description=The head of a zombie
+
+tile.redNetherBrick.description=Appears to be nether bricks but appear more red in colour than usual.
+tile.netherWartBlock.description=A compressed block of nether wart
+tile.boneBlock.description=A block of solid bone
+tile.magma.description=A block of molten rock. Very hot.
+tile.banner.description=A piece of cloth hung on a rope with an pattern dyed on.
+tile.brewingStand.description=A small stand used to mix ingredients into potions.
+tile.comparator.description=A multipurpose redstone component capable of comparing redstone input signals or measuring fullness of containers.
+tile.diode.description=A multipurpose redstone component capable of repeating signals at full strength, delaying signals, enforce signal direction, and lock signals in one state 
+tile.observer.description=Mysterious block which emits a redstone energy pulse when the block placed in front changes.
+
+tile.shulkerBoxBlue.description=Mystical blue box which can store items inside it, even when broken.
+tile.shulkerBoxLightBlue.description=Mystical light blue box which can store items inside it, even when broken.
+tile.shulkerBoxGreen.description=Mystical green box which can store items inside it, even when broken.
+tile.shulkerBoxLime.description=Mystical lime box which can store items inside it, even when broken.
+tile.shulkerBoxRed.description=Mystical red box which can store items inside it, even when broken.
+tile.shulkerBoxPink.description=Mystical pink box which can store items inside it, even when broken.
+tile.shulkerBoxOrange.description=Mystical orange box which can store items inside it, even when broken.
+tile.shulkerBoxYellow.description=Mystical yellow box which can store items inside it, even when broken.
+tile.shulkerBoxCyan.description=Mystical cyan box which can store items inside it, even when broken.
+tile.shulkerBoxMagenta.description=Mystical magenta box which can store items inside it, even when broken.
+tile.shulkerBoxPurple.description=Mystical purple box which can store items inside it, even when broken.
+tile.shulkerBoxBrown.description=Mystical brown box which can store items inside it, even when broken.
+tile.shulkerBoxWhite.description=Mystical white box which can store items inside it, even when broken.
+tile.shulkerBoxSilver.description=Mystical light grey box which can store items inside it, even when broken.
+tile.shulkerBoxGray.description=Mystical gray box which can store items inside it, even when broken.
+tile.shulkerBoxBlack.description=Mystical black box which can store items inside it, even when broken.
+
+tile.glazedTerracottaBlue.description=Vibrant mosaic block with a blue pattern
+tile.glazedTerracottaLightBlue.description=Vibrant mosaic block with a light blue pattern
+tile.glazedTerracottaGreen.description=Vibrant mosaic block with a green pattern
+tile.glazedTerracottaLime.description=Vibrant mosaic block with a lime pattern
+tile.glazedTerracottaRed.description=Vibrant mosaic block with a red pattern
+tile.glazedTerracottaPink.description=Vibrant mosaic block with a pink pattern
+tile.glazedTerracottaOrange.description=Vibrant mosaic block with an orange pattern
+tile.glazedTerracottaYellow.description=Vibrant mosaic block with a yellow pattern
+tile.glazedTerracottaCyan.description=Vibrant mosaic block with a cyan pattern
+tile.glazedTerracottaMagenta.description=Vibrant mosaic block with a magenta pattern
+tile.glazedTerracottaPurple.description=Vibrant mosaic block with a purple pattern
+tile.glazedTerracottaBrown.description=Vibrant mosaic block with a brown pattern
+tile.glazedTerracottaWhite.description=Vibrant mosaic block with a white pattern
+tile.glazedTerracottaSilver.description=Vibrant mosaic block with a light grey pattern
+tile.glazedTerracottaGray.description=Vibrant mosaic block with a gray pattern
+tile.glazedTerracottaBlack.description=Vibrant mosaic block with a black pattern
+
+tile.concretePowder.blue.description=A powdered mix of sand and gravel coloured blue
+tile.concretePowder.lightBlue.description=A powdered mix of sand and gravel coloured light blue
+tile.concretePowder.green.description=A powdered mix of sand and gravel coloured green
+tile.concretePowder.lime.description=A powdered mix of sand and gravel coloured lime
+tile.concretePowder.red.description=A powdered mix of sand and gravel coloured red
+tile.concretePowder.pink.description=A powdered mix of sand and gravel coloured pink
+tile.concretePowder.orange.description=A powdered mix of sand and gravel coloured orange
+tile.concretePowder.yellow.description=A powdered mix of sand and gravel coloured yellow
+tile.concretePowder.cyan.description=A powdered mix of sand and gravel coloured cyan
+tile.concretePowder.magenta.description=A powdered mix of sand and gravel coloured magenta
+tile.concretePowder.purple.description=A powdered mix of sand and gravel coloured purple
+tile.concretePowder.brown.description=A powdered mix of sand and gravel coloured brown
+tile.concretePowder.white.description=A powdered mix of sand and gravel coloured white
+tile.concretePowder.silver.description=A powdered mix of sand and gravel coloured light grey
+tile.concretePowder.gray.description=A powdered mix of sand and gravel coloured gray
+tile.concretePowder.black.description=A powdered mix of sand and gravel coloured black
+
+tile.concrete.blue.description=A hardened blue block
+tile.concrete.lightBlue.description=A hardened light blue block
+tile.concrete.green.description=A hardened green block
+tile.concrete.lime.description==A hardened lime block
+tile.concrete.red.description=A hardened red block
+tile.concrete.pink.description=A hardened pink block
+tile.concrete.orange.description=A hardened orange block
+tile.concrete.yellow.description=A hardened yellow block
+tile.concrete.cyan.description=A hardened cyan block
+tile.concrete.magenta.description=A hardened magenta block
+tile.concrete.purple.description=A hardened purple block
+tile.concrete.brown.description=A hardened brown block
+tile.concrete.white.description=A hardened white block
+tile.concrete.silver.description=A hardened light grey block
+tile.concrete.gray.description=A hardened gray block
+tile.concrete.black.description=A hardened black block
+
 tile.ore_aluminium.description=Rock containing scraps of metal resembling Aluminium
 tile.ore_titanium.description=Rock containing scraps of metal resembling Titanium
 tile.ore_tin.description=Rock containing scraps of metal resembling Tin
@@ -1660,3 +1755,5 @@ entity.Horse.description=A sturdy land animal which can be ridden once tamed.
 entity.PolarBear.description=A dangerous animal native to the frozen oceans. Very protective of their offspring.
 entity.Llama.description=A pack animal native to the Savannahs. Useful for transporting large amounts of items
 entity.ElderGuardian.description=A stronger and larger variant of the guardian which can inflict Mining Fatigue.
+
+chat.message.knowledgeGained=%sYou gained %s%d%s knowledge from scanning %s%s

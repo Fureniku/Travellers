@@ -512,13 +512,52 @@ public class BlockDatabank extends BlockScannable implements ITileEntityProvider
 
 			return this.getDefaultState().withProperty(PART, DatabankPartEnum.UPPER).withProperty(FACING,
 					placer.getHorizontalFacing().getOpposite());
+		} else {
+			world.setBlockToAir(pos);
+			return this.getDefaultState();
 		}
 
-		return null;
+		//return null;
+	}
+	
+	@Override
+	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer,
+			ItemStack stack) {
+		
+		if (worldIn.getBlockState(pos).getBlock() instanceof BlockDatabank) {
+			
+			DatabankPartEnum part = state.getValue(PART);
+			
+			boolean secondaryBlockIsDatabank = false;
+			
+			BlockPos secondaryBlock = pos;
+			
+			if (part == DatabankPartEnum.LOWER) {
+				secondaryBlock = pos.up();
+				secondaryBlockIsDatabank = worldIn.getBlockState(secondaryBlock).getBlock() instanceof BlockDatabank;
+			} else if (part == DatabankPartEnum.UPPER) {
+				secondaryBlock = pos.down();
+				secondaryBlockIsDatabank = worldIn.getBlockState(secondaryBlock).getBlock() instanceof BlockDatabank;
+			}
+			
+			if (!secondaryBlockIsDatabank) {
+				
+				if (part == DatabankPartEnum.LOWER) {
+					worldIn.removeTileEntity(pos);
+				} else if (part == DatabankPartEnum.UPPER) {
+					worldIn.removeTileEntity(secondaryBlock);
+				}
+				
+				worldIn.setBlockToAir(pos);
+			}
+			
+		}
+		
+		super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
 	}
 
 	/**
-	 * Converts block state into meta. 0 | 0 | 0 | 0 ^ Part ^---^ Facing
+	 * Converts block state into meta. 0 | 0 | 0 | 0 ^ Part ^^^ Facing
 	 * 
 	 * @see net.minecraft.block.Block#getMetaFromState(net.minecraft.block.state.IBlockState)
 	 */

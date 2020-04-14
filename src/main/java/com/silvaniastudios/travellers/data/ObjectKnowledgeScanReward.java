@@ -2,6 +2,7 @@ package com.silvaniastudios.travellers.data;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
@@ -18,11 +19,19 @@ public class ObjectKnowledgeScanReward {
 	
 	public ObjectEntryList list;
 	
+	public HashMap<String, Integer> boostsHashed = new HashMap<String, Integer>();
+	
 	public ObjectKnowledgeScanReward () {
 		try {
 
 			String json = Resources.toString(Travellers.class.getResource(BOOSTS_LOCATION), Charsets.UTF_8);	
 			list = new Gson().fromJson(json, ObjectEntryList.class);
+			
+			for (ObjectEntry entry : list.list) {
+				if (entry != null) {
+					boostsHashed.put(entry.key, entry.knowledge);
+				}
+			}
 		
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -30,12 +39,10 @@ public class ObjectKnowledgeScanReward {
 	}
 	
 	public int findReward (String key) {
-		for (ObjectEntry entry : list.list) {
-			if (entry.key.contentEquals(key)) {
-				return entry.knowledge;
-			}
+		Integer result = boostsHashed.get(key);
+		if (result != null) {
+			return result;
 		}
-		
 		return 0;
 	}
 	
