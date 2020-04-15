@@ -22,6 +22,8 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemSchematic extends Item {
 	
@@ -142,7 +144,9 @@ public class ItemSchematic extends Item {
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
+		
 		if (worldIn.isRemote) {
 			Minecraft.getMinecraft().displayGuiScreen(new GuiSchematicInfoScreen(playerIn.getHeldItem(handIn)));
 			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
