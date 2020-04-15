@@ -3,7 +3,6 @@ package com.silvaniastudios.travellers;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.silvaniastudios.travellers.items.CodexItems;
 import com.silvaniastudios.travellers.items.ItemAssembler;
 import com.silvaniastudios.travellers.items.ItemBasic;
 import com.silvaniastudios.travellers.items.ItemCodex;
@@ -84,8 +83,7 @@ public class ModItems {
 	public static ItemSchematic exotic_swivel = new ItemSchematic("swivel.exotic", SchematicRarityEnum.EXOTIC,
 			SchematicTypeEnum.SWIVELCANNON, new String[] {}, true, "schematic_default", true);
 
-	public static CodexItems parsed_codex = new CodexItems();
-	public static List<ItemCodex> codices = parsed_codex.generateItems();
+	public static List<ItemCodex> codices = Travellers.CODEX_DATA.itemList();
 	public static ItemCodex default_codex = new ItemCodex("default_codex");
 
 	public static ItemScrapMetal aluminium_scrap = new ItemScrapMetal("scrap_aluminium");

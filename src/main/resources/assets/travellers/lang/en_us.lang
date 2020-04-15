@@ -198,6 +198,7 @@ travellers.gui.button.save=SAVE SHIP FRAME
 travellers.gui.button.revert=REVERT CHANGES
 travellers.gui.button.duplicate=DUPLICATE SCHEMATIC
 travellers.gui.button.unload=UNLOAD SCHEMATIC
+travellers.gui.button.ok=OK
 
 travellers.gui.shipyard.guidance=Click EDIT to customize the shape of your ship.
 travellers.gui.shipyard.code=SHIPYARD CODE

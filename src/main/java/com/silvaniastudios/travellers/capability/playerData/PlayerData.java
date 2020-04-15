@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
-import com.silvaniastudios.travellers.ModItems;
+import com.silvaniastudios.travellers.Travellers;
 import com.silvaniastudios.travellers.capability.schematicData.SchematicDataProvider;
 import com.silvaniastudios.travellers.entity.EntityScannerLine;
 
@@ -38,6 +38,7 @@ public class PlayerData implements IPlayerData {
 		this.entityScanning = null;
 		this.knowledgeNodeUses = new HashMap<String, Integer>();
 		this.knownLorePieces = new ArrayList<String>();
+		this.scannedObjects = new ArrayList<String>();
 
 		this.schematicList = new ArrayList<ItemStack>();
 		this.shipDesignList = new HashMap<String, ItemStack>();
@@ -154,9 +155,14 @@ public class PlayerData implements IPlayerData {
 
 	@Override
 	public void learnLorePiece(String loreID) {
+		
+		if (Travellers.CODEX_DATA.piecesByGuid.get(loreID) == null) {
+			return;
+		}
+		
 		this.knownLorePieces.add(loreID);
 
-		this.incrementKnowledgeBalance(ModItems.parsed_codex.codexMapped.get(loreID).knowledge);
+		this.incrementKnowledgeBalance(Travellers.CODEX_DATA.piecesByGuid.get(loreID).knowledge);
 	}
 
 	@Override
@@ -204,7 +210,6 @@ public class PlayerData implements IPlayerData {
 			scannedObjects.setString(String.valueOf(index), object);
 			index++;
 		}
-		
 		nbtTag.setTag("scannedObjects", scannedObjects);
 
 		NBTTagCompound shipDesigns = new NBTTagCompound();
@@ -268,7 +273,7 @@ public class PlayerData implements IPlayerData {
 		
 		ArrayList<String> scannedObjects = new ArrayList<String>();
 		for (String key : nbtTag.getCompoundTag("scannedObjects").getKeySet()) {
-			scannedObjects.add(Integer.valueOf(key), nbtTag.getCompoundTag("scannedObjects").getString(key));
+			scannedObjects.add(nbtTag.getCompoundTag("scannedObjects").getString(key));
 		}
 		
 		this.scannedObjects = scannedObjects;
