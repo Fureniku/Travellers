@@ -9,6 +9,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.ItemPickupEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
 
@@ -51,6 +52,11 @@ public class EventHandler {
 
 		PacketHandler.INSTANCE.sendTo(new PlayerDataSyncMessage(playerData),
 				(EntityPlayerMP) event.player);
+	}
+	
+	@SubscribeEvent
+	public void onPlayerPickupItemStack (ItemPickupEvent event) {
+		System.out.println(event.getOriginalEntity().serializeNBT().toString());
 	}
 
 }

@@ -3,8 +3,13 @@
 		{
 			"name": "utility.torch",
 			"rarity": "common",
-			"unlearnable": true,
-			"baseHp": 20
+			"stats": [
+				{"name": "travellers.stat.resilience.name", "amount": 20}
+			],
+			"crafting": [
+				{"name": "travellers.slot.handle", "type": "travellers.material.wood", "amount": 30},
+				{"name": "travellers.slot.cloth", "type": "travellers.material.cloth", "amount": 10}
+			]
 		}
 	]
 }

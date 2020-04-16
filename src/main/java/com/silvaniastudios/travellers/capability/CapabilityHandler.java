@@ -3,7 +3,7 @@ package com.silvaniastudios.travellers.capability;
 import com.silvaniastudios.travellers.Travellers;
 import com.silvaniastudios.travellers.capability.playerData.PlayerDataProvider;
 import com.silvaniastudios.travellers.capability.schematicData.SchematicDataProvider;
-import com.silvaniastudios.travellers.schematic.ItemSchematic;
+import com.silvaniastudios.travellers.items.schematic.ItemSchematic;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -33,11 +33,8 @@ public class CapabilityHandler {
 	@SubscribeEvent
 	public void attachCapabilityItemStack(AttachCapabilitiesEvent<ItemStack> event) {
 		ItemStack itemStack = event.getObject();
-
 		if (itemStack.getItem() instanceof ItemSchematic) {
-
 			event.addCapability(SCHEMATIC_DATA, new SchematicDataProvider());
-
 		}
 	}
 }

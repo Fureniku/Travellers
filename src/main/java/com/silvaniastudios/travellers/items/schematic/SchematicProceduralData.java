@@ -1,8 +1,35 @@
-package com.silvaniastudios.travellers.schematic;
+package com.silvaniastudios.travellers.items.schematic;
 
-public class ProcSchematicConfig {
+import java.util.ArrayList;
 
-	public static String getEngineName(float[] stats, SchematicRarityEnum rarity) {
+import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicStatisticSlot;
+
+/**
+ * 
+ * @author jamesm2w
+ */
+public class SchematicProceduralData {
+
+	/**
+	 * Credit to Node, Ziwix, Machine Maker, Kruft, Docfreeman, Vloshko,
+	 * jamesm2w all from the community and Matt Foster from Bossa Studios (Bossa
+	 * Moster) For compiling the many engine schematics to make sure all
+	 * possible part names were covered, and thanks to Moster for confirming
+	 * which were actually bugs :)
+	 * 
+	 * @param statSlots
+	 * @param rarity
+	 * @return String representing the name of the engine
+	 */
+	public static String getEngineName(ArrayList<SchematicStatisticSlot> statSlots, SchematicRarityEnum rarity) {
+		// Method was originally designed to work with a float array. So this
+		// just converts it to that.
+		float[] stats = new float[statSlots.size()];
+		for (SchematicStatisticSlot slot : statSlots) {
+			int indexOfStat = indexOf(ENGINE_STAT_NAMES, slot.name);
+			stats[indexOfStat] = slot.amount;
+		}
+
 		String casingName = "", mountType = "m", propMountName = "", powerNum = "", propType = "p", propName = "";
 
 		for (int i = 0; i < EngineCasingList.length; i++) {
@@ -62,6 +89,9 @@ public class ProcSchematicConfig {
 
 		return -1;
 	}
+
+	public static final String[] ENGINE_SLOT_NAMES = new String[] { "travellers.slot.casing.name",
+			"travellers.slot.combus.name", "travellers.slot.mech.name", "travellers.slot.prop.name" };
 
 	public static final String[] ENGINE_STAT_NAMES = new String[] { "travellers.stat.resilience.name",
 			"travellers.stat.power.name", "travellers.stat.boost.name", "travellers.stat.fueleff.name",

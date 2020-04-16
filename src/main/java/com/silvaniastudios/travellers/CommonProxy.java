@@ -36,15 +36,14 @@ public class CommonProxy {
 
 	}
 
-	@SuppressWarnings("deprecation")
 	public void init(FMLInitializationEvent event) {
 		// OreDictionary.registerOre(CopperConfig.oredict.oreOreDict, new
 		// ItemStack(ModBlocks.blockOre1, 1, 0));
 		// OreDictionary.registerOre(CopperConfig.oredict.nuggetOreDict,
 		// ModItems.nuggetCopper);
 
-		CapabilityManager.INSTANCE.register(IPlayerData.class, new PlayerDataStorage(), PlayerData.class);
-		CapabilityManager.INSTANCE.register(ISchematicData.class, new SchematicDataStorage(), SchematicData.class);
+		CapabilityManager.INSTANCE.register(IPlayerData.class, new PlayerDataStorage(), PlayerData::new);
+		CapabilityManager.INSTANCE.register(ISchematicData.class, new SchematicDataStorage(), SchematicData::new);
 
 		MinecraftForge.EVENT_BUS.register(new CapabilityHandler());
 		MinecraftForge.EVENT_BUS.register(new EventHandler());

@@ -5,6 +5,7 @@ import com.silvaniastudios.travellers.commands.SchematicDataViewer;
 import com.silvaniastudios.travellers.commands.SchematicListViewer;
 import com.silvaniastudios.travellers.data.LoreCodexData;
 import com.silvaniastudios.travellers.data.ObjectKnowledgeScanReward;
+import com.silvaniastudios.travellers.data.SchematicFixedData;
 import com.silvaniastudios.travellers.entity.EntityScannerLine;
 
 import net.minecraft.block.Block;
@@ -31,9 +32,6 @@ public class Travellers {
 
 	public static final String MODID = "travellers";
 	public static final String VERSION = "0.0.1";
-	
-	public static final ObjectKnowledgeScanReward SCAN_REWARDS = new ObjectKnowledgeScanReward();
-	public static final LoreCodexData CODEX_DATA  = new LoreCodexData();
 
 	@Instance(MODID)
 	public static Travellers instance;
@@ -64,6 +62,10 @@ public class Travellers {
 			return true;
 		};
 	}.setBackgroundImageName("item_search.png");
+	
+	public static final ObjectKnowledgeScanReward SCAN_REWARDS = new ObjectKnowledgeScanReward();
+	public static final LoreCodexData CODEX_DATA  = new LoreCodexData();
+	public static final SchematicFixedData SCHEMATIC_DATA = new SchematicFixedData();
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {

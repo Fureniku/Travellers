@@ -42,8 +42,8 @@ public class ItemCodex extends ItemBasic {
 		ModItems.codices.add(this);
 	}
 
-	public ItemCodex(String uuid, int index, String parentName, int knowledge, String language) {
-		super(uuid);
+	public ItemCodex(String uuid, int index, String parentName, int knowledge, String language, String text) {
+		super(cleanString(parentName).concat("_").concat(String.valueOf(index + 1)));
 
 		this.setGuid(uuid);
 		this.pieceIndex = index;
@@ -51,8 +51,9 @@ public class ItemCodex extends ItemBasic {
 		this.knowledge = knowledge;
 		this.language = language;
 
-		text = Travellers.CODEX_DATA.getText(uuid);
+		this.text = text;
 		this.setCreativeTab(Travellers.tabLore);
+
 		this.setUnlocalizedName("codex_piece");
 		this.setMaxStackSize(1);
 	}
@@ -81,7 +82,7 @@ public class ItemCodex extends ItemBasic {
 				TextFormatting.RESET));
 		tooltip.add(String.format("%s #%d", this.parentName, this.pieceIndex + 1));
 		tooltip.add(String.format("Language: %s", this.language));
-		
+
 	}
 
 	@Override
@@ -183,5 +184,12 @@ public class ItemCodex extends ItemBasic {
 	 */
 	public void setKnowledge(int knowledge) {
 		this.knowledge = knowledge;
+	}
+
+	public static String cleanString(String str) {
+		return str.replace("<", "").replace(">", "").replace("\"", "").replace("\"", "").replace(" ", "_")
+				.replace("-", "_").replace(",", "").replace(".", "").replace(":", "_").replace("'", "")
+				.replace("___", "_").replace("__", "_")
+				.toLowerCase();
 	}
 }

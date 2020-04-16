@@ -1,4 +1,4 @@
-package com.silvaniastudios.travellers.schematic;
+package com.silvaniastudios.travellers.items.schematic;
 
 public enum SchematicTypeEnum {
 	FIXED("fixed", 0), ENGINE("engine", 5), WING("wing", 3), CANNON("cannon", 5), SWIVELCANNON("swivel", 5);
@@ -26,20 +26,21 @@ public enum SchematicTypeEnum {
 		}
 	}
 
+	//TODO: not static?
 	public static String[] getStatNames(SchematicTypeEnum type) {
 		switch (type) {
 		case FIXED:
-			return ProcSchematicConfig.FIXED_STAT_NAMES;
+			return SchematicProceduralData.FIXED_STAT_NAMES;
 		case ENGINE:
-			return ProcSchematicConfig.ENGINE_STAT_NAMES;
+			return SchematicProceduralData.ENGINE_STAT_NAMES;
 		case WING:
-			return ProcSchematicConfig.WING_STAT_NAMES;
+			return SchematicProceduralData.WING_STAT_NAMES;
 		case CANNON:
-			return ProcSchematicConfig.CANNON_STAT_NAMES;
+			return SchematicProceduralData.CANNON_STAT_NAMES;
 		case SWIVELCANNON:
-			return ProcSchematicConfig.SWIVELCANNON_STAT_NAMES;
+			return SchematicProceduralData.SWIVELCANNON_STAT_NAMES;
 		default:
-			return ProcSchematicConfig.FIXED_STAT_NAMES;
+			return SchematicProceduralData.FIXED_STAT_NAMES;
 		}
 	}
 }

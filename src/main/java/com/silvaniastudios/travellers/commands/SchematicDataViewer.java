@@ -1,10 +1,8 @@
 package com.silvaniastudios.travellers.commands;
 
-import java.util.Arrays;
-
 import com.silvaniastudios.travellers.capability.schematicData.ISchematicData;
 import com.silvaniastudios.travellers.capability.schematicData.SchematicDataProvider;
-import com.silvaniastudios.travellers.schematic.ItemSchematic;
+import com.silvaniastudios.travellers.items.schematic.ItemSchematic;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
@@ -38,17 +36,7 @@ public class SchematicDataViewer extends CommandBase {
 			
 			ISchematicData schemdata = schemHolding.getCapability(SchematicDataProvider.SCHEMATIC_DATA, null);
 			
-			sender.sendMessage(new TextComponentString("UUID: " + schemdata.getUUID().toString()));
-			sender.sendMessage(new TextComponentString("Name: " + schemdata.getName()));
-			sender.sendMessage(new TextComponentString("Tooltip: " + schemdata.getTooltip()));
-			sender.sendMessage(new TextComponentString("Rarity: " + schemdata.getRarity().name));
-			sender.sendMessage(new TextComponentString("Type: " + schemdata.getType().name));
-			sender.sendMessage(new TextComponentString("Tags: " + Arrays.toString(schemdata.getTags())));
-			sender.sendMessage(new TextComponentString("Unlearnable: " + String.format("%b", schemdata.isUnlearnable())));
-			sender.sendMessage(new TextComponentString("Iconref: " + schemdata.getIconRef()));
-			sender.sendMessage(new TextComponentString("Stats: " + Arrays.toString(schemdata.getBaseStats())));
-			sender.sendMessage(new TextComponentString("StatAmount: " + String.valueOf(schemdata.getStatAmount())));
-			sender.sendMessage(new TextComponentString("isDefault" + String.format("%b", schemdata.isDefault())));
+			sender.sendMessage(new TextComponentString(schemdata.toNBT().toString()));
 		}
 	}
 

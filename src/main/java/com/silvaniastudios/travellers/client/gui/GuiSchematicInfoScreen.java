@@ -1,6 +1,7 @@
 package com.silvaniastudios.travellers.client.gui;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import com.silvaniastudios.travellers.PacketHandler;
 import com.silvaniastudios.travellers.Travellers;
@@ -8,10 +9,11 @@ import com.silvaniastudios.travellers.capability.playerData.IPlayerData;
 import com.silvaniastudios.travellers.capability.playerData.PlayerDataProvider;
 import com.silvaniastudios.travellers.capability.schematicData.ISchematicData;
 import com.silvaniastudios.travellers.capability.schematicData.SchematicDataProvider;
+import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicStatisticSlot;
+import com.silvaniastudios.travellers.items.schematic.ItemSchematic;
+import com.silvaniastudios.travellers.items.schematic.SchematicTypeEnum;
 import com.silvaniastudios.travellers.network.KnowledgeIncreaseMessage;
 import com.silvaniastudios.travellers.network.LearnSchematicMessage;
-import com.silvaniastudios.travellers.schematic.ItemSchematic;
-import com.silvaniastudios.travellers.schematic.SchematicTypeEnum;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -58,7 +60,7 @@ public class GuiSchematicInfoScreen extends GuiScreen {
 			this.bottomSection = 64;
 			this.middleSection = 31;
 
-			this.descText = I18n.format(this.schem.getTooltip());
+			this.descText = I18n.format(this.schem.getName());
 
 			this.player = Minecraft.getMinecraft().player;
 			this.mc = Minecraft.getMinecraft();
@@ -111,14 +113,14 @@ public class GuiSchematicInfoScreen extends GuiScreen {
 		this.drawTexturedModalRect(this.guiLeft, this.guiTop + bottomSectionStart, 0, bottomSection, 150,
 				100 - bottomSection);
 
-		if (this.schem.getBaseStats().length > 0) {
+		if (this.schem.getStats().size() > 0) {
 			this.drawTexturedModalRect(this.guiLeft + 160, this.guiTop, 150, 0, 106, 108);
 
 			String[] statNames = SchematicTypeEnum.getStatNames(this.schem.getType());
-			int[] stats = this.schem.getRoundedStats();
+			ArrayList<SchematicStatisticSlot> stats = this.schem.getStats();
 			for (int i = 0; i < statNames.length; i++) {
 				this.mc.renderEngine.bindTexture(TEXTURE);
-				this.drawTexturedModalRect(this.guiLeft + xSize + 13, this.guiTop + 19 + (19 * i), 0, 100, stats[i],
+				this.drawTexturedModalRect(this.guiLeft + xSize + 13, this.guiTop + 19 + (19 * i), 0, 100, (int)stats.get(i).amount,
 						104);
 			}
 
@@ -135,22 +137,22 @@ public class GuiSchematicInfoScreen extends GuiScreen {
 
 		this.fontRenderer.drawSplitString(stack.getDisplayName(), this.guiLeft + 38, this.guiTop + 12, 104, 5592405);
 
-		this.fontRenderer.drawSplitString(I18n.format(this.schem.getTooltip()), this.guiLeft + 8, this.guiTop + 40,
+		this.fontRenderer.drawSplitString(I18n.format(this.schem.getName()), this.guiLeft + 8, this.guiTop + 40,
 				xSize - 16, 5592405);
 
-		if (this.schem.getBaseStats().length > 0) {
+		if (this.schem.getStats().size() > 0) {
 
 			String[] statNames = SchematicTypeEnum.getStatNames(this.schem.getType());
 
-			int[] stats = this.schem.getRoundedStats();
+			ArrayList<SchematicStatisticSlot> stats = this.schem.getStats();
 			for (int i = 0; i < statNames.length; i++) {
 				String stat = statNames[i];
 
 				this.fontRenderer.drawString(I18n.format(stat), this.guiLeft + xSize + 14, this.guiTop + 8 + (19 * i),
 						5592405);
 
-				int strLength = this.fontRenderer.getStringWidth(String.valueOf(stats[i]));
-				this.fontRenderer.drawString(String.valueOf(stats[i]), this.guiLeft + xSize + 108 - strLength,
+				int strLength = this.fontRenderer.getStringWidth(String.valueOf(stats.get(i)));
+				this.fontRenderer.drawString(String.valueOf(stats.get(i)), this.guiLeft + xSize + 108 - strLength,
 						this.guiTop + 8 + (19 * i), 5592405);
 
 			}
