@@ -36,7 +36,12 @@ public class SchematicDataViewer extends CommandBase {
 			
 			ISchematicData schemdata = schemHolding.getCapability(SchematicDataProvider.SCHEMATIC_DATA, null);
 			
-			sender.sendMessage(new TextComponentString(schemdata.toNBT().toString()));
+			sender.sendMessage(new TextComponentString("UUID: " + schemdata.getUUID().toString()));
+			sender.sendMessage(new TextComponentString("Name: " + schemdata.getName()));
+			sender.sendMessage(new TextComponentString("Rarity: " + schemdata.getRarity().toString()));
+			sender.sendMessage(new TextComponentString("Type: " + schemdata.getType().toString()));
+			sender.sendMessage(new TextComponentString("Stats: " + schemdata.getStats().toString()));
+			sender.sendMessage(new TextComponentString("Crafting: " + schemdata.getCrafting().toString()));
 		}
 	}
 

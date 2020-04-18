@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicCraftingSlot;
 import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicStatisticSlot;
+import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicStats;
 import com.silvaniastudios.travellers.items.schematic.SchematicRarityEnum;
 import com.silvaniastudios.travellers.items.schematic.SchematicTypeEnum;
 
@@ -16,7 +17,7 @@ public class SchematicData implements ISchematicData {
 	private String name = "schematic";
 	private SchematicRarityEnum rarity = SchematicRarityEnum.COMMON;
 	private SchematicTypeEnum type = SchematicTypeEnum.FIXED;
-	private ArrayList<SchematicStatisticSlot> stats = new ArrayList<SchematicStatisticSlot>();
+	private SchematicStats stats = new SchematicStats();
 	private ArrayList<SchematicCraftingSlot> crafting = new ArrayList<SchematicCraftingSlot>();
 	
 	public SchematicData () {
@@ -24,7 +25,7 @@ public class SchematicData implements ISchematicData {
 		name = "schematic";
 		rarity = SchematicRarityEnum.COMMON;
 		type = SchematicTypeEnum.FIXED;
-		stats = new ArrayList<SchematicStatisticSlot>();
+		stats = new SchematicStats();
 		crafting = new ArrayList<SchematicCraftingSlot>();
 	}
 
@@ -46,6 +47,7 @@ public class SchematicData implements ISchematicData {
 		NBTTagCompound crafting = new NBTTagCompound();
 		for (SchematicCraftingSlot craft : getCrafting()) {
 			NBTTagCompound slotDetail = new NBTTagCompound();
+			slotDetail.setString("name", craft.name);
 			slotDetail.setString("type", craft.type);
 			slotDetail.setInteger("amount", craft.amount);
 			crafting.setTag(craft.name, slotDetail);
@@ -57,24 +59,39 @@ public class SchematicData implements ISchematicData {
 
 	@Override
 	public void fromNBT(NBTTagCompound compound) {
-		setUUID(compound.getUniqueId("uuid"));
-		setName(compound.getString("name"));
 		
-		setRarity(SchematicRarityEnum.fromString(compound.getString("rarity")));
-		setType(SchematicTypeEnum.fromString(compound.getString("type")));
-		
-		ArrayList<SchematicStatisticSlot> stats = new ArrayList<SchematicStatisticSlot>();
-		for (String key : compound.getCompoundTag("stats").getKeySet()) {
-			stats.add(new SchematicStatisticSlot(key, compound.getCompoundTag("stats").getFloat(key)));
+		if (compound == null) {
+			return;
 		}
-		setStats(stats);
 		
-		ArrayList<SchematicCraftingSlot> crafting = new ArrayList<SchematicCraftingSlot>();
-		for (String key : compound.getCompoundTag("crafting").getKeySet()) {
-			NBTTagCompound craft = compound.getCompoundTag("crafting").getCompoundTag(key);
-			crafting.add(new SchematicCraftingSlot(key, craft.getString("type"), craft.getInteger("amount")));
+		if (compound.hasUniqueId("uuid")) {
+			setUUID(compound.getUniqueId("uuid"));
 		}
-		setCrafting(crafting);
+		if (compound.hasKey("name")) {
+			setName(compound.getString("name"));
+		}
+		if (compound.hasKey("rarity")) {
+			setRarity(SchematicRarityEnum.fromString(compound.getString("rarity")));
+		}
+		
+		if (compound.hasKey("type")) {
+			setType(SchematicTypeEnum.fromString(compound.getString("type")));
+		}
+		if (compound.hasKey("stats")) {
+			SchematicStats stats = new SchematicStats();
+			for (String key : compound.getCompoundTag("stats").getKeySet()) {
+				stats.add(new SchematicStatisticSlot(key, compound.getCompoundTag("stats").getFloat(key)));
+			}
+			setStats(stats);
+		}
+		if (compound.hasKey("crafting")) {
+			ArrayList<SchematicCraftingSlot> crafting = new ArrayList<SchematicCraftingSlot>();
+			for (String key : compound.getCompoundTag("crafting").getKeySet()) {
+				NBTTagCompound craft = compound.getCompoundTag("crafting").getCompoundTag(key);
+				crafting.add(new SchematicCraftingSlot(key, craft.getString("type"), craft.getInteger("amount")));
+			}
+			setCrafting(crafting);
+		}
 	}
 	
 	@Override
@@ -133,12 +150,12 @@ public class SchematicData implements ISchematicData {
 	}
 
 	@Override
-	public ArrayList<SchematicStatisticSlot> getStats() {
+	public SchematicStats getStats() {
 		return this.stats;
 	}
 
 	@Override
-	public void setStats(ArrayList<SchematicStatisticSlot> stats) {
+	public void setStats(SchematicStats stats) {
 		this.stats = stats;
 	}
 

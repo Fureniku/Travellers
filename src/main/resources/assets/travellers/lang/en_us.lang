@@ -184,7 +184,7 @@ travellers.tooltip.clothing.dye_teal=Teal colored pigment. People seem to feel h
 travellers.tooltip.clothing.maeshift_cloth=Makeshift cloth made from plant fibers. A crafting component that can be used as a fabric in many schematics.
 
 travellers.tooltip.utility.hip_lantern=Small lantern, which can be attached to a belt strap to light the way. The default key to turn on and off is Y.
-travellers.tooltip.utility.torch=Flaming torch, which can be held aloft to light dark areas. na na na na extra text cause kittco is gonna try and break this
+travellers.tooltip.utility.torch=Flaming torch, which can be held aloft to light dark areas.
 travellers.tooltip.utility.makeshift_storage=A makeshift container for storing items on land or leaving them for fellow travellers.
 travellers.tooltip.utility.scanner_tool=A traveller's best friend; used to gain insight and knowledge from the world around you.
 

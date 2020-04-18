@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicCraftingSlot;
-import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicStatisticSlot;
+import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicStats;
 import com.silvaniastudios.travellers.items.schematic.SchematicRarityEnum;
 import com.silvaniastudios.travellers.items.schematic.SchematicTypeEnum;
 
@@ -56,8 +56,8 @@ public interface ISchematicData {
 	 * Stats (resil:20, etc)
 	 * @return
 	 */
-	public ArrayList<SchematicStatisticSlot> getStats();
-	public void setStats(ArrayList<SchematicStatisticSlot> stats);
+	public SchematicStats getStats();
+	public void setStats(SchematicStats stats);
 	
 	/**
 	 * Crafting (casing:20wood, etc.)

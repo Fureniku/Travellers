@@ -41,6 +41,8 @@ public class CommonProxy {
 		// ItemStack(ModBlocks.blockOre1, 1, 0));
 		// OreDictionary.registerOre(CopperConfig.oredict.nuggetOreDict,
 		// ModItems.nuggetCopper);
+		
+		PacketHandler.registerPacketsClient();
 
 		CapabilityManager.INSTANCE.register(IPlayerData.class, new PlayerDataStorage(), PlayerData::new);
 		CapabilityManager.INSTANCE.register(ISchematicData.class, new SchematicDataStorage(), SchematicData::new);

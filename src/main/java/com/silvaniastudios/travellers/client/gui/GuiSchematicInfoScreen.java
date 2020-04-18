@@ -1,7 +1,6 @@
 package com.silvaniastudios.travellers.client.gui;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import com.silvaniastudios.travellers.PacketHandler;
 import com.silvaniastudios.travellers.Travellers;
@@ -12,55 +11,72 @@ import com.silvaniastudios.travellers.capability.schematicData.SchematicDataProv
 import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicStatisticSlot;
 import com.silvaniastudios.travellers.items.schematic.ItemSchematic;
 import com.silvaniastudios.travellers.items.schematic.SchematicTypeEnum;
-import com.silvaniastudios.travellers.network.KnowledgeIncreaseMessage;
 import com.silvaniastudios.travellers.network.LearnSchematicMessage;
+import com.silvaniastudios.travellers.network.SalvageSchematicMessage;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraft.util.text.TextFormatting;
 
 public class GuiSchematicInfoScreen extends GuiScreen {
-
-	private int guiLeft;
-	private int guiTop;
-
-	private int xSize;
-	private int ySize;
-
-	private int bottomSection;
-	private int middleSection;
-	private int middleRepeat;
-	private int bottomSectionStart;
-	private String descText;
-
-	private boolean itemRemoved = false;
-
-	private EntityPlayerSP player;
-
-	private ISchematicData schem;
-	private ItemStack stack;
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation(Travellers.MODID,
 			"textures/gui/schematic.png");
 
+	private int screenLeft;
+	private int screenTop;
+
+	private int xSize;
+	private int ySize;
+
+	private int statSectionXSize = 114;
+
+	private int infoSectionXSize = 150;
+	private int infoSectionYSize = 100;
+
+	private int infoPaddingLeft = 8;
+	private int infoPaddingRight = 8;
+	private int infoPaddingTop = 12;
+	private int infoPaddingBottom = 8;
+
+	private int buttonHeight = 20;
+	private int buttonWidth = 60;
+
+	private int itemStackWidth = 16;
+	private int itemStackMarginLeft = 5;
+
+	private int infoMarginRight = 5;
+
+	private int descriptionPaddingTop = 12;
+	private int buttonPaddingTop = 12;
+
+	private ISchematicData schematic;
+	private ItemStack stack;
+
+	private Minecraft mc;
+	private EntityPlayer player;
+
+	private String titleText;
+	private String descriptionText;
+
+	private int titleHeight;
+	private int descriptionHeight;
+
+	private boolean itemRemoved = false;
+
 	public GuiSchematicInfoScreen(ItemStack stack) {
-		if (stack.getItem() instanceof ItemSchematic) {
+		if (stack.getItem() instanceof ItemSchematic
+				&& stack.hasCapability(SchematicDataProvider.SCHEMATIC_DATA, null)) {
+
 			this.stack = stack;
-			this.schem = stack.getCapability(SchematicDataProvider.SCHEMATIC_DATA, null);
-			this.xSize = 150;
-			this.ySize = 100;
-
-			this.bottomSection = 64;
-			this.middleSection = 31;
-
-			this.descText = I18n.format(this.schem.getName());
+			this.schematic = stack.getCapability(SchematicDataProvider.SCHEMATIC_DATA, null);
 
 			this.player = Minecraft.getMinecraft().player;
 			this.mc = Minecraft.getMinecraft();
@@ -72,19 +88,36 @@ public class GuiSchematicInfoScreen extends GuiScreen {
 	public void initGui() {
 		super.initGui();
 
-		this.middleRepeat = Math.floorDiv(fontRenderer.getWordWrappedHeight(descText, xSize - 16),
-				bottomSection - middleSection) + 1;
+		this.titleText = stack.getDisplayName();
+		if (schematic.getType() != SchematicTypeEnum.FIXED) {
+			this.descriptionText = I18n
+					.format("travellers.tooltip.ship_parts." + schematic.getType().name.toLowerCase());
+		} else {
+			this.descriptionText = I18n.format("travellers.tooltip." + schematic.getName().toLowerCase());
+		}
 
-		this.ySize += (middleRepeat - 1) * (bottomSection - middleSection);
+		this.titleHeight = fontRenderer.getWordWrappedHeight(this.titleText,
+				this.infoSectionXSize - infoPaddingLeft - infoPaddingRight - itemStackWidth - itemStackMarginLeft);
+		this.descriptionHeight = fontRenderer.getWordWrappedHeight(this.descriptionText,
+				this.infoSectionXSize - infoPaddingLeft - infoPaddingRight);
 
-		this.bottomSectionStart = this.bottomSection + ((middleRepeat - 1) * (bottomSection - middleSection));
+		int height = infoPaddingTop + titleHeight + descriptionPaddingTop + descriptionHeight + buttonPaddingTop
+				+ buttonHeight + infoPaddingBottom;
+		if (height > this.infoSectionYSize) {
+			this.infoSectionYSize = infoPaddingTop + titleHeight + descriptionPaddingTop + descriptionHeight
+					+ buttonPaddingTop + buttonHeight + infoPaddingBottom;
+		}
 
-		this.guiLeft = (width - xSize) / 2;
-		this.guiTop = (height - ySize) / 2;
+		this.xSize = this.infoSectionXSize;
+		this.ySize = this.infoSectionYSize;
 
-		this.buttonList.add(new GuiButton(0, this.guiLeft + 8, this.guiTop + bottomSectionStart + 8, 60, 20, "Learn"));
-		this.buttonList
-				.add(new GuiButton(1, this.guiLeft + 82, this.guiTop + bottomSectionStart + 8, 60, 20, "Salvage"));
+		this.screenLeft = (this.width - this.xSize) / 2;
+		this.screenTop = (this.height - this.ySize) / 2;
+
+		this.buttonList.add(new GuiButton(0, screenLeft + infoPaddingLeft,
+				screenTop + infoSectionYSize - buttonHeight - infoPaddingBottom, buttonWidth, buttonHeight, "Learn"));
+		this.buttonList.add(new GuiButton(1, screenLeft + infoSectionXSize - buttonWidth - infoPaddingRight,
+				screenTop + infoSectionYSize - infoPaddingBottom - buttonHeight, buttonWidth, buttonHeight, "Salvage"));
 	}
 
 	@Override
@@ -103,27 +136,33 @@ public class GuiSchematicInfoScreen extends GuiScreen {
 
 		this.mc.renderEngine.bindTexture(TEXTURE);
 
-		this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, 150, middleSection);
-
-		for (int i = 1; i <= this.middleRepeat; i++) {
-			this.drawTexturedModalRect(this.guiLeft, this.guiTop + (middleSection * i), 0, middleSection, 150,
-					bottomSection);
+		// Draw info section
+		this.drawTexturedModalRect(screenLeft, screenTop, 0, 0, infoSectionXSize, 5);
+		for (int i = 0; i < infoSectionYSize - 10; i++) {
+			this.drawTexturedModalRect(screenLeft, screenTop + 5 + i, 0, 5, infoSectionXSize, 1);
 		}
+		this.drawTexturedModalRect(screenLeft, screenTop + infoSectionYSize - 5, 0, 95, infoSectionXSize, 5);
 
-		this.drawTexturedModalRect(this.guiLeft, this.guiTop + bottomSectionStart, 0, bottomSection, 150,
-				100 - bottomSection);
+		// Draw stat section
+		if (schematic.getStats().size() > 0) {
+			this.mc.renderEngine.bindTexture(TEXTURE);
+			// Draw main section
+			this.drawTexturedModalRect(screenLeft + infoSectionXSize + infoMarginRight, screenTop, 0, 105,
+					statSectionXSize, 5);
 
-		if (this.schem.getStats().size() > 0) {
-			this.drawTexturedModalRect(this.guiLeft + 160, this.guiTop, 150, 0, 106, 108);
-
-			String[] statNames = SchematicTypeEnum.getStatNames(this.schem.getType());
-			ArrayList<SchematicStatisticSlot> stats = this.schem.getStats();
-			for (int i = 0; i < statNames.length; i++) {
-				this.mc.renderEngine.bindTexture(TEXTURE);
-				this.drawTexturedModalRect(this.guiLeft + xSize + 13, this.guiTop + 19 + (19 * i), 0, 100, (int)stats.get(i).amount,
-						104);
+			// Draw progress bars
+			int index = 1;
+			for (SchematicStatisticSlot stat : schematic.getStats()) {
+				
+				this.drawTexturedModalRect(screenLeft + infoSectionXSize + infoMarginRight, screenTop - 14 + ((index) * 19),
+						0, 110, 114, 19);
+				
+				this.drawTexturedModalRect(screenLeft + infoSectionXSize + infoMarginRight + 7,
+						screenTop + (index * 19), 0, 100, (int) stat.amount, 5);
+				index++;
 			}
-
+			
+			this.drawTexturedModalRect(screenLeft + infoSectionXSize + infoMarginRight, screenTop - 14 + ((index) * 19), 0, 205, 114, 8);
 		}
 	}
 
@@ -133,28 +172,34 @@ public class GuiSchematicInfoScreen extends GuiScreen {
 		this.drawBackground(0);
 		super.drawScreen(mouseX, mouseY, partialTicks);
 
-		itemRender.renderItemIntoGUI(stack, this.guiLeft + 8, this.guiTop + 12);
+		itemRender.renderItemIntoGUI(stack, this.screenLeft + infoPaddingLeft, this.screenTop + infoPaddingTop);
+		
+		fontRenderer.drawSplitString(
+				String.format("%s%s%s", schematic.getRarity().toMCRarity().rarityColor, this.titleText,
+						TextFormatting.RESET),
+				this.screenLeft + infoPaddingLeft + itemStackWidth + itemStackMarginLeft,
+				this.screenTop + infoPaddingTop,
+				this.infoSectionXSize - infoPaddingLeft - infoPaddingRight - itemStackWidth - itemStackMarginLeft,
+				Integer.parseInt("FFFFFF", 16));
 
-		this.fontRenderer.drawSplitString(stack.getDisplayName(), this.guiLeft + 38, this.guiTop + 12, 104, 5592405);
+		fontRenderer.drawSplitString(this.descriptionText, this.screenLeft + infoPaddingLeft,
+				this.screenTop + infoPaddingTop + titleHeight + descriptionPaddingTop,
+				infoSectionXSize - infoPaddingLeft - infoPaddingRight, 5592405);
 
-		this.fontRenderer.drawSplitString(I18n.format(this.schem.getName()), this.guiLeft + 8, this.guiTop + 40,
-				xSize - 16, 5592405);
+		if (schematic.getStats().size() > 0) {
 
-		if (this.schem.getStats().size() > 0) {
+			int index = 0;
+			for (SchematicStatisticSlot stat : schematic.getStats()) {
+				fontRenderer.drawString(I18n.format(stat.name), screenLeft + infoSectionXSize + infoMarginRight + 7,
+						screenTop + 8 + (19 * index), 5592405);
 
-			String[] statNames = SchematicTypeEnum.getStatNames(this.schem.getType());
+				int amountLength = fontRenderer.getStringWidth(String.valueOf((int) stat.amount));
 
-			ArrayList<SchematicStatisticSlot> stats = this.schem.getStats();
-			for (int i = 0; i < statNames.length; i++) {
-				String stat = statNames[i];
+				fontRenderer.drawString(String.valueOf((int) stat.amount),
+						screenLeft + infoSectionXSize + infoMarginRight + statSectionXSize - 7 - amountLength,
+						screenTop + 8 + (19 * index), 5592405);
 
-				this.fontRenderer.drawString(I18n.format(stat), this.guiLeft + xSize + 14, this.guiTop + 8 + (19 * i),
-						5592405);
-
-				int strLength = this.fontRenderer.getStringWidth(String.valueOf(stats.get(i)));
-				this.fontRenderer.drawString(String.valueOf(stats.get(i)), this.guiLeft + xSize + 108 - strLength,
-						this.guiTop + 8 + (19 * i), 5592405);
-
+				index++;
 			}
 		}
 
@@ -168,16 +213,15 @@ public class GuiSchematicInfoScreen extends GuiScreen {
 
 			PacketHandler.INSTANCE.sendToServer(new LearnSchematicMessage(this.stack, player.getUniqueID()));
 		} else if (button.id == 1) { // Salvage Schematic
-
-			PacketHandler.INSTANCE.sendToServer(new KnowledgeIncreaseMessage(20, player.getUniqueID()));
+			PacketHandler.INSTANCE.sendToServer(new SalvageSchematicMessage(this.stack, player.getUniqueID()));
 		}
 
 		player.setHeldItem(EnumHand.MAIN_HAND, ItemStack.EMPTY);
 		player.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, ItemStack.EMPTY);
-		FMLCommonHandler.instance().getMinecraftServerInstance().addScheduledTask(() -> {
-			FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList()
-					.getPlayerByUUID(player.getUniqueID()).setHeldItem(EnumHand.MAIN_HAND, ItemStack.EMPTY);
-		});
+		//FMLCommonHandler.instance().getMinecraftServerInstance().addScheduledTask(() -> {
+		//	FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList()
+		//			.getPlayerByUUID(player.getUniqueID()).setHeldItem(EnumHand.MAIN_HAND, ItemStack.EMPTY);
+		//});
 		this.itemRemoved = true;
 		player.closeScreen();
 	}
@@ -188,10 +232,11 @@ public class GuiSchematicInfoScreen extends GuiScreen {
 
 		if (!this.itemRemoved) {
 			player.setHeldItem(EnumHand.MAIN_HAND, stack);
-			FMLCommonHandler.instance().getMinecraftServerInstance().addScheduledTask(() -> {
-				FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList()
-						.getPlayerByUUID(player.getUniqueID()).setHeldItem(EnumHand.MAIN_HAND, stack);
-			});
+			
+			//FMLCommonHandler.instance().getMinecraftServerInstance().addScheduledTask(() -> {
+			//	FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList()
+			//			.getPlayerByUUID(player.getUniqueID()).setHeldItem(EnumHand.MAIN_HAND, stack);
+			//});
 		}
 	}
 

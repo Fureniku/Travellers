@@ -19,64 +19,81 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-/**
- * Informs server that a player client has learned a schematic
- * 
- * @author james_pntzyfo
- */
-public class LearnSchematicMessage implements IMessage {
+public class SalvageSchematicMessage implements IMessage {
 
 	private ItemStack schematic;
-	private UUID uuid;
+	private UUID playerFrom;
 
-	public LearnSchematicMessage() {
+	public SalvageSchematicMessage() {
 	}
 
-	public LearnSchematicMessage(ItemStack schematic, UUID playeruuid) {
-		this.schematic = schematic;
-		this.uuid = playeruuid;
+	public SalvageSchematicMessage(ItemStack stack, UUID player) {
+		this.schematic = stack;
+		this.playerFrom = player;
 	}
 
 	@Override
 	public void fromBytes(ByteBuf buf) {
 
+		this.playerFrom = UUID.fromString(ByteBufUtils.readUTF8String(buf));
 		this.schematic = ByteBufUtils.readItemStack(buf);
-		this.uuid = UUID.fromString(ByteBufUtils.readUTF8String(buf));
-		this.schematic.getCapability(SchematicDataProvider.SCHEMATIC_DATA, null).fromNBT(ByteBufUtils.readTag(buf));
+
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf) {
-
+		ByteBufUtils.writeUTF8String(buf, playerFrom.toString());
 		ByteBufUtils.writeItemStack(buf, schematic);
-		ByteBufUtils.writeUTF8String(buf, this.uuid.toString());
-		ByteBufUtils.writeTag(buf, schematic.getCapability(SchematicDataProvider.SCHEMATIC_DATA, null).toNBT());
 	}
 
-	public static class SLearnSchematicMessageHandler implements IMessageHandler<LearnSchematicMessage, IMessage> {
+	public static class SSalvageSchematicMessage implements IMessageHandler<SalvageSchematicMessage, IMessage> {
 
 		@Override
-		public IMessage onMessage(LearnSchematicMessage message, MessageContext ctx) {
+		public IMessage onMessage(SalvageSchematicMessage message, MessageContext ctx) {
 			MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+			
 			server.addScheduledTask(() -> {
-				EntityPlayer player = server.getPlayerList().getPlayerByUUID(message.uuid);
-
-				player.getCapability(PlayerDataProvider.PLAYER_DATA, null).learnSchematic(message.schematic);
-
-				String response = String.format("%sLearnt %s%s%s", TextFormatting.GOLD, message.schematic.getRarity().rarityColor,
-						message.schematic.getDisplayName(), TextFormatting.RESET);
 				
-				player.sendMessage(new TextComponentString(response));
+				EntityPlayer player = server.getPlayerList().getPlayerByUUID(message.playerFrom);
+
+				int increase = 0;
+
+				switch (message.schematic.getCapability(SchematicDataProvider.SCHEMATIC_DATA, null).getRarity()) {
+				default:
+					increase = 15;
+					break;
+				case UNCOMMON:
+					increase = 20;
+					break;
+				case RARE:
+					increase = 30;
+					break;
+				case EXOTIC:
+					increase = 45;
+					break;
+				case PRISTINE:
+					increase = 55;
+					break;
+				case LEGENDARY:
+					increase = 65;
+					break;
+				}
+
+				player.getCapability(PlayerDataProvider.PLAYER_DATA, null).incrementKnowledgeBalance(increase);
 				
 				player.inventory.deleteStack(message.schematic);
 				
+				player.sendMessage(new TextComponentString(String.format("%sYou gained %s%d%s knowledge%s",
+						TextFormatting.GOLD, TextFormatting.RESET, increase, TextFormatting.GOLD, TextFormatting.RESET)));
+
 				PacketHandler.INSTANCE.sendTo(
 						new PlayerDataSyncMessage(player.getCapability(PlayerDataProvider.PLAYER_DATA, null)),
 						(EntityPlayerMP) player);
 			});
+
 			
 			return null;
 		}
-
 	}
+
 }

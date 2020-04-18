@@ -11,8 +11,8 @@ import com.silvaniastudios.travellers.capability.schematicData.SchematicDataProv
 import com.silvaniastudios.travellers.client.gui.GuiSchematicInfoScreen;
 import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicCraftingSlot;
 import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicStatisticSlot;
+import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicStats;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.client.util.ITooltipFlag.TooltipFlags;
@@ -27,8 +27,7 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class ItemSchematic extends Item {
 
@@ -59,7 +58,7 @@ public class ItemSchematic extends Item {
 	/**
 	 * Fixed Schematic - JSON data supplies all fields
 	 */
-	public ItemSchematic(String name, String rarity, ArrayList<SchematicStatisticSlot> stats,
+	public ItemSchematic(String name, String rarity, SchematicStats stats,
 			ArrayList<SchematicCraftingSlot> crafting) {
 		this("schematic_" + name);
 
@@ -99,7 +98,7 @@ public class ItemSchematic extends Item {
 
 			switch (schematicData.getType()) {
 			case ENGINE:
-				return SchematicProceduralData.getEngineName(schematicData.getStats(), schematicData.getRarity());
+				return EngineProceduralData.getEngineName(schematicData);
 			default:
 				return super.getItemStackDisplayName(stack);
 			}
@@ -157,6 +156,9 @@ public class ItemSchematic extends Item {
 					if (schematicData.getType() != SchematicTypeEnum.FIXED) {
 						schematicData.setStats(SchematicRandomGeneration.generateRandomStats(schematicData.getType(),
 								schematicData.getRarity()));
+						
+						schematicData.setCrafting(EngineProceduralData.generateEngineCosts(schematicData));
+						schematicData.generateUUID();
 					}
 
 				}
@@ -167,11 +169,10 @@ public class ItemSchematic extends Item {
 
 	// TODO: investigate this because of broken dedicated server functionality
 	@Override
-	@SideOnly(Side.CLIENT)
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
 
 		if (worldIn.isRemote) {
-			Minecraft.getMinecraft().displayGuiScreen(new GuiSchematicInfoScreen(playerIn.getHeldItem(handIn)));
+			FMLCommonHandler.instance().showGuiScreen(new GuiSchematicInfoScreen(playerIn.getHeldItem(handIn)));
 			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
 		}
 
@@ -200,7 +201,7 @@ public class ItemSchematic extends Item {
 
 			ISchematicData schematicData = stack.getCapability(SchematicDataProvider.SCHEMATIC_DATA, null);
 			schematicData.fromNBT(nbt);
-			System.out.println(schematicData.toNBT().toString());
+			//System.out.println(schematicData.toNBT().toString());
 		}
 		super.readNBTShareTag(stack, nbt);
 	}

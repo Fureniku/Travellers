@@ -1,5 +1,6 @@
 package com.silvaniastudios.travellers.commands;
 
+import com.silvaniastudios.travellers.capability.playerData.IPlayerData;
 import com.silvaniastudios.travellers.capability.playerData.PlayerDataProvider;
 
 import net.minecraft.command.CommandBase;
@@ -26,7 +27,17 @@ public class PlayerDataViewer extends CommandBase {
 		EntityPlayer player = getCommandSenderAsPlayer(sender);
 		
 		if (player.hasCapability(PlayerDataProvider.PLAYER_DATA, null)) {
-			sender.sendMessage(new TextComponentString(player.getCapability(PlayerDataProvider.PLAYER_DATA, null).toNBT().toString()));
+			
+			IPlayerData playerData = player.getCapability(PlayerDataProvider.PLAYER_DATA, null);
+			
+			sender.sendMessage(new TextComponentString("Knowledge: " + String.valueOf(playerData.getKnowledgeBalance())));
+			sender.sendMessage(new TextComponentString("Shipyard: " + String.valueOf(playerData.getShipyardVisitorCode())));
+			sender.sendMessage(new TextComponentString("IsDev: " + String.valueOf(playerData.isDev())));
+			sender.sendMessage(new TextComponentString("EntityScanning: " + String.valueOf(playerData.getScanningEntity())));
+			sender.sendMessage(new TextComponentString("Lore Pieces: " + playerData.getKnownLorePieces().toString()));
+			sender.sendMessage(new TextComponentString("Schematic List: " + playerData.getSchematicList().toString()));
+			sender.sendMessage(new TextComponentString("Scanned Objects: " + playerData.getScannedObjects().toString()));
+		
 		} else {
 			sender.sendMessage(new TextComponentString("No player data found"));
 		}

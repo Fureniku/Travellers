@@ -1,14 +1,18 @@
 package com.silvaniastudios.travellers.items.schematic;
 
+import java.util.Arrays;
 import java.util.ArrayList;
 
+import com.silvaniastudios.travellers.capability.schematicData.ISchematicData;
+import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicCraftingSlot;
 import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicStatisticSlot;
+import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicStats;
 
 /**
  * 
  * @author jamesm2w
  */
-public class SchematicProceduralData {
+public class EngineProceduralData {
 
 	/**
 	 * Credit to Node, Ziwix, Machine Maker, Kruft, Docfreeman, Vloshko,
@@ -17,77 +21,107 @@ public class SchematicProceduralData {
 	 * possible part names were covered, and thanks to Moster for confirming
 	 * which were actually bugs :)
 	 * 
-	 * @param statSlots
-	 * @param rarity
+	 * @param schematic The Schematic Data object
 	 * @return String representing the name of the engine
 	 */
-	public static String getEngineName(ArrayList<SchematicStatisticSlot> statSlots, SchematicRarityEnum rarity) {
-		// Method was originally designed to work with a float array. So this
-		// just converts it to that.
-		float[] stats = new float[statSlots.size()];
-		for (SchematicStatisticSlot slot : statSlots) {
-			int indexOfStat = indexOf(ENGINE_STAT_NAMES, slot.name);
-			stats[indexOfStat] = slot.amount;
-		}
-
-		String casingName = "", mountType = "m", propMountName = "", powerNum = "", propType = "p", propName = "";
-
+	public static String getEngineName(ISchematicData schematic) {
+		EngineCasing casing = getCasing(schematic);
+		EnginePropMount propMount = getPropMount(schematic, casing);
+		EngineProp prop = getProp(schematic, propMount);
+		
+		int powerNumber = getPowerOffset(schematic, propMount);
+		
+		return String.format("%s %s %s%s", casing.name, propMount.name, prop.letter, String.valueOf(powerNumber));
+	}
+	
+	public static EngineCasing getCasing (ISchematicData schematic) {
+		EngineCasing foundCasing = EngineCasingList[0];
+		
 		for (int i = 0; i < EngineCasingList.length; i++) {
 			EngineCasing currentCasing = EngineCasingList[i];
-			if (currentCasing.tier <= rarity.tier
-					&& indexOfMax(stats) == indexOf(ENGINE_STAT_NAMES, currentCasing.stat)) {
-				casingName = currentCasing.name;
-				mountType = currentCasing.mountType;
+			if (currentCasing.tier <= schematic.getRarity().tier
+					&& schematic.getStats().maxStat().name.contentEquals(currentCasing.stat)) {
+
+				foundCasing = currentCasing;
 			}
 		}
-
-		float power = stats[indexOf(ENGINE_STAT_NAMES, "travellers.stat.power.name")];
+		
+		return foundCasing;
+	}
+	
+	public static EnginePropMount getPropMount (ISchematicData schematic, EngineCasing casing) {
+		
+		float power = schematic.getStats().find("travellers.stat.power.name").amount;
+		EnginePropMount propMount = EnginePropMountList[0];
+		
 		for (int i = 0; i < EnginePropMountList.length; i++) {
-			if (power > EnginePropMountList[i].minPower && EnginePropMountList[i].mountType.equals(mountType)) {
+			if (power > EnginePropMountList[i].minPower && EnginePropMountList[i].mountType.equals(casing.mountType)) {
 
-				propMountName = EnginePropMountList[i].name;
-				powerNum = String.valueOf(Math.round(power - EnginePropMountList[i].minPower));
-				propType = EnginePropMountList[i].propType;
+				propMount = EnginePropMountList[i];
 
 				break;
 			}
 		}
-
-		float boost = stats[indexOf(ENGINE_STAT_NAMES, "travellers.stat.boost.name")];
+		
+		return propMount;
+	}
+	
+	public static EngineProp getProp (ISchematicData schematic, EnginePropMount propMount) {
+		float boost = schematic.getStats().find("travellers.stat.boost.name").amount;
+		EngineProp prop = EnginePropList[0];
+		
 		for (int i = 0; i < EnginePropList.length; i++) {
-			if (boost >= EnginePropList[i].minBoost && EnginePropList[i].propType.equals(propType)) {
-
-				propName = EnginePropList[i].letter;
-				propType = EnginePropList[i].propType;
-
+			if (boost >= EnginePropList[i].minBoost && EnginePropList[i].propType.equals(propMount.propType)) {
+				prop = EnginePropList[i];
 				break;
 			}
 		}
-
-		return casingName + " " + propMountName + " " + propName + powerNum;
+		
+		return prop;
 	}
-
-	public static int indexOfMax(float[] stats) {
-		int index = 0;
-		float maxValue = stats[0];
-		for (int i = 0; i < stats.length; i++) {
-			if (stats[i] > maxValue) {
-				maxValue = stats[i];
-				index = i;
-			}
-		}
-
-		return index;
+	
+	public static int getPowerOffset (ISchematicData schematic, EnginePropMount propMount) {
+		float power = schematic.getStats().find("travellers.stat.power.name").amount;
+		return Math.round(power - propMount.minPower);
 	}
+	
+	public static ArrayList<SchematicCraftingSlot> generateEngineCosts (ISchematicData schematic) {
+		
+		SchematicStats stats = schematic.getStats();
+		
+		SchematicStatisticSlot statResilience = stats.find("travellers.stat.resilience.name");
+		SchematicStatisticSlot statPower = stats.find("travellers.stat.power.name");
+		SchematicStatisticSlot statBoost = stats.find("travellers.stat.boost.name");
+		SchematicStatisticSlot statFuelEff = stats.find("travellers.stat.fueleff.name");
+		SchematicStatisticSlot statOhl = stats.find("travellers.stat.ohl.name");
+		
+		EngineCasing casing = getCasing(schematic);
+		EnginePropMount propMount = getPropMount(schematic, casing);
+		EngineProp prop = getProp(schematic, propMount);
+		
+		SchematicCraftingSlot slotCasing = new SchematicCraftingSlot("travellers.slot.casing.name");
+		slotCasing.amount = 2 * (int)(statResilience.amount + statPower.amount + statBoost.amount); //2 x (Resilience + Power + Spinup)
+		slotCasing.type = casing.materialType(); // Dependent on tier / resilience value
+		
+		SchematicCraftingSlot slotCombus = new SchematicCraftingSlot("travellers.slot.combus.name"); 
+		slotCombus.amount = 2 * (int)(statPower.amount + statFuelEff.amount + statOhl.amount); //2 x (Power + Fuel efficiency + Overheat)
+		slotCombus.type = "travellers.material.metal"; // Always metal
+		
+		SchematicCraftingSlot slotMech = new SchematicCraftingSlot("travellers.slot.mech.name");
+		slotMech.amount = 2 * (int)(statPower.amount + statFuelEff.amount); //2 x (Power + Fuel efficiency)
+		slotMech.type = "travellers.material.metal"; // Always metal
+		
+		SchematicCraftingSlot slotProp = new SchematicCraftingSlot("travellers.slot.prop.name");
+		slotProp.amount = 2 * (int)(statBoost.amount + statOhl.amount); //2 x (Spinup + Overheat)
+		slotProp.type = prop.materialType(); // Is Prop Vowel?
+		
+		ArrayList<SchematicCraftingSlot> slots = new ArrayList<SchematicCraftingSlot>();
+		slots.add(slotCasing);
+		slots.add(slotCombus);
+		slots.add(slotMech);
+		slots.add(slotProp);
+		return slots;
 
-	public static int indexOf(String[] arr, String str) {
-		for (int i = 0; i < arr.length; i++) {
-			if (arr[i].equals(str)) {
-				return i;
-			}
-		}
-
-		return -1;
 	}
 
 	public static final String[] ENGINE_SLOT_NAMES = new String[] { "travellers.slot.casing.name",
@@ -160,6 +194,19 @@ public class SchematicProceduralData {
 			this.stat = stat;
 			this.mountType = mountType;
 		}
+		
+		public String materialType () {
+			if (mountType.contentEquals("m")){
+				return "travellers.material.metal";
+			} else {
+				return "travellers.material.wood";
+			}
+		}
+		
+		@Override
+		public String toString() {
+			return String.format("[name=%s, stat=%s, mount=%s]", name, stat, mountType);
+		}
 	}
 
 	public static class EnginePropMount {
@@ -174,6 +221,11 @@ public class SchematicProceduralData {
 			this.mountType = mountType;
 			this.propType = propType;
 		}
+		
+		@Override
+		public String toString() {
+			return String.format("[power=%d, name=%s, mount=%s, jet=%s]", minPower, name, mountType, propType);
+		}
 	}
 
 	public static class EngineProp {
@@ -186,18 +238,22 @@ public class SchematicProceduralData {
 			this.letter = letter;
 			this.propType = propType;
 		}
+		
+		public String materialType () {
+			String[] vowels = new String[]{"A", "E", "I", "O", "U"};
+
+			if (Arrays.asList(vowels).contains(letter)) {
+				return "travellers.material.wood";
+			} else {
+				return "travellers.material.metal";
+			}
+		}
+		
+		@Override
+		public String toString() {
+			return String.format("[boost=%d, letter=%s, jet=%s]", minBoost, letter, propType);
+		}
 	}
 
-	public static class WingCasing {
-	}
-
-	public static class WingTip {
-	}
-
-	public static class WingAileron {
-	}
-
-	public static class WingMount {
-	}
 
 }

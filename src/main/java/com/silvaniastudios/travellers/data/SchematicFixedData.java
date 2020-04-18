@@ -41,7 +41,7 @@ public class SchematicFixedData {
 	public static class Schematic {
 		public String name;
 		public String rarity;
-		public ArrayList<SchematicStatisticSlot> stats;
+		public SchematicStats stats;
 		public ArrayList<SchematicCraftingSlot> crafting;
 	}
 	
@@ -54,14 +54,50 @@ public class SchematicFixedData {
 			this.amount = amount;
 		}
 		
-		public static SchematicStatisticSlot findStat (ArrayList<SchematicStatisticSlot> stats, String stat) {
-			for (SchematicStatisticSlot slot : stats) {
-				if (slot.name.contentEquals(stat)) {
-					return slot;
+		@Override
+		public String toString() {
+			return String.format("{name=%s, amount=%.2f}", name, amount);
+		}
+	}
+	
+	public static class SchematicStats extends ArrayList<SchematicStatisticSlot> {
+
+		private static final long serialVersionUID = -3413675288030167381L;
+
+		public SchematicStats() {
+			super();
+		}
+		
+		/**
+		 * Finds the given stat or null if not found
+		 * @param name
+		 * @return
+		 */
+		public SchematicStatisticSlot find (String name) {
+			SchematicStatisticSlot foundSlot = null;
+			
+			for (SchematicStatisticSlot slot : this) {
+				if (slot.name.contentEquals(name)) {
+					foundSlot = slot;
 				}
 			}
 			
-			return null;
+			return foundSlot;
+		}
+		
+		/** 
+		 * Finds the highest stat in the set
+		 * @return SchematicStatisticSlot
+		 */
+		public SchematicStatisticSlot maxStat () {
+			SchematicStatisticSlot maxStat = new SchematicStatisticSlot("null", 0);
+			for (SchematicStatisticSlot slot : this) {
+				if (slot.amount > maxStat.amount) {
+					maxStat = slot;
+				}
+			}
+			
+			return maxStat;
 		}
 	}
 	
@@ -78,6 +114,11 @@ public class SchematicFixedData {
 		
 		public SchematicCraftingSlot (String name) {
 			this.name = name;
+		}
+		
+		@Override
+		public String toString() {
+			return String.format("[name=%s, type=%s, amount=%d]", name, type, amount);
 		}
 	}
 

@@ -30,17 +30,17 @@ public enum SchematicTypeEnum {
 	public static String[] getStatNames(SchematicTypeEnum type) {
 		switch (type) {
 		case FIXED:
-			return SchematicProceduralData.FIXED_STAT_NAMES;
+			return EngineProceduralData.FIXED_STAT_NAMES;
 		case ENGINE:
-			return SchematicProceduralData.ENGINE_STAT_NAMES;
+			return EngineProceduralData.ENGINE_STAT_NAMES;
 		case WING:
-			return SchematicProceduralData.WING_STAT_NAMES;
+			return EngineProceduralData.WING_STAT_NAMES;
 		case CANNON:
-			return SchematicProceduralData.CANNON_STAT_NAMES;
+			return EngineProceduralData.CANNON_STAT_NAMES;
 		case SWIVELCANNON:
-			return SchematicProceduralData.SWIVELCANNON_STAT_NAMES;
+			return EngineProceduralData.SWIVELCANNON_STAT_NAMES;
 		default:
-			return SchematicProceduralData.FIXED_STAT_NAMES;
+			return EngineProceduralData.FIXED_STAT_NAMES;
 		}
 	}
 }

@@ -1,22 +1,21 @@
 package com.silvaniastudios.travellers.items.schematic;
 
-import java.util.ArrayList;
 import java.util.Random;
 
-import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicCraftingSlot;
 import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicStatisticSlot;
+import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicStats;
 
 public class SchematicRandomGeneration {
 
 	public static final int MAX = 100;
 	public static final int MIN = 5;
 
-	public static ArrayList<SchematicStatisticSlot> generateRandomStats(SchematicTypeEnum type,
+	public static SchematicStats generateRandomStats(SchematicTypeEnum type,
 			SchematicRarityEnum rarity) {
 		float[] stats = generateRandomArrayWithTotal(type.statNo, rarity.getTotal(type.statNo));
 		String[] names = SchematicTypeEnum.getStatNames(type);
 
-		ArrayList<SchematicStatisticSlot> combinedLists = new ArrayList<SchematicStatisticSlot>();
+		SchematicStats combinedLists = new SchematicStats();
 
 		for (int i = 0; i < stats.length; i++) {
 			combinedLists.add(new SchematicStatisticSlot(names[i], stats[i]));
@@ -24,40 +23,7 @@ public class SchematicRandomGeneration {
 
 		return combinedLists;
 	}
-
 	
-	public static ArrayList<SchematicCraftingSlot> generateEngineCosts (SchematicTypeEnum type, ArrayList<SchematicStatisticSlot> stats) {
-	
-		SchematicStatisticSlot statResilience = SchematicStatisticSlot.findStat(stats, "travellers.stat.resilience.name");
-		SchematicStatisticSlot statPower = SchematicStatisticSlot.findStat(stats, "travellers.stat.power.name");
-		SchematicStatisticSlot statBoost = SchematicStatisticSlot.findStat(stats, "travellers.stat.boost.name");
-		SchematicStatisticSlot statFuelEff = SchematicStatisticSlot.findStat(stats, "travellers.stat.fueleff.name");
-		SchematicStatisticSlot statOhl = SchematicStatisticSlot.findStat(stats, "travellers.stat.ohl.name");
-		
-		SchematicCraftingSlot slotCasing = new SchematicCraftingSlot("travellers.slot.casing.name");
-		slotCasing.amount = 2 * (int)(statResilience.amount + statPower.amount + statBoost.amount); //2 x (Resilience + Power + Spinup)
-		slotCasing.type = ""; // Dependent on tier / resilience value
-		
-		SchematicCraftingSlot slotCombus = new SchematicCraftingSlot("travellers.slot.combus.name"); 
-		slotCombus.amount = 2 * (int)(statPower.amount + statFuelEff.amount + statOhl.amount); //2 x (Power + Fuel efficiency + Overheat)
-		slotCombus.type = "travellers.material.metal"; // Always metal
-		
-		SchematicCraftingSlot slotMech = new SchematicCraftingSlot("travellers.slot.mech.name");
-		slotMech.amount = 2 * (int)(statPower.amount + statFuelEff.amount); //2 x (Power + Fuel efficiency)
-		slotCombus.type = "travellers.material.metal"; // Always metal
-		
-		SchematicCraftingSlot slotProp = new SchematicCraftingSlot("travellers.slot.prop.name");
-		slotProp.amount = 2 * (int)(statBoost.amount + statOhl.amount); //2 x (Spinup + Overheat)
-		slotProp.type = ""; // Is Prop Vowel?
-		
-		ArrayList<SchematicCraftingSlot> slots = new ArrayList<SchematicCraftingSlot>();
-		slots.add(slotCasing);
-		slots.add(slotCombus);
-		slots.add(slotMech);
-		slots.add(slotProp);
-		return slots;
-
-	}
 	/**
 	 * Generates array of random numbers. Originally made by Ziwix in MATLAB
 	 * adapted to Java

@@ -112,8 +112,8 @@ public class EntityScannerLine extends Entity {
 	public EntityScannerLine(World worldIn, UUID playerUUID) {
 		super(worldIn);
 		this.player = worldIn.getPlayerEntityByUUID(playerUUID);
-		// System.out.println("scanner line created (via worldin, uuid) " +
-		/// this.entityUniqueID.toString() + " UUID: " + playerUUID.toString());
+		//System.out.println("scanner line created (via worldin, uuid) " +
+		//this.entityUniqueID.toString() + " UUID: " + playerUUID.toString());
 		initialUUID = this.entityUniqueID;
 		deleteImmediately = true;
 	}
@@ -202,8 +202,8 @@ public class EntityScannerLine extends Entity {
 		RayTraceResult res = this.getLookedAt(0);
 		//// System.out.println(this.getLookedAt(0).toString());
 
-		//// System.out.println("Shooting scanner_line " +
-		//// this.entityUniqueID.toString());
+		//System.out.println("Shooting scanner_line " +
+		//this.entityUniqueID.toString());
 		// System.out.println(res.toString());
 
 		String objectString = null;
@@ -398,8 +398,7 @@ public class EntityScannerLine extends Entity {
 	public void handleKill() {
 		if (!this.world.isRemote && this.player != null) {
 
-			// System.out.println("Killed scanner_line because it was marked
-			// dead on server with player " + this.getCachedUniqueIdString());
+			// System.out.println("Killed scanner_line because it was marked dead on server with player " + this.getCachedUniqueIdString());
 			this.setDead();
 			IPlayerData playerData = this.player.getCapability(PlayerDataProvider.PLAYER_DATA, null);
 			playerData.setScanning(null);
@@ -407,13 +406,11 @@ public class EntityScannerLine extends Entity {
 			PacketHandler.INSTANCE.sendTo(new PlayerDataSyncMessage(playerData), (EntityPlayerMP) player);
 		} else if (this.player == null) {
 			this.setDead();
-			// System.out.println("Killed scanner_line " +
-			// this.getUniqueID().toString() + " because it has no parent player
-			// on" + (this.world.isRemote ? "client" : "server") + " IUUID: " +
-			// initialUUID.toString());
+			 //System.out.println("Killed scanner_line " +
+			 //this.getUniqueID().toString() + " because it has no parent player on" + (this.world.isRemote ? "client" : "server") + " IUUID: " +
+			 //initialUUID.toString());
 		} else {
-			// System.out.println("Killed scanner_line which has player but is
-			// marked dead on client " + this.getCachedUniqueIdString());
+			 //System.out.println("Killed scanner_line which has player but is marked dead on client " + this.getCachedUniqueIdString());
 			this.setDead();
 		}
 	}
@@ -572,7 +569,7 @@ public class EntityScannerLine extends Entity {
 	}
 
 	public RayTraceResult getLookedAt(float partialTicks) {
-		Entity player = this.player;
+		EntityPlayer player = this.player;
 
 		Entity pointedEntity;
 
@@ -582,8 +579,12 @@ public class EntityScannerLine extends Entity {
 			if (this.world != null) {
 
 				double reachDistance = (double) 10.0F;
-				objectMouseOver = player.rayTrace(reachDistance, partialTicks);
+
 				Vec3d playerEyeVector = player.getPositionEyes(partialTicks);
+		        Vec3d playerLookVector = player.getLook(partialTicks);
+		        Vec3d extendedPlayerLookVector = playerEyeVector.addVector(playerLookVector.x * reachDistance, playerLookVector.y * reachDistance, playerLookVector.z * reachDistance);
+		        objectMouseOver = world.rayTraceBlocks(playerEyeVector, extendedPlayerLookVector, false, false, true);
+
 				boolean reachOver3 = false;
 
 				double d1 = reachDistance;

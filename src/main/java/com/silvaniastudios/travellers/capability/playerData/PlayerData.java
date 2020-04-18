@@ -14,6 +14,8 @@ import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * 
@@ -224,6 +226,7 @@ public class PlayerData implements IPlayerData {
 
 	@Override
 	public void fromNBT(NBTBase nbt) {
+		
 		NBTTagCompound nbtTag = (NBTTagCompound) nbt;
 
 		this.setKnowledgeBalance(nbtTag.getInteger("knowledge"));
@@ -232,10 +235,15 @@ public class PlayerData implements IPlayerData {
 		if (nbtTag.hasKey("entityScanning") && nbtTag.getTag("entityScanning") != null) {
 			
 			NBTTagCompound entityTag = nbtTag.getCompoundTag("entityScanning");
-			World world = Minecraft.getMinecraft().world;
-			if (world == null) {
+			
+			World world = null;
+			
+			if (FMLCommonHandler.instance().getMinecraftServerInstance() != null) {
 				world = FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld();
+			} else if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
+				world = clientGetWorld();
 			}
+			
 			UUID player = entityTag.getUniqueId("player");
 
 			if (player.toString().contentEquals("00000000-0000-0000-0000-000000000000")) {
@@ -247,8 +255,7 @@ public class PlayerData implements IPlayerData {
 		} else {
 			this.entityScanning = null;
 		}
-		
-		
+
 		this.setShipyardVisitorCode(nbtTag.getString("shipyardVisitorCode"));
 
 		for (String key : ((NBTTagCompound) nbtTag.getCompoundTag("knowledgeTreeUses")).getKeySet()) {
@@ -282,7 +289,12 @@ public class PlayerData implements IPlayerData {
 		this.setKnownLorePieces(knownLorePieces);
 
 	}
-
+	
+	@SideOnly(Side.CLIENT)
+	public World clientGetWorld () {
+		return Minecraft.getMinecraft().world;
+	}
+	
 	@Override
 	public void copyData(IPlayerData capability) {
 		this.setKnowledgeBalance(capability.getKnowledgeBalance());
