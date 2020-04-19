@@ -22,7 +22,7 @@ import net.minecraft.util.math.Vec3d;
  * Renders the scanner line entity to the world.
  * Heavily borrowed from the vanilla Fishing Rod & bobber
  * 
- * @author james_pntzyfo
+ * @author jamesm2w
  * 
  */
 public class RenderScannerLine extends Render<EntityScannerLine> {

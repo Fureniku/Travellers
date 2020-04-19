@@ -1,9 +1,8 @@
 package com.silvaniastudios.travellers.capability.schematicData;
 
-import java.util.ArrayList;
 import java.util.UUID;
 
-import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicCraftingSlot;
+import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicCrafting;
 import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicStats;
 import com.silvaniastudios.travellers.items.schematic.SchematicRarityEnum;
 import com.silvaniastudios.travellers.items.schematic.SchematicTypeEnum;
@@ -63,6 +62,8 @@ public interface ISchematicData {
 	 * Crafting (casing:20wood, etc.)
 	 * @return
 	 */
-	public ArrayList<SchematicCraftingSlot> getCrafting();
-	public void setCrafting(ArrayList<SchematicCraftingSlot> crafting);
+	public SchematicCrafting getCrafting();
+	public void setCrafting(SchematicCrafting crafting);
+	
+	public String[] getSlotNames();
 }

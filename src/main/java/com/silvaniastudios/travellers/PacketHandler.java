@@ -1,6 +1,7 @@
 package com.silvaniastudios.travellers;
 
 import com.silvaniastudios.travellers.network.LearnSchematicMessage;
+import com.silvaniastudios.travellers.network.OpenKnowledgeTree;
 import com.silvaniastudios.travellers.network.PlayerDataSyncMessage;
 import com.silvaniastudios.travellers.network.SalvageSchematicMessage;
 import com.silvaniastudios.travellers.network.ScannerLineSyncMessage;
@@ -19,16 +20,20 @@ public class PacketHandler {
 		INSTANCE.registerMessage(PlayerDataSyncMessage.CPlayerDataSyncMessageHandler.class, PlayerDataSyncMessage.class,
 				id++, Side.CLIENT);
 
-		//INSTANCE.registerMessage(PlayerDataSyncMessage.SPlayerDataSyncMessageHandler.class, PlayerDataSyncMessage.class,
-		//		id++, Side.SERVER);
+		// INSTANCE.registerMessage(PlayerDataSyncMessage.SPlayerDataSyncMessageHandler.class,
+		// PlayerDataSyncMessage.class,
+		// id++, Side.SERVER);
 
 		INSTANCE.registerMessage(LearnSchematicMessage.SLearnSchematicMessageHandler.class, LearnSchematicMessage.class,
 				id++, Side.SERVER);
-		
-		INSTANCE.registerMessage(SalvageSchematicMessage.SSalvageSchematicMessage.class,
-				SalvageSchematicMessage.class, id++, Side.SERVER);
+
+		INSTANCE.registerMessage(SalvageSchematicMessage.SSalvageSchematicMessage.class, SalvageSchematicMessage.class,
+				id++, Side.SERVER);
 
 		INSTANCE.registerMessage(ScannerLineSyncMessage.CScannerLineSyncMessage.class, ScannerLineSyncMessage.class,
 				id++, Side.CLIENT);
+
+		INSTANCE.registerMessage(OpenKnowledgeTree.SOpenKnowledgeTreeHandler.class, OpenKnowledgeTree.class, id++,
+				Side.SERVER);
 	}
 }

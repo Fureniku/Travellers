@@ -43,4 +43,15 @@ public enum SchematicTypeEnum {
 			return EngineProceduralData.FIXED_STAT_NAMES;
 		}
 	}
+	
+	public String[] getSlotNames () {
+		switch (this) {
+		default:
+			return null;
+		case ENGINE:
+			return EngineProceduralData.ENGINE_SLOT_NAMES;
+		}
+		
+		//TODO: add more here
+	}
 }

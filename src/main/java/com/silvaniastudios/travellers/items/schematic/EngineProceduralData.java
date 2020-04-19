@@ -1,9 +1,9 @@
 package com.silvaniastudios.travellers.items.schematic;
 
 import java.util.Arrays;
-import java.util.ArrayList;
 
 import com.silvaniastudios.travellers.capability.schematicData.ISchematicData;
+import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicCrafting;
 import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicCraftingSlot;
 import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicStatisticSlot;
 import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicStats;
@@ -85,7 +85,7 @@ public class EngineProceduralData {
 		return Math.round(power - propMount.minPower);
 	}
 	
-	public static ArrayList<SchematicCraftingSlot> generateEngineCosts (ISchematicData schematic) {
+	public static SchematicCrafting generateEngineCosts (ISchematicData schematic) {
 		
 		SchematicStats stats = schematic.getStats();
 		
@@ -115,7 +115,7 @@ public class EngineProceduralData {
 		slotProp.amount = 2 * (int)(statBoost.amount + statOhl.amount); //2 x (Spinup + Overheat)
 		slotProp.type = prop.materialType(); // Is Prop Vowel?
 		
-		ArrayList<SchematicCraftingSlot> slots = new ArrayList<SchematicCraftingSlot>();
+		SchematicCrafting slots = new SchematicCrafting();
 		slots.add(slotCasing);
 		slots.add(slotCombus);
 		slots.add(slotMech);
@@ -196,6 +196,7 @@ public class EngineProceduralData {
 		}
 		
 		public String materialType () {
+			System.out.println(this.mountType);
 			if (mountType.contentEquals("m")){
 				return "travellers.material.metal";
 			} else {

@@ -1,8 +1,8 @@
 package com.silvaniastudios.travellers.capability.schematicData;
 
-import java.util.ArrayList;
 import java.util.UUID;
 
+import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicCrafting;
 import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicCraftingSlot;
 import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicStatisticSlot;
 import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicStats;
@@ -18,7 +18,7 @@ public class SchematicData implements ISchematicData {
 	private SchematicRarityEnum rarity = SchematicRarityEnum.COMMON;
 	private SchematicTypeEnum type = SchematicTypeEnum.FIXED;
 	private SchematicStats stats = new SchematicStats();
-	private ArrayList<SchematicCraftingSlot> crafting = new ArrayList<SchematicCraftingSlot>();
+	private SchematicCrafting crafting = new SchematicCrafting();
 	
 	public SchematicData () {
 		uuid = UUID.randomUUID();
@@ -26,7 +26,7 @@ public class SchematicData implements ISchematicData {
 		rarity = SchematicRarityEnum.COMMON;
 		type = SchematicTypeEnum.FIXED;
 		stats = new SchematicStats();
-		crafting = new ArrayList<SchematicCraftingSlot>();
+		crafting = new SchematicCrafting();
 	}
 
 	@Override
@@ -85,7 +85,7 @@ public class SchematicData implements ISchematicData {
 			setStats(stats);
 		}
 		if (compound.hasKey("crafting")) {
-			ArrayList<SchematicCraftingSlot> crafting = new ArrayList<SchematicCraftingSlot>();
+			SchematicCrafting crafting = new SchematicCrafting();
 			for (String key : compound.getCompoundTag("crafting").getKeySet()) {
 				NBTTagCompound craft = compound.getCompoundTag("crafting").getCompoundTag(key);
 				crafting.add(new SchematicCraftingSlot(key, craft.getString("type"), craft.getInteger("amount")));
@@ -160,13 +160,27 @@ public class SchematicData implements ISchematicData {
 	}
 
 	@Override
-	public ArrayList<SchematicCraftingSlot> getCrafting() {
+	public SchematicCrafting getCrafting() {
 		return this.crafting;
 	}
 
 	@Override
-	public void setCrafting(ArrayList<SchematicCraftingSlot> crafting) {
+	public void setCrafting(SchematicCrafting crafting) {
 		this.crafting = crafting;
+	}
+	
+	@Override
+	public String[] getSlotNames () {
+		if (getType() == SchematicTypeEnum.FIXED) {
+			String[] slotNames = new String[getCrafting().size()];
+			for (int i = 0; i < getCrafting().size(); i++) {
+				slotNames[i] = getCrafting().get(i).name;
+			}
+			return slotNames;
+		} else {
+			String[] slotNames = getType().getSlotNames();
+			return slotNames;
+		}
 	}
 	
 }

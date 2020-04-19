@@ -100,6 +100,17 @@ itemGroup.travellers=Travellers
 itemGroup.schematics=Schematics
 itemGroup.lore=Codex Pieces
 
+travellers.material.metal=Metal
+travellers.material.wood=Wood
+travellers.material.cloth=Cloth
+travellers.material.atlas=Atlas
+travellers.material.fuel=Fuel
+
+travellers.slot.casing.name=Casing
+travellers.slot.combus.name=Combustion Internals
+travellers.slot.mech.name=Mechanical Internals
+travellers.slot.prop.name=Propeller
+
 travellers.config.title_world=Travellers Config
 
 travellers.tooltip.fixed.common=Common Schematic

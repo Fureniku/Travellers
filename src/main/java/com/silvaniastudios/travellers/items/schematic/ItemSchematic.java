@@ -1,6 +1,5 @@
 package com.silvaniastudios.travellers.items.schematic;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.silvaniastudios.travellers.ModItems;
@@ -9,7 +8,7 @@ import com.silvaniastudios.travellers.capability.schematicData.ISchematicData;
 import com.silvaniastudios.travellers.capability.schematicData.SchematicData;
 import com.silvaniastudios.travellers.capability.schematicData.SchematicDataProvider;
 import com.silvaniastudios.travellers.client.gui.GuiSchematicInfoScreen;
-import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicCraftingSlot;
+import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicCrafting;
 import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicStatisticSlot;
 import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicStats;
 
@@ -59,7 +58,7 @@ public class ItemSchematic extends Item {
 	 * Fixed Schematic - JSON data supplies all fields
 	 */
 	public ItemSchematic(String name, String rarity, SchematicStats stats,
-			ArrayList<SchematicCraftingSlot> crafting) {
+			SchematicCrafting crafting) {
 		this("schematic_" + name);
 
 		this.setCreativeTab(Travellers.tabSchematics);

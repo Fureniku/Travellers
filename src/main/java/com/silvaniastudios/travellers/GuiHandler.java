@@ -7,8 +7,10 @@ import com.silvaniastudios.travellers.blocks.tileentity.shipyard.ShipyardEntity;
 import com.silvaniastudios.travellers.client.gui.GuiAssembler;
 import com.silvaniastudios.travellers.client.gui.GuiCrosshair;
 import com.silvaniastudios.travellers.client.gui.GuiKnowledgeOverlay;
+import com.silvaniastudios.travellers.client.gui.GuiKnowledgeTree;
 import com.silvaniastudios.travellers.client.gui.GuiScannerInformation;
 import com.silvaniastudios.travellers.client.gui.GuiShipyard;
+import com.silvaniastudios.travellers.inventory.EmptyContainer;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -24,6 +26,10 @@ public class GuiHandler implements IGuiHandler {
 	public static final GuiKnowledgeOverlay knowledge_overlay = new GuiKnowledgeOverlay();
 	public static final GuiCrosshair crosshair_overlay = new GuiCrosshair();
 	public static final GuiScannerInformation scanner_information = new GuiScannerInformation();
+	
+	public enum TravellersContainers {
+			EMPTY, SHIPYARD, ASSEMBLER, KNOWLEDGE_TREE
+	};
 	
 	@SubscribeEvent
 	public void onRenderGui(RenderGameOverlayEvent.Post event) {
@@ -57,6 +63,11 @@ public class GuiHandler implements IGuiHandler {
 				return new AssemblerContainer(player.inventory, (AssemblerEntity) te);
 			}
 		}
+		
+		if (ID == TravellersContainers.KNOWLEDGE_TREE.ordinal()) {
+			return new EmptyContainer(player.inventory, !world.isRemote, player);
+		}
+		
 		return null;
 	}
 	
@@ -72,6 +83,10 @@ public class GuiHandler implements IGuiHandler {
 				AssemblerEntity entity = (AssemblerEntity) te;
 				return new GuiAssembler(entity, new AssemblerContainer(player.inventory, entity));
 			}
+		}
+		
+		if (ID == TravellersContainers.KNOWLEDGE_TREE.ordinal()) {
+			return new GuiKnowledgeTree(player, world);
 		}
 		return null;
 	}

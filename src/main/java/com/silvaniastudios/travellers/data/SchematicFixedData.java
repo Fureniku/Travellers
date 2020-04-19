@@ -42,7 +42,7 @@ public class SchematicFixedData {
 		public String name;
 		public String rarity;
 		public SchematicStats stats;
-		public ArrayList<SchematicCraftingSlot> crafting;
+		public SchematicCrafting crafting;
 	}
 	
 	public static class SchematicStatisticSlot {
@@ -120,6 +120,28 @@ public class SchematicFixedData {
 		public String toString() {
 			return String.format("[name=%s, type=%s, amount=%d]", name, type, amount);
 		}
+	}
+	
+	public static class SchematicCrafting extends ArrayList<SchematicCraftingSlot> {
+
+		private static final long serialVersionUID = 8710708185018416424L;
+		
+		public SchematicCrafting () {
+			super();
+		}
+		
+		public SchematicCraftingSlot find (String slotName) {
+			SchematicCraftingSlot foundSlot = null;
+			
+			for (SchematicCraftingSlot slot : this) {
+				if (slot.name.contentEquals(slotName)) {
+					foundSlot = slot;
+				}
+			}
+			
+			return foundSlot;
+		}
+		
 	}
 
 }

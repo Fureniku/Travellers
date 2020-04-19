@@ -1,6 +1,7 @@
 package com.silvaniastudios.travellers.client.gui;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import com.silvaniastudios.travellers.PacketHandler;
 import com.silvaniastudios.travellers.Travellers;
@@ -8,7 +9,9 @@ import com.silvaniastudios.travellers.capability.playerData.IPlayerData;
 import com.silvaniastudios.travellers.capability.playerData.PlayerDataProvider;
 import com.silvaniastudios.travellers.capability.schematicData.ISchematicData;
 import com.silvaniastudios.travellers.capability.schematicData.SchematicDataProvider;
+import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicCraftingSlot;
 import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicStatisticSlot;
+import com.silvaniastudios.travellers.items.schematic.EngineProceduralData;
 import com.silvaniastudios.travellers.items.schematic.ItemSchematic;
 import com.silvaniastudios.travellers.items.schematic.SchematicTypeEnum;
 import com.silvaniastudios.travellers.network.LearnSchematicMessage;
@@ -29,6 +32,7 @@ public class GuiSchematicInfoScreen extends GuiScreen {
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation(Travellers.MODID,
 			"textures/gui/schematic.png");
+	private static final ResourceLocation icons = new ResourceLocation(Travellers.MODID, "textures/gui/icons.png");
 
 	private int screenLeft;
 	private int screenTop;
@@ -153,16 +157,62 @@ public class GuiSchematicInfoScreen extends GuiScreen {
 			// Draw progress bars
 			int index = 1;
 			for (SchematicStatisticSlot stat : schematic.getStats()) {
-				
-				this.drawTexturedModalRect(screenLeft + infoSectionXSize + infoMarginRight, screenTop - 14 + ((index) * 19),
-						0, 110, 114, 19);
-				
+
+				this.drawTexturedModalRect(screenLeft + infoSectionXSize + infoMarginRight,
+						screenTop - 14 + ((index) * 19), 0, 110, 114, 19);
+
 				this.drawTexturedModalRect(screenLeft + infoSectionXSize + infoMarginRight + 7,
 						screenTop + (index * 19), 0, 100, (int) stat.amount, 5);
 				index++;
 			}
-			
-			this.drawTexturedModalRect(screenLeft + infoSectionXSize + infoMarginRight, screenTop - 14 + ((index) * 19), 0, 205, 114, 8);
+
+			this.drawTexturedModalRect(screenLeft + infoSectionXSize + infoMarginRight, screenTop - 14 + ((index) * 19),
+					0, 205, 114, 8);
+		}
+
+		if (schematic.getCrafting().size() > 0) {
+			this.drawTexturedModalRect(screenLeft - 5 - 70, screenTop, 114, 105, 70, 7);
+
+			int index = 0;
+			for (String slot : schematic.getSlotNames()) {
+
+				SchematicCraftingSlot crafting = schematic.getCrafting().find(slot);
+				if (crafting != null) {
+					this.mc.renderEngine.bindTexture(TEXTURE);
+
+					int left = screenLeft - 5 - 70;
+					int top = screenTop + 7 + (index * 25);
+
+					if (index > 0) {
+						this.drawTexturedModalRect(left, top - 7, 114, 130, 70, 7);
+					}
+
+					this.drawTexturedModalRect(left, top, 114, 112, 70, 18);
+					top += 1;
+					left += 7;
+
+					switch (crafting.type) {
+					case "travellers.material.wood":
+						this.drawWoodIcon(left, top, false);
+						break;
+					case "travellers.material.metal":
+						this.drawMetalIcon(left, top, false);
+						break;
+					default:
+						this.drawMaterialIcon(left, top, false);
+						break;
+					}
+
+					top += 5;
+					left += 19;
+
+					index++;
+				}
+
+				this.mc.renderEngine.bindTexture(TEXTURE);
+
+				this.drawTexturedModalRect(screenLeft - 5 - 70, screenTop + (index * 25), 114, 205, 70, 7);
+			}
 		}
 	}
 
@@ -172,8 +222,19 @@ public class GuiSchematicInfoScreen extends GuiScreen {
 		this.drawBackground(0);
 		super.drawScreen(mouseX, mouseY, partialTicks);
 
+		int index = 0;
+		for (String slot : schematic.getSlotNames()) {
+
+			SchematicCraftingSlot crafting = schematic.getCrafting().find(slot);
+			if (crafting != null) {
+				fontRenderer.drawString(String.valueOf(crafting.amount), screenLeft - 5 - 70 + 26,
+						screenTop + 7 + (index * 25) + 6, 0xFFFFFF);
+			}
+			index++;
+		}
+
 		itemRender.renderItemIntoGUI(stack, this.screenLeft + infoPaddingLeft, this.screenTop + infoPaddingTop);
-		
+
 		fontRenderer.drawSplitString(
 				String.format("%s%s%s", schematic.getRarity().toMCRarity().rarityColor, this.titleText,
 						TextFormatting.RESET),
@@ -188,7 +249,7 @@ public class GuiSchematicInfoScreen extends GuiScreen {
 
 		if (schematic.getStats().size() > 0) {
 
-			int index = 0;
+			index = 0;
 			for (SchematicStatisticSlot stat : schematic.getStats()) {
 				fontRenderer.drawString(I18n.format(stat.name), screenLeft + infoSectionXSize + infoMarginRight + 7,
 						screenTop + 8 + (19 * index), 5592405);
@@ -201,6 +262,25 @@ public class GuiSchematicInfoScreen extends GuiScreen {
 
 				index++;
 			}
+		}
+
+		index = 0;
+		for (String slot : schematic.getSlotNames()) {
+
+			SchematicCraftingSlot crafting = schematic.getCrafting().find(slot);
+			if (crafting != null) {
+				ArrayList<String> tooltips = new ArrayList<String>();
+				tooltips.add(I18n.format(crafting.name));
+				tooltips.add(I18n.format(crafting.type) + ": " + String.valueOf(crafting.amount));
+
+				if ((screenLeft - 5 - 70 < mouseX && mouseX < screenLeft - 5 - 6)
+						&& (screenTop + 7 + (index * 25) < mouseY && mouseY < screenTop + 7 + (index * 25) + 18)) {
+
+					this.drawHoveringText(tooltips, mouseX, mouseY, fontRenderer);
+
+				}
+			}
+			index++;
 		}
 
 	}
@@ -218,10 +298,12 @@ public class GuiSchematicInfoScreen extends GuiScreen {
 
 		player.setHeldItem(EnumHand.MAIN_HAND, ItemStack.EMPTY);
 		player.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, ItemStack.EMPTY);
-		//FMLCommonHandler.instance().getMinecraftServerInstance().addScheduledTask(() -> {
-		//	FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList()
-		//			.getPlayerByUUID(player.getUniqueID()).setHeldItem(EnumHand.MAIN_HAND, ItemStack.EMPTY);
-		//});
+		// FMLCommonHandler.instance().getMinecraftServerInstance().addScheduledTask(()
+		// -> {
+		// FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList()
+		// .getPlayerByUUID(player.getUniqueID()).setHeldItem(EnumHand.MAIN_HAND,
+		// ItemStack.EMPTY);
+		// });
 		this.itemRemoved = true;
 		player.closeScreen();
 	}
@@ -232,17 +314,37 @@ public class GuiSchematicInfoScreen extends GuiScreen {
 
 		if (!this.itemRemoved) {
 			player.setHeldItem(EnumHand.MAIN_HAND, stack);
-			
-			//FMLCommonHandler.instance().getMinecraftServerInstance().addScheduledTask(() -> {
-			//	FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList()
-			//			.getPlayerByUUID(player.getUniqueID()).setHeldItem(EnumHand.MAIN_HAND, stack);
-			//});
+
+			// FMLCommonHandler.instance().getMinecraftServerInstance().addScheduledTask(()
+			// -> {
+			// FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList()
+			// .getPlayerByUUID(player.getUniqueID()).setHeldItem(EnumHand.MAIN_HAND,
+			// stack);
+			// });
 		}
 	}
 
 	@Override
 	public boolean doesGuiPauseGame() {
 		return false;
+	}
+
+	private void drawMaterialIcon(int left, int top, boolean overlay) {
+		int offset = overlay ? 16 : 0;
+		mc.getTextureManager().bindTexture(icons);
+		drawTexturedModalRect(left, top, 0, 0 + offset, 16, 16);
+	}
+
+	private void drawMetalIcon(int left, int top, boolean overlay) {
+		int offset = overlay ? 16 : 0;
+		mc.getTextureManager().bindTexture(icons);
+		drawTexturedModalRect(left, top, 16, 0 + offset, 16, 16);
+	}
+
+	private void drawWoodIcon(int left, int top, boolean overlay) {
+		int offset = overlay ? 16 : 0;
+		mc.getTextureManager().bindTexture(icons);
+		drawTexturedModalRect(left, top, 32, 0 + offset, 16, 16);
 	}
 
 }

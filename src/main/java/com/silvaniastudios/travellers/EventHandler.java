@@ -2,17 +2,24 @@ package com.silvaniastudios.travellers;
 
 import com.silvaniastudios.travellers.capability.playerData.IPlayerData;
 import com.silvaniastudios.travellers.capability.playerData.PlayerDataProvider;
+import com.silvaniastudios.travellers.client.ClientProxy;
+import com.silvaniastudios.travellers.network.OpenKnowledgeTree;
 import com.silvaniastudios.travellers.network.PlayerDataSyncMessage;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.ItemPickupEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EventHandler {
 	@SubscribeEvent
@@ -59,6 +66,17 @@ public class EventHandler {
 	@SubscribeEvent
 	public void onPlayerPickupItemStack(ItemPickupEvent event) {
 		System.out.println(event.getOriginalEntity().serializeNBT().toString());
+	}
+	
+	@SideOnly(Side.CLIENT)
+	@SubscribeEvent
+	public void onKeyPressed (KeyInputEvent event) {
+		KeyBinding[] keyBindings = ClientProxy.keyBindings;
+		
+		if (keyBindings[0].isPressed()) {
+			// open gui
+			PacketHandler.INSTANCE.sendToServer(new OpenKnowledgeTree(Minecraft.getMinecraft().player));
+		}
 	}
 
 }
