@@ -20,8 +20,8 @@ public class EmptyContainer extends ContainerPlayer {
 	public void addPlayerSlots(IInventory playerInventory) {
 		// add inv slots
 
-		int left = 151;
-		int top = 129;
+		int left = 294;
+		int top = 174;
 
 		for (int i = 0; i < 3; ++i) {
 			for (int j = 0; j < 9; ++j) {
@@ -31,8 +31,8 @@ public class EmptyContainer extends ContainerPlayer {
 			}
 		}
 
-		left = 151;
-		top = 187;
+		left = 294;
+		top = 232;
 
 		// add hotbar slots
 		for (int i = 0; i < 9; ++i) {

@@ -94,11 +94,12 @@ public class GuiTextScrollPane extends Gui {
 		}
 	}
 
-	public void updateScrollPos() {
+	public int updateScrollPos() {
+		int dWheel = Mouse.getDWheel();
 		if (draggingScroll) {
 			scrollPosition += Mouse.getDY();
 		} else {
-			deltaScroll = Mouse.getDWheel() / 8;
+			deltaScroll = dWheel / 8;
 			scrollPosition += deltaScroll;
 		}
 		
@@ -109,7 +110,7 @@ public class GuiTextScrollPane extends Gui {
 		}
 
 		scrollBarPosition = ((double) scrollPosition / (double) scrollBottom) * (height - scrollBarHeight);
-
+		return dWheel;
 	}
 
 	/**
@@ -117,7 +118,7 @@ public class GuiTextScrollPane extends Gui {
 	 */
 	public void draw() {
 		// Update the variables with the scroll bar position
-		updateScrollPos();
+		//updateScrollPos();
 
 		// Set up GlStateManager for drawing
 		GlStateManager.pushMatrix();
@@ -131,7 +132,8 @@ public class GuiTextScrollPane extends Gui {
 		// Render text, translates in the y by the current scroll position
 		GlStateManager.depthFunc(515);
 		GlStateManager.translate(0F, (float) scrollPosition, 0F);
-		mc.fontRenderer.drawSplitString(text, 0, 0, width - scrollBarWidth, 5592405);
+		
+		this.drawInside();
 
 		// Render scroll bar. First undoes the scroll position translation, then
 		// moves to the scroll bar position
@@ -150,6 +152,10 @@ public class GuiTextScrollPane extends Gui {
 		GlStateManager.popMatrix();
 		GlStateManager.depthFunc(515);
 		GlStateManager.disableDepth();
+	}
+	
+	public void drawInside () {
+		mc.fontRenderer.drawSplitString(text, 0, 0, width - scrollBarWidth, 5592405);
 	}
 
 	public void onMouseDown(int mouseX, int mouseY) {

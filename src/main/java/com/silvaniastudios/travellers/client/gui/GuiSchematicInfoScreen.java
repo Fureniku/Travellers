@@ -11,7 +11,6 @@ import com.silvaniastudios.travellers.capability.schematicData.ISchematicData;
 import com.silvaniastudios.travellers.capability.schematicData.SchematicDataProvider;
 import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicCraftingSlot;
 import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicStatisticSlot;
-import com.silvaniastudios.travellers.items.schematic.EngineProceduralData;
 import com.silvaniastudios.travellers.items.schematic.ItemSchematic;
 import com.silvaniastudios.travellers.items.schematic.SchematicTypeEnum;
 import com.silvaniastudios.travellers.network.LearnSchematicMessage;
@@ -28,6 +27,12 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 
+
+/**
+ * 
+ * @author jamesm2w
+ *
+ */
 public class GuiSchematicInfoScreen extends GuiScreen {
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation(Travellers.MODID,

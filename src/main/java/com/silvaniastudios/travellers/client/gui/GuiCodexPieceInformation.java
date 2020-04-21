@@ -117,6 +117,7 @@ public class GuiCodexPieceInformation extends GuiScreen {
 		fontRenderer.drawSplitString(titleText + rarityText, screenLeft + 5, screenTop + 5, xSize - 10, 0xFFFFFF);
 
 		if (shouldScroll) {
+			scrollPane.updateScrollPos();
 			scrollPane.draw();
 		} else {
 			fontRenderer.drawSplitString(this.piece.text, this.screenLeft + 7, this.screenTop + titleHeight + 10,
