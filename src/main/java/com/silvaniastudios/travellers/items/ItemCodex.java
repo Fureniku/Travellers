@@ -3,6 +3,7 @@ package com.silvaniastudios.travellers.items;
 import java.util.List;
 import java.util.UUID;
 
+import com.silvaniastudios.travellers.ChatHandler;
 import com.silvaniastudios.travellers.ModItems;
 import com.silvaniastudios.travellers.PacketHandler;
 import com.silvaniastudios.travellers.Travellers;
@@ -19,7 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -96,19 +97,21 @@ public class ItemCodex extends ItemBasic {
 			IPlayerData playerData = playerIn.getCapability(PlayerDataProvider.PLAYER_DATA, null);
 
 			if (playerData.getKnownLorePieces().contains(this.guid)) {
-				String message = String.format("%sYou have already collected this codex piece%s", TextFormatting.GOLD,
-						TextFormatting.RESET);
-				playerIn.sendMessage(new TextComponentString(message));
+				
+				ITextComponent msg = ChatHandler.translatedString("chat.message.alreadyCollected", TextFormatting.GOLD);
+				playerIn.sendMessage(msg);
 
 				return new ActionResult<ItemStack>(EnumActionResult.PASS, playerHolding);
 			}
 
 			playerData.learnLorePiece(this.guid);
-			String message = String.format("%sPiece %s%d%s of %s%s%s gave you %s%d%s knowledge%s", TextFormatting.GOLD,
-					TextFormatting.RESET, this.pieceIndex + 1, TextFormatting.GOLD, TextFormatting.RESET,
-					this.parentName, TextFormatting.GOLD, TextFormatting.RESET, this.knowledge, TextFormatting.GOLD,
-					TextFormatting.RESET);
-			playerIn.sendMessage(new TextComponentString(message));
+			
+			ITextComponent msg = ChatHandler.translatedString("chat.message.codexCollect", TextFormatting.GOLD,
+					ChatHandler.number(this.pieceIndex + 1, TextFormatting.WHITE),
+					ChatHandler.translatedString(this.parentName, TextFormatting.WHITE),
+					ChatHandler.number(this.knowledge, TextFormatting.WHITE));
+
+			playerIn.sendMessage(msg);
 
 			PacketHandler.INSTANCE.sendTo(new PlayerDataSyncMessage(playerData), (EntityPlayerMP) playerIn);
 

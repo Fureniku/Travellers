@@ -2,6 +2,7 @@ package com.silvaniastudios.travellers.network;
 
 import java.util.UUID;
 
+import com.silvaniastudios.travellers.ChatHandler;
 import com.silvaniastudios.travellers.PacketHandler;
 import com.silvaniastudios.travellers.capability.playerData.PlayerDataProvider;
 import com.silvaniastudios.travellers.capability.schematicData.SchematicDataProvider;
@@ -11,7 +12,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
@@ -83,8 +84,10 @@ public class SalvageSchematicMessage implements IMessage {
 				
 				player.inventory.deleteStack(message.schematic);
 				
-				player.sendMessage(new TextComponentString(String.format("%sYou gained %s%d%s knowledge%s",
-						TextFormatting.GOLD, TextFormatting.RESET, increase, TextFormatting.GOLD, TextFormatting.RESET)));
+				ITextComponent msg = ChatHandler.translatedString("chat.message.knowledgeScan", TextFormatting.GOLD,
+						ChatHandler.number(increase, TextFormatting.WHITE));
+				
+				player.sendMessage(msg);
 
 				PacketHandler.INSTANCE.sendTo(
 						new PlayerDataSyncMessage(player.getCapability(PlayerDataProvider.PLAYER_DATA, null)),

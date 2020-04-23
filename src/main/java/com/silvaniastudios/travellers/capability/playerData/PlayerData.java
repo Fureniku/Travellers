@@ -5,8 +5,12 @@ import java.util.HashMap;
 import java.util.UUID;
 
 import com.silvaniastudios.travellers.Travellers;
+import com.silvaniastudios.travellers.capability.schematicData.ISchematicData;
 import com.silvaniastudios.travellers.capability.schematicData.SchematicDataProvider;
+import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicCategories;
+import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicCategories.EnumMethod;
 import com.silvaniastudios.travellers.entity.EntityScannerLine;
+import com.silvaniastudios.travellers.items.schematic.SchematicTypeEnum;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
@@ -97,19 +101,17 @@ public class PlayerData implements IPlayerData {
 	public void setDev(boolean isDev) {
 		this.isDev = isDev;
 	}
-	
 
-	
 	@Override
 	public boolean isScanning() {
 		return this.entityScanning != null;
 	}
-	
+
 	@Override
 	public EntityScannerLine getScanningEntity() {
 		return this.entityScanning;
 	}
-	
+
 	@Override
 	public void setScanning(EntityScannerLine scanning) {
 		this.entityScanning = scanning;
@@ -125,11 +127,11 @@ public class PlayerData implements IPlayerData {
 	 */
 
 	@Override
-	public HashMap<String, Integer> getKnowledgeNodeUses() {
+	public HashMap<String, Integer> getKnowledgeTreeUses() {
 		return this.knowledgeNodeUses;
 	}
-	
-	public int getKnowledgeNodeUsage (String nodeKey) {
+
+	public int getKnowledgeNodeUsage(String nodeKey) {
 		if (this.knowledgeNodeUses.get(nodeKey) != null) {
 			return this.knowledgeNodeUses.get(nodeKey);
 		} else {
@@ -166,11 +168,11 @@ public class PlayerData implements IPlayerData {
 
 	@Override
 	public void learnLorePiece(String loreID) {
-		
+
 		if (Travellers.CODEX_DATA.piecesByGuid.get(loreID) == null) {
 			return;
 		}
-		
+
 		this.knownLorePieces.add(loreID);
 
 		this.incrementKnowledgeBalance(Travellers.CODEX_DATA.piecesByGuid.get(loreID).knowledge);
@@ -187,16 +189,16 @@ public class PlayerData implements IPlayerData {
 		NBTTagCompound nbtTag = new NBTTagCompound();
 		nbtTag.setInteger("knowledge", this.getKnowledgeBalance());
 		nbtTag.setBoolean("isDev", this.isDev());
-		
+
 		if (this.entityScanning != null) {
 			nbtTag.setTag("entityScanning", this.entityScanning.serializeNBT());
 		}
-	
+
 		nbtTag.setString("shipyardVisitorCode", this.getShipyardVisitorCode());
 
 		NBTTagCompound knowledgeTreeUses = new NBTTagCompound();
-		for (String key : this.getKnowledgeNodeUses().keySet()) {
-			knowledgeTreeUses.setInteger(key, this.getKnowledgeNodeUses().get(key));
+		for (String key : this.getKnowledgeTreeUses().keySet()) {
+			knowledgeTreeUses.setInteger(key, this.getKnowledgeTreeUses().get(key));
 		}
 
 		int index = 0;
@@ -214,7 +216,7 @@ public class PlayerData implements IPlayerData {
 		nbtTag.setTag("learntSchematicList", learntSchematics);
 		nbtTag.setTag("knowledgeTreeUses", knowledgeTreeUses);
 		nbtTag.setTag("knownLorePieces", knownLorePieces);
-		
+
 		NBTTagCompound scannedObjects = new NBTTagCompound();
 		index = 0;
 		for (String object : this.scannedObjects) {
@@ -235,24 +237,24 @@ public class PlayerData implements IPlayerData {
 
 	@Override
 	public void fromNBT(NBTBase nbt) {
-		
+
 		NBTTagCompound nbtTag = (NBTTagCompound) nbt;
 
 		this.setKnowledgeBalance(nbtTag.getInteger("knowledge"));
 		this.setDev(nbtTag.getBoolean("isDev"));
-		
+
 		if (nbtTag.hasKey("entityScanning") && nbtTag.getTag("entityScanning") != null) {
-			
+
 			NBTTagCompound entityTag = nbtTag.getCompoundTag("entityScanning");
-			
+
 			World world = null;
-			
+
 			if (FMLCommonHandler.instance().getMinecraftServerInstance() != null) {
 				world = FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld();
 			} else if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
 				world = clientGetWorld();
 			}
-			
+
 			UUID player = entityTag.getUniqueId("player");
 
 			if (player.toString().contentEquals("00000000-0000-0000-0000-000000000000")) {
@@ -286,17 +288,17 @@ public class PlayerData implements IPlayerData {
 		for (String key : nbtTag.getCompoundTag("shipDesignList").getKeySet()) {
 			designList.put(key, new ItemStack(nbtTag.getCompoundTag("shipDesignList").getCompoundTag(key)));
 		}
-		
+
 		ArrayList<String> scannedObjects = new ArrayList<String>();
 		for (String key : nbtTag.getCompoundTag("scannedObjects").getKeySet()) {
 			scannedObjects.add(nbtTag.getCompoundTag("scannedObjects").getString(key));
 		}
-		
+
 		HashMap<String, Integer> knowledgeTree = new HashMap<String, Integer>();
-		for (String key: nbtTag.getCompoundTag("knowledgeTreeUses").getKeySet()) {
+		for (String key : nbtTag.getCompoundTag("knowledgeTreeUses").getKeySet()) {
 			knowledgeTree.put(key, nbtTag.getCompoundTag("knowledgeTreeUses").getInteger(key));
 		}
-		
+
 		this.scannedObjects = scannedObjects;
 		this.shipDesignList = designList;
 		this.schematicList = schematicList;
@@ -304,24 +306,24 @@ public class PlayerData implements IPlayerData {
 		this.setKnownLorePieces(knownLorePieces);
 
 	}
-	
+
 	@SideOnly(Side.CLIENT)
-	public World clientGetWorld () {
+	public World clientGetWorld() {
 		return Minecraft.getMinecraft().world;
 	}
-	
+
 	@Override
 	public void copyData(IPlayerData capability) {
 		this.setKnowledgeBalance(capability.getKnowledgeBalance());
 
 		this.setDev(capability.isDev());
-		
+
 		this.setScanning(capability.getScanningEntity());
 
 		this.setShipyardVisitorCode(capability.getShipyardVisitorCode());
 
-		for (String key : capability.getKnowledgeNodeUses().keySet()) {
-			this.setKnowledgeNodeUses(key, capability.getKnowledgeNodeUses().get(key));
+		for (String key : capability.getKnowledgeTreeUses().keySet()) {
+			this.setKnowledgeNodeUses(key, capability.getKnowledgeTreeUses().get(key));
 		}
 
 		this.schematicList = capability.getSchematicList();
@@ -329,8 +331,8 @@ public class PlayerData implements IPlayerData {
 		this.shipDesignList = capability.getShipDesignSchematics();
 
 		this.setKnownLorePieces(capability.getKnownLorePieces());
-		
-		this.knowledgeNodeUses = capability.getKnowledgeNodeUses();
+
+		this.knowledgeNodeUses = capability.getKnowledgeTreeUses();
 	}
 
 	@Override
@@ -346,23 +348,23 @@ public class PlayerData implements IPlayerData {
 	@Override
 	public boolean learnSchematic(ItemStack schematic) {
 		if (!hasLearntSchematic(schematic)) {
-			this.schematicList.add(schematic);
-			
-			//ISchematicData schemdata = schematic.getCapability(SchematicDataProvider.SCHEMATIC_DATA, null);
-			
-			/*System.out.println("UUID: " + schemdata.getUUID().toString());
-			System.out.println("Name: " + schemdata.getName());
-			System.out.println("Tooltip: " + schemdata.getTooltip());
-			System.out.println("Rarity: " + schemdata.getRarity().name);
-			System.out.println("Type: " + schemdata.getType().name);
-			System.out.println("Tags: " + Arrays.toString(schemdata.getTags()));
-			System.out.println("Unlearnable: " + String.format("%b", schemdata.isUnlearnable()));
-			System.out.println("Iconref: " + schemdata.getIconRef());
-			System.out.println("Stats: " + Arrays.toString(schemdata.getBaseStats()));
-			System.out.println("StatAmount: " + String.valueOf(schemdata.getStatAmount()));
-			System.out.println("isDefault" + String.format("%b", schemdata.isDefault()));*/
 
-			return true;
+			EnumMethod method = schematic.getCapability(SchematicDataProvider.SCHEMATIC_DATA, null).getCategories()
+					.getMethod();
+
+			int maxSize = (method == EnumMethod.ASSEMBLER) ? 25 : 15;
+			maxSize += getKnowledgeNodeUsage("increase_slots");
+
+			System.out.println("Max Schematic Size: " + String.valueOf(maxSize));
+			System.out.println("Type: " + method.toString());
+
+			if (method == EnumMethod.ASSEMBLER && getAssemblerSchematics().size() <= maxSize) {
+				this.schematicList.add(schematic);
+				return true;
+			} else if (method == EnumMethod.MULTITOOL && getMultitoolSchematics().size() <= maxSize) {
+				this.schematicList.add(schematic);
+				return true;
+			}
 		}
 
 		return false;
@@ -379,18 +381,64 @@ public class PlayerData implements IPlayerData {
 		return this.schematicList;
 	}
 
+	public ArrayList<ItemStack> getMultitoolSchematics() {
+		ArrayList<ItemStack> filtered = new ArrayList<ItemStack>();
+		for (ItemStack schematic : this.schematicList) {
+			if (schematic.getCapability(SchematicDataProvider.SCHEMATIC_DATA, null).getCategories()
+					.getMethod() == EnumMethod.MULTITOOL) {
+				filtered.add(schematic);
+			}
+		}
+
+		return filtered;
+	}
+
+	public ArrayList<ItemStack> getAssemblerSchematics() {
+		ArrayList<ItemStack> filtered = new ArrayList<ItemStack>();
+		for (ItemStack schematic : this.schematicList) {
+			if (schematic.getCapability(SchematicDataProvider.SCHEMATIC_DATA, null).getCategories()
+					.getMethod() == EnumMethod.ASSEMBLER) {
+				filtered.add(schematic);
+			}
+		}
+
+		return filtered;
+	}
+
+	public ArrayList<ItemStack> getSchematicsWithCategory(SchematicCategories.EnumMethod craftingMethod,
+			String category) {
+		ArrayList<ItemStack> filtered = new ArrayList<ItemStack>();
+		for (ItemStack schematic : this.schematicList) {
+			SchematicCategories schemCategories = schematic.getCapability(SchematicDataProvider.SCHEMATIC_DATA, null)
+					.getCategories();
+
+			if (schemCategories.getMethod() == craftingMethod && schemCategories.contains(category)) {
+				filtered.add(schematic);
+			}
+		}
+
+		return filtered;
+	}
+
 	@Override
 	public boolean hasLearntSchematic(ItemStack schematic) {
-		
-		UUID schematicUUID = schematic.getCapability(SchematicDataProvider.SCHEMATIC_DATA, null).getUUID();
-		
+
+		ISchematicData schematicData = schematic.getCapability(SchematicDataProvider.SCHEMATIC_DATA, null);
+
+		UUID schematicUUID = schematicData.getUUID();
+
 		for (ItemStack item : this.schematicList) {
-			
-			UUID currentItemUUID = item.getCapability(SchematicDataProvider.SCHEMATIC_DATA, null).getUUID();
-			
-			//System.out.println(String.valueOf(schematicUUID.compareTo(currentItemUUID)));
-			//System.out.println("Schematic: " + schematicUUID.toString());
-			//System.out.println("Current I: " + currentItemUUID.toString());
+			ISchematicData itemData = item.getCapability(SchematicDataProvider.SCHEMATIC_DATA, null);
+			UUID currentItemUUID = itemData.getUUID();
+
+			// System.out.println(String.valueOf(schematicUUID.compareTo(currentItemUUID)));
+			// System.out.println("Schematic: " + schematicUUID.toString());
+			// System.out.println("Current I: " + currentItemUUID.toString());
+			if (schematicData.getType() == SchematicTypeEnum.FIXED
+					&& schematicData.getName().equals(itemData.getName())) {
+				return true;
+			}
+
 			if (schematicUUID.compareTo(currentItemUUID) == 0) {
 				return true;
 			}
@@ -405,7 +453,7 @@ public class PlayerData implements IPlayerData {
 			this.scannedObjects.add(unlocalizedString.toLowerCase());
 			return true;
 		}
-		
+
 		return false;
 	}
 

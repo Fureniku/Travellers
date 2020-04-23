@@ -8,6 +8,7 @@ import com.silvaniastudios.travellers.capability.schematicData.ISchematicData;
 import com.silvaniastudios.travellers.capability.schematicData.SchematicData;
 import com.silvaniastudios.travellers.capability.schematicData.SchematicDataProvider;
 import com.silvaniastudios.travellers.client.gui.GuiSchematicInfoScreen;
+import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicCategories;
 import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicCrafting;
 import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicStatisticSlot;
 import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicStats;
@@ -28,6 +29,10 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
+/**
+ * 
+ * @author jamesm2w
+ */
 public class ItemSchematic extends Item {
 
 	private SchematicData schematicData;
@@ -59,7 +64,7 @@ public class ItemSchematic extends Item {
 	 * Fixed Schematic - JSON data supplies all fields
 	 */
 	public ItemSchematic(String name, String rarity, SchematicStats stats,
-			SchematicCrafting crafting) {
+			SchematicCrafting crafting, SchematicCategories categories) {
 		this("schematic_" + name);
 
 		this.setCreativeTab(Travellers.tabSchematics);
@@ -68,6 +73,8 @@ public class ItemSchematic extends Item {
 		schematicData.setType(SchematicTypeEnum.FIXED);
 		schematicData.setStats(stats);
 		schematicData.setCrafting(crafting);
+		schematicData.setCategories(categories);
+		
 		ModItems.schematicsByName.put(name, this);
 	}
 
@@ -121,7 +128,11 @@ public class ItemSchematic extends Item {
 			}
 			
 			if (schematicData.getType() != SchematicTypeEnum.FIXED) {
-				tooltip.add(I18n.format("travellers.tooltip.ship_parts." + schematicData.getType().name.toLowerCase()));
+				String description = I18n.format("travellers.tooltip.ship_parts." + schematicData.getType().name.toLowerCase());
+				if (description.length() > 44) {
+					description = description.substring(0, 41).concat("...");
+				}
+				tooltip.add(description);
 			} else {
 				tooltip.add(I18n.format("travellers.tooltip." + schematicData.getName().toLowerCase()));
 			}
@@ -160,6 +171,7 @@ public class ItemSchematic extends Item {
 								schematicData.getRarity()));
 						
 						schematicData.setCrafting(EngineProceduralData.generateEngineCosts(schematicData));
+						schematicData.setCategories(EngineProceduralData.getCategories(schematicData));
 						schematicData.generateUUID();
 					}
 

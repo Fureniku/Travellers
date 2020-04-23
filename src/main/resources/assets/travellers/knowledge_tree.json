@@ -9,8 +9,8 @@
 		"unlocks": [
 			{"name": "engine.common", "uses": 1},
 			{"name": "wing.common", "uses": 1},
-			{"name": "cannon.common", "uses": 1},
 			{"name": "swivel.common", "uses": 1},
+			{"name": "cannon.common", "uses": 1},
 			{"name": "increase_slots", "uses": 1},
 			{"name": "territory_control", "uses": 1}
 		],

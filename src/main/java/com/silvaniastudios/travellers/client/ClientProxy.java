@@ -3,7 +3,6 @@ package com.silvaniastudios.travellers.client;
 import org.lwjgl.input.Keyboard;
 
 import com.silvaniastudios.travellers.CommonProxy;
-import com.silvaniastudios.travellers.GuiHandler;
 import com.silvaniastudios.travellers.PacketHandler;
 import com.silvaniastudios.travellers.Travellers;
 import com.silvaniastudios.travellers.client.render.RenderScannerLine;
@@ -22,7 +21,6 @@ import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 
 public class ClientProxy extends CommonProxy {
@@ -31,8 +29,8 @@ public class ClientProxy extends CommonProxy {
 	
 	@Override
 	public void init(FMLInitializationEvent event) {
-		NetworkRegistry.INSTANCE.registerGuiHandler(Travellers.instance, new GuiHandler());
 		
+
 		keyBindings = new KeyBinding[] {
 				new KeyBinding("travellers.key.inventory.desc", Keyboard.KEY_K, "key.travellers.category")
 		};
@@ -59,7 +57,7 @@ public class ClientProxy extends CommonProxy {
 	}
 	
 	public void postInit(FMLPostInitializationEvent event) {
-		MinecraftForge.EVENT_BUS.register(new GuiHandler());
+		MinecraftForge.EVENT_BUS.register(new GuiOverlayHandler());
 	
 		super.postInit(event);
 	}

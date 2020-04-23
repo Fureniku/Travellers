@@ -38,7 +38,7 @@ public class PlayerDataViewer extends CommandBase {
 			sender.sendMessage(new TextComponentString("Schematic List: " + playerData.getSchematicList().toString()));
 			sender.sendMessage(new TextComponentString("Scanned Objects: " + playerData.getScannedObjects().toString()));
 			
-			sender.sendMessage(new TextComponentString("Knowledge Tree: " + playerData.getKnowledgeNodeUses().toString()));
+			sender.sendMessage(new TextComponentString("Knowledge Tree: " + playerData.getKnowledgeTreeUses().toString()));
 			
 		} else {
 			sender.sendMessage(new TextComponentString("No player data found"));

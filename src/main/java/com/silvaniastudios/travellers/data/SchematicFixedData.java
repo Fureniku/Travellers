@@ -29,7 +29,7 @@ public class SchematicFixedData {
 	public ArrayList<ItemSchematic> generateItems () {
 		ArrayList<ItemSchematic> list = new ArrayList<ItemSchematic>();
 		for (Schematic schem : schematicList) {
-			list.add(new ItemSchematic(schem.name, schem.rarity, schem.stats, schem.crafting));
+			list.add(new ItemSchematic(schem.name, schem.rarity, schem.stats, schem.crafting, schem.categories));
 		}
 		return list;
 	}
@@ -43,6 +43,7 @@ public class SchematicFixedData {
 		public String rarity;
 		public SchematicStats stats;
 		public SchematicCrafting crafting;
+		public SchematicCategories categories;
 	}
 	
 	public static class SchematicStatisticSlot {
@@ -140,6 +141,28 @@ public class SchematicFixedData {
 			}
 			
 			return foundSlot;
+		}
+		
+	}
+	
+	public static class SchematicCategories extends ArrayList<String> {
+
+		private static final long serialVersionUID = -4109164836752740552L;
+		
+		public SchematicCategories () {
+			super();
+		}
+		
+		public static enum EnumMethod {MULTITOOL, ASSEMBLER};
+		
+		public EnumMethod getMethod () {
+			if (this.contains("multitool")) {
+				return EnumMethod.MULTITOOL;
+			} else if (this.contains("assembler")) {
+				return EnumMethod.ASSEMBLER;
+			} else {
+				return null;
+			}
 		}
 		
 	}

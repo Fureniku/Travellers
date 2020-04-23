@@ -12,6 +12,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentString;
 
+/**
+ * 
+ * @author jamesm2w
+ *
+ */
 public class SchematicDataViewer extends CommandBase {
 
 	@Override
@@ -42,6 +47,7 @@ public class SchematicDataViewer extends CommandBase {
 			sender.sendMessage(new TextComponentString("Type: " + schemdata.getType().toString()));
 			sender.sendMessage(new TextComponentString("Stats: " + schemdata.getStats().toString()));
 			sender.sendMessage(new TextComponentString("Crafting: " + schemdata.getCrafting().toString()));
+			sender.sendMessage(new TextComponentString("Categories: " + schemdata.getCategories().toString()));
 		}
 	}
 

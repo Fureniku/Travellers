@@ -17,6 +17,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 @Mod.EventBusSubscriber
 public class CommonProxy {
@@ -41,6 +42,8 @@ public class CommonProxy {
 		// ItemStack(ModBlocks.blockOre1, 1, 0));
 		// OreDictionary.registerOre(CopperConfig.oredict.nuggetOreDict,
 		// ModItems.nuggetCopper);
+		
+		NetworkRegistry.INSTANCE.registerGuiHandler(Travellers.instance, new GuiHandler());
 		
 		PacketHandler.registerPacketsClient();
 

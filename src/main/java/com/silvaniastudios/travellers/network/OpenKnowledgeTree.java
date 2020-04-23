@@ -15,15 +15,17 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class OpenKnowledgeTree implements IMessage {
-	
+
 	public UUID playerUUID;
-	
-	public OpenKnowledgeTree (EntityPlayer player) {
+
+	public OpenKnowledgeTree(EntityPlayer player) {
+
 		this.playerUUID = player.getUniqueID();
 	}
-	
-	public OpenKnowledgeTree () {}
-	
+
+	public OpenKnowledgeTree() {
+	}
+
 	@Override
 	public void fromBytes(ByteBuf buf) {
 		this.playerUUID = UUID.fromString(ByteBufUtils.readUTF8String(buf));
@@ -33,23 +35,24 @@ public class OpenKnowledgeTree implements IMessage {
 	public void toBytes(ByteBuf buf) {
 		ByteBufUtils.writeUTF8String(buf, this.playerUUID.toString());
 	}
-	
+
 	public static class SOpenKnowledgeTreeHandler implements IMessageHandler<OpenKnowledgeTree, IMessage> {
 
 		@Override
 		public IMessage onMessage(OpenKnowledgeTree message, MessageContext ctx) {
 			MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
-			
+
 			server.addScheduledTask(() -> {
 				EntityPlayer player = server.getPlayerList().getPlayerByUUID(message.playerUUID);
 
-				player.openGui(Travellers.instance, TravellersContainers.KNOWLEDGE_TREE.ordinal(), server.getEntityWorld(), 0, 0, 0);
-				
+				player.openGui(Travellers.instance, TravellersContainers.KNOWLEDGE_TREE.ordinal(),
+						player.getEntityWorld(), (int) player.posX, (int) player.posY, (int) player.posZ);
+
 			});
-			
+
 			return null;
 		}
-		
+
 	}
 
 }

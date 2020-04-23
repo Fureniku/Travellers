@@ -3,6 +3,7 @@ package com.silvaniastudios.travellers.items.schematic;
 import java.util.Arrays;
 
 import com.silvaniastudios.travellers.capability.schematicData.ISchematicData;
+import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicCategories;
 import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicCrafting;
 import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicCraftingSlot;
 import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicStatisticSlot;
@@ -123,6 +124,14 @@ public class EngineProceduralData {
 		return slots;
 
 	}
+	
+	public static SchematicCategories getCategories (ISchematicData schematicData) {
+		SchematicCategories engineCategories = new SchematicCategories();
+		engineCategories.add("assembler");
+		engineCategories.add("engine");
+		engineCategories.add(schematicData.getRarity().name);
+		return engineCategories;
+	}	
 
 	public static final String[] ENGINE_SLOT_NAMES = new String[] { "travellers.slot.casing.name",
 			"travellers.slot.combus.name", "travellers.slot.mech.name", "travellers.slot.prop.name" };

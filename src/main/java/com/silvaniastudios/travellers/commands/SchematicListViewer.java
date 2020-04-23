@@ -12,6 +12,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentString;
 
+/**
+ * 
+ * @author jamesm2w
+ *
+ */
 public class SchematicListViewer extends CommandBase {
 
 	@Override
@@ -31,7 +36,7 @@ public class SchematicListViewer extends CommandBase {
 		
 		if (player.hasCapability(PlayerDataProvider.PLAYER_DATA, null)) {
 			IPlayerData playerData = player.getCapability(PlayerDataProvider.PLAYER_DATA, null);
-			
+			sender.sendMessage(new TextComponentString("Max size = +" + String.valueOf(playerData.getKnowledgeNodeUsage("increase_slots"))));
 			for (ItemStack stack : playerData.getSchematicList()) {
 				sender.sendMessage(new TextComponentString(stack.getDisplayName() + " UUID {" + stack.getCapability(SchematicDataProvider.SCHEMATIC_DATA, null).getUUID() + "}"));
 			}

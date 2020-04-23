@@ -2,6 +2,7 @@ package com.silvaniastudios.travellers.network;
 
 import java.util.UUID;
 
+import com.silvaniastudios.travellers.ChatHandler;
 import com.silvaniastudios.travellers.ModItems;
 import com.silvaniastudios.travellers.PacketHandler;
 import com.silvaniastudios.travellers.Travellers;
@@ -16,7 +17,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
@@ -64,22 +65,29 @@ public class UseKnowledgeNode implements IMessage {
 								player.posZ, stack.copy());
 						dropItem.setPickupDelay(0);
 						player.getEntityWorld().spawnEntity(dropItem);
-						
-						if (node.name.equals("engine.common") && playerData.getKnowledgeNodeUsage("engine.common") <= 1) {
+
+						if (node.name.equals("engine.common")
+								&& playerData.getKnowledgeNodeUsage("engine.common") <= 1) {
 							playerData.useKnowlegeNode("engine.power_generator");
-							doNodeRewards(player, Travellers.KNOWLEDGE_TREE.getNode("engine.power_generator"), playerData, true);
+							doNodeRewards(player, Travellers.KNOWLEDGE_TREE.getNode("engine.power_generator"),
+									playerData, true);
 							playerData.useKnowlegeNode("engine.moonshine");
-							doNodeRewards(player, Travellers.KNOWLEDGE_TREE.getNode("engine.moonshine"), playerData, true);
+							doNodeRewards(player, Travellers.KNOWLEDGE_TREE.getNode("engine.moonshine"), playerData,
+									true);
 						}
-						
-						if (node.name.equals("cannon.common") && playerData.getKnowledgeNodeUsage("cannon.common") <= 1) {
+
+						if (node.name.equals("cannon.common")
+								&& playerData.getKnowledgeNodeUsage("cannon.common") <= 1) {
 							playerData.useKnowlegeNode("cannon.cannon_shells");
-							doNodeRewards(player, Travellers.KNOWLEDGE_TREE.getNode("cannon.cannon_shells"), playerData, true);	
+							doNodeRewards(player, Travellers.KNOWLEDGE_TREE.getNode("cannon.cannon_shells"), playerData,
+									true);
 						}
-						
-						if (node.name.equals("swivel.common") && playerData.getKnowledgeNodeUsage("swivel.common") <= 1) {
+
+						if (node.name.equals("swivel.common")
+								&& playerData.getKnowledgeNodeUsage("swivel.common") <= 1) {
 							playerData.useKnowlegeNode("swivel.buckshot_shells");
-							doNodeRewards(player, Travellers.KNOWLEDGE_TREE.getNode("swivel.buckshot_shells"), playerData, true);	
+							doNodeRewards(player, Travellers.KNOWLEDGE_TREE.getNode("swivel.buckshot_shells"),
+									playerData, true);
 						}
 					}
 
@@ -92,10 +100,11 @@ public class UseKnowledgeNode implements IMessage {
 							if (instaLearn) {
 								schematic.onUpdate(stack, player.getEntityWorld(), player, 0, false);
 								playerData.learnSchematic(stack);
-								String response = String.format("%sLearnt %s%s%s", TextFormatting.GOLD,
-										stack.getRarity().rarityColor, stack.getDisplayName(), TextFormatting.RESET);
 
-								player.sendMessage(new TextComponentString(response));
+								ITextComponent msg = ChatHandler.translatedString("chat.message.learnSchematic",
+										TextFormatting.GOLD, ChatHandler.schematicString(stack));
+
+								player.sendMessage(msg);
 							} else {
 								EntityItem dropItem = new EntityItem(player.getEntityWorld(), player.posX, player.posY,
 										player.posZ, stack.copy());
@@ -105,17 +114,30 @@ public class UseKnowledgeNode implements IMessage {
 						}
 					}
 				} else if (node.rewards.type.equals("increase_schematic_slots")) {
-					//TODO Schematic Slot limiting
-					player.sendMessage(new TextComponentString("Increasing schematic slots has not been implemented yet"));
+
+					ITextComponent msg = ChatHandler.translatedString("chat.message.increasedSlots",
+							TextFormatting.GOLD);
+
+					player.sendMessage(msg);
 				} else if (node.rewards.type.equals("none")) {
 					// Just learn nothing special here
 					if (node.name.equals("reviver_interface")) {
-						player.sendMessage(new TextComponentString("Connected to the Ancient Reviver Network"));
+
+						ITextComponent msg = ChatHandler.translatedString("chat.message.reviverNetwork",
+								TextFormatting.GOLD);
+
+						player.sendMessage(msg);
 					} else if (node.name.equals("engine.moonshine")) {
-						player.sendMessage(new TextComponentString("Moonshine is not implemented yet!"));
+						// TODO: schematics and moonshine
+
+						ITextComponent msg = ChatHandler.translatedString("chat.message.notImplemented",
+								TextFormatting.BLUE, "Moonshine");
+						player.sendMessage(msg);
 					}
 				} else {
-					player.sendMessage(new TextComponentString("There was an error learning that knowledge node"));
+					ITextComponent msg = ChatHandler.translatedString("chat.message.error", TextFormatting.RED,
+							"process knowledge node rewards");
+					player.sendMessage(msg);
 				}
 			}
 		}
@@ -140,10 +162,14 @@ public class UseKnowledgeNode implements IMessage {
 								playerData.useKnowlegeNode(message.nodeKey);
 								playerData.incrementKnowledgeBalance(-node.cost);
 
-								player.sendMessage(new TextComponentString(String.format(
-										"%1$sResearched %2$s%3$s%1$s for %2$s%4$d%1$s knowledge%2$s",
-										TextFormatting.GOLD, TextFormatting.RESET, message.nodeKey, node.cost)));
-								
+								ITextComponent msg = ChatHandler.translatedString("chat.message.researchNode",
+										TextFormatting.GOLD,
+										ChatHandler.translatedString("travellers.node." + message.nodeKey,
+												TextFormatting.WHITE),
+										ChatHandler.number(node.cost, TextFormatting.WHITE));
+
+								player.sendMessage(msg);
+
 								doNodeRewards(player, node, playerData, false);
 							}
 						}

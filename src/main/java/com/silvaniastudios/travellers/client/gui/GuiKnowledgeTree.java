@@ -28,6 +28,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
+/**
+ * 
+ * @author jamesm2w
+ *
+ */
 public class GuiKnowledgeTree extends GuiContainer {
 
 	public static final ResourceLocation TEXTURE_LEFT = new ResourceLocation(Travellers.MODID,
@@ -122,7 +127,7 @@ public class GuiKnowledgeTree extends GuiContainer {
 
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-
+		
 		if (player.hasCapability(PlayerDataProvider.PLAYER_DATA, null)) {
 			playerData = player.getCapability(PlayerDataProvider.PLAYER_DATA, null);
 			// System.out.println(playerData.getKnowledgeNodeUses().toString());
@@ -131,6 +136,7 @@ public class GuiKnowledgeTree extends GuiContainer {
 		this.drawDefaultBackground();
 
 		super.drawScreen(mouseX, mouseY, partialTicks);
+		
 
 		int dWheel = Mouse.getDWheel();
 
@@ -155,6 +161,11 @@ public class GuiKnowledgeTree extends GuiContainer {
 					lines.add(I18n.format("travellers.node." + area.node.name));
 
 					if (!maxedOut) {
+						
+						if (!area.available) {
+							lines.add(TextFormatting.RED + I18n.format("Locked") + TextFormatting.RESET);
+						}
+						
 						if (playerData.getKnowledgeBalance() >= area.node.cost) {
 							lines.add(TextFormatting.GREEN + I18n.format("travellers.gui.message.cost", area.node.cost)
 									+ TextFormatting.RESET);
@@ -162,6 +173,8 @@ public class GuiKnowledgeTree extends GuiContainer {
 							lines.add(I18n.format("travellers.gui.message.cost", area.node.cost) + " " + TextFormatting.RED
 									+ I18n.format("travellers.gui.message.too_expensive") + TextFormatting.RESET);
 						}
+					} else {
+						lines.add(TextFormatting.GREEN + I18n.format("Researched") + TextFormatting.RESET);
 					}
 
 					if (Mouse.isButtonDown(0)) {
@@ -173,6 +186,8 @@ public class GuiKnowledgeTree extends GuiContainer {
 			}
 		}
 		nodeAreas = new ArrayList<NodeArea>();
+		
+		this.renderHoveredToolTip(mouseX, mouseY);
 	}
 
 	@Override
@@ -373,7 +388,7 @@ public class GuiKnowledgeTree extends GuiContainer {
 			}
 
 			if (maxedOut) {
-				drawTexturedModalRect(node.position[0], node.position[1], 0, 120, 30, 30);
+				drawTexturedModalRect(node.position[0], node.position[1], 0, 30, 30, 30);
 			}
 
 			drawTexturedModalRect(node.position[0], node.position[1], node.texture[0], node.texture[1], 30, 30);
@@ -384,10 +399,10 @@ public class GuiKnowledgeTree extends GuiContainer {
 			float width = 30 * deltaScroll;
 			float height = 30 * deltaScroll;
 
-			nodeAreas.add(new NodeArea(boxLeft, boxTop, width, height, node, (unlocked && canUse && !maxedOut)));
+			nodeAreas.add(new NodeArea(boxLeft, boxTop, width, height, node, (unlocked && canUse && !maxedOut), unlocked));
 
 		} else {
-			drawTexturedModalRect(node.position[0], node.position[1], 0, 150, 30, 30);
+			drawTexturedModalRect(node.position[0], node.position[1], 0, 120, 30, 30);
 		}
 
 	}
@@ -422,16 +437,18 @@ public class GuiKnowledgeTree extends GuiContainer {
 		float width;
 		float height;
 		KnowledgeNode node;
-
+		
+		boolean available = false;
 		boolean unlocked = false;
 
-		public NodeArea(float left, float top, float width, float height, KnowledgeNode node, boolean locked) {
+		public NodeArea(float left, float top, float width, float height, KnowledgeNode node, boolean locked, boolean available) {
 			this.x = left;
 			this.y = top;
 			this.width = width;
 			this.height = height;
 			this.node = node;
 			this.unlocked = locked;
+			this.available = available;
 		}
 
 		public boolean isOverArea(int mouseX, int mouseY) {

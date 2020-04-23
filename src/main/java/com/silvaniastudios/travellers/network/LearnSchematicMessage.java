@@ -2,6 +2,7 @@ package com.silvaniastudios.travellers.network;
 
 import java.util.UUID;
 
+import com.silvaniastudios.travellers.ChatHandler;
 import com.silvaniastudios.travellers.PacketHandler;
 import com.silvaniastudios.travellers.capability.playerData.PlayerDataProvider;
 import com.silvaniastudios.travellers.capability.schematicData.SchematicDataProvider;
@@ -11,7 +12,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
@@ -63,10 +64,10 @@ public class LearnSchematicMessage implements IMessage {
 
 				player.getCapability(PlayerDataProvider.PLAYER_DATA, null).learnSchematic(message.schematic);
 
-				String response = String.format("%sLearnt %s%s%s", TextFormatting.GOLD, message.schematic.getRarity().rarityColor,
-						message.schematic.getDisplayName(), TextFormatting.RESET);
+				ITextComponent msg = ChatHandler.translatedString("chat.message.learnSchematic", TextFormatting.GOLD, 
+						ChatHandler.schematicString(message.schematic));
 				
-				player.sendMessage(new TextComponentString(response));
+				player.sendMessage(msg);
 				
 				player.inventory.deleteStack(message.schematic);
 				

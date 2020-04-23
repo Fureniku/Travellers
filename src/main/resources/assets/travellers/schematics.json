@@ -9,7 +9,8 @@
 			"crafting": [
 				{"name": "travellers.slot.handle", "type": "travellers.material.wood", "amount": 30},
 				{"name": "travellers.slot.cloth", "type": "travellers.material.cloth", "amount": 10}
-			]
+			],
+			"categories": ["multitool", "utility"]
 		},{
 			"name": "engine.power_generator",
 			"rarity": "common",
@@ -18,7 +19,8 @@
 			],
 			"crafting": [
 				{"name": "travellers.slot.casing", "type": "travellers.material.metal", "amount": 100}
-			]
+			],
+			"categories": ["assembler", "engine"]
 		},{
 			"name": "territory_control_tower",
 			"rarity": "pristine",
@@ -27,7 +29,8 @@
 			],
 			"crafting": [
 				{"name": "travellers.slot.casing", "type": "travellers.material.metal", "amount": 1000}
-			]
+			],
+			"categories": ["assembler", "other"]
 		},{
 			"name": "cannon.cannon_shells",
 			"rarity": "common",
@@ -36,7 +39,8 @@
 			],
 			"crafting": [
 				{"name": "travellers.slot.casing", "type": "travellers.material.metal", "amount": 50}
-			]
+			],
+			"categories": ["multitool", "weapons"]
 		},{
 			"name": "swivel.buckshot_shells",
 			"rarity": "common",
@@ -45,7 +49,8 @@
 			],
 			"crafting": [
 				{"name": "travellers.slot.casing", "type": "travellers.material.metal", "amount": 50}
-			]
+			],
+			"categories": ["multitool", "weapons"]
 		}
 	]
 }

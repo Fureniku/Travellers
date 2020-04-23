@@ -2,6 +2,7 @@ package com.silvaniastudios.travellers.capability.schematicData;
 
 import java.util.UUID;
 
+import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicCategories;
 import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicCrafting;
 import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicStats;
 import com.silvaniastudios.travellers.items.schematic.SchematicRarityEnum;
@@ -66,4 +67,10 @@ public interface ISchematicData {
 	public void setCrafting(SchematicCrafting crafting);
 	
 	public String[] getSlotNames();
+	
+	/**
+	 * Categories ("multitool", "utility"...)
+	 */
+	public SchematicCategories getCategories();
+	public void setCategories (SchematicCategories categories);
 }

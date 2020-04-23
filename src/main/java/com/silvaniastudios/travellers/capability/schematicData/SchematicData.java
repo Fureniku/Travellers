@@ -2,6 +2,7 @@ package com.silvaniastudios.travellers.capability.schematicData;
 
 import java.util.UUID;
 
+import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicCategories;
 import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicCrafting;
 import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicCraftingSlot;
 import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicStatisticSlot;
@@ -19,6 +20,7 @@ public class SchematicData implements ISchematicData {
 	private SchematicTypeEnum type = SchematicTypeEnum.FIXED;
 	private SchematicStats stats = new SchematicStats();
 	private SchematicCrafting crafting = new SchematicCrafting();
+	private SchematicCategories categories = new SchematicCategories();
 	
 	public SchematicData () {
 		uuid = UUID.randomUUID();
@@ -27,6 +29,7 @@ public class SchematicData implements ISchematicData {
 		type = SchematicTypeEnum.FIXED;
 		stats = new SchematicStats();
 		crafting = new SchematicCrafting();
+		categories = new SchematicCategories();
 	}
 
 	@Override
@@ -53,6 +56,12 @@ public class SchematicData implements ISchematicData {
 			crafting.setTag(craft.name, slotDetail);
 		}
 		nbt.setTag("crafting", crafting);
+		
+		NBTTagCompound categories = new NBTTagCompound();
+		for (String category : getCategories()) {
+			categories.setString(category, "true");
+		}
+		nbt.setTag("categories", categories);
 		
 		return nbt;
 	}
@@ -92,6 +101,14 @@ public class SchematicData implements ISchematicData {
 			}
 			setCrafting(crafting);
 		}
+		if (compound.hasKey("categories")) {
+			SchematicCategories categories = new SchematicCategories();
+			for (String key : compound.getCompoundTag("categories").getKeySet()) {
+				categories.add(key);
+			}
+			
+			setCategories(categories);
+		}
 	}
 	
 	@Override
@@ -102,6 +119,7 @@ public class SchematicData implements ISchematicData {
 		setType(old.getType());
 		setStats(old.getStats());
 		setCrafting(old.getCrafting());
+		setCategories(old.getCategories());
 	}
 
 	@Override
@@ -181,6 +199,14 @@ public class SchematicData implements ISchematicData {
 			String[] slotNames = getType().getSlotNames();
 			return slotNames;
 		}
+	}
+	
+	public SchematicCategories getCategories() {
+		return this.categories;
+	}
+	
+	public void setCategories (SchematicCategories categories) {
+		this.categories = categories;
 	}
 	
 }

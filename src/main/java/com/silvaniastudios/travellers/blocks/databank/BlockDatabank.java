@@ -3,6 +3,7 @@ package com.silvaniastudios.travellers.blocks.databank;
 import java.util.List;
 import java.util.Random;
 
+import com.silvaniastudios.travellers.ChatHandler;
 import com.silvaniastudios.travellers.ModBlocks;
 import com.silvaniastudios.travellers.ModItems;
 import com.silvaniastudios.travellers.PacketHandler;
@@ -38,6 +39,7 @@ import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
@@ -181,27 +183,26 @@ public class BlockDatabank extends BlockScannable implements ITileEntityProvider
 
 				if (((TileEntityDatabank) dataBankTileEntity).isScannedBy(playerIn)) {
 					playerIn.sendMessage(new TextComponentString(
-							TextFormatting.YELLOW + "You have already scanned this databank" + TextFormatting.RESET));
+							TextFormatting.GOLD + "You have already scanned this databank" + TextFormatting.RESET));
 					return true;
 				} else {
 					boolean successfulScan = ((TileEntityDatabank) dataBankTileEntity).beScannedBy(playerIn);
 
 					if (!successfulScan) {
-						playerIn.sendMessage(new TextComponentString(TextFormatting.YELLOW
-								+ "You have already scanned this databank" + TextFormatting.RESET));
+						
+						ITextComponent msg = ChatHandler.translatedString("chat.message.databankAlreadyScanned", TextFormatting.GOLD);
+						playerIn.sendMessage(msg);
 						return true;
 					}
 
 					playerData = playerIn.getCapability(PlayerDataProvider.PLAYER_DATA, null);
 					playerData.incrementKnowledgeBalance(rarity.getKnowledgeBoost());
+					
+					ITextComponent msg = ChatHandler.translatedString("chat.message.databankScan", TextFormatting.GOLD,
+							ChatHandler.translatedString(rarity.toString().toLowerCase(), DatabankRarityEnum.color(rarity)),
+							ChatHandler.number(rarity.getKnowledgeBoost(), TextFormatting.WHITE));
 
-					String rarityString = String.format("%s%s", DatabankRarityEnum.color(rarity),
-							rarity.toString().toLowerCase());
-					String msg = String.format(TextFormatting.YELLOW + "Scanned %s" + TextFormatting.YELLOW
-							+ " databank for %d knowledge" + TextFormatting.RESET, rarityString,
-							rarity.getKnowledgeBoost());
-
-					playerIn.sendMessage(new TextComponentString(msg));
+					playerIn.sendMessage(msg);
 
 					PacketHandler.INSTANCE.sendTo(new PlayerDataSyncMessage(playerData), (EntityPlayerMP) playerIn);
 
