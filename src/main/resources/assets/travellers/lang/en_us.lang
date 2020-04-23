@@ -210,6 +210,74 @@ travellers.tooltip.misc.shipyard_b=The inner workings are a mystery lost to time
 travellers.tooltip.ui.invalid_placement=Cannot place item here, not enough space.
 travellers.tooltip.ui.invalid_placement_flat=Cannot place item here, place on a flat surface.
 
+travellers.node.shipbuilding=Shipbuilding
+travellers.node.increase_slots=Increase Schematic Slots
+travellers.node.territory_control=Territory Control Beacon
+travellers.node.reviver_interface=Ancient Reviver Interface
+
+travellers.description.shipbuilding=The mechanical foundations of building Skyships.
+travellers.description.increase_slots=Expand your multi-tool to hold more schematics.
+travellers.description.territory_control=Control the skies with powerful beacons.
+travellers.description.reviver_interface=Link yourself to the ancient network or revivers left around the world.
+
+travellers.node.engine.common=Tier 1 Engine
+travellers.node.engine.uncommon=Tier 2 Engine
+travellers.node.engine.rare=Tier 3 Engine
+travellers.node.engine.exotic=Tier 4 Engine
+travellers.node.engine.power_generator=Power Generator
+travellers.node.engine.moonshine=Moonshine
+
+travellers.description.engine.common=Provides propulsion if attached to a ship, requires a power generator to run.
+travellers.description.engine.uncommon=Provides propulsion if attached to a ship, requires a power generator to run.
+travellers.description.engine.rare=Provides propulsion if attached to a ship, requires a power generator to run.
+travellers.description.engine.exotic=Provides propulsion if attached to a ship, requires a power generator to run.
+travellers.description.engine.power_generator=Provides power to the engines on a ship when supplied with fuel.
+travelelrs.description.engine.moonshine=Curious substance which increases engine efficiency.
+
+travellers.node.wing.common=Tier 1 Wing
+travellers.node.wing.uncommon=Tier 2 Wing
+travellers.node.wing.rare=Tier 3 Wing
+travellers.node.wing.exotic=Tier 4 Wing
+
+travellers.description.wing.common=Improves turning if attached vertically and pitching if attached horizontally.
+travellers.description.wing.uncommon=Improves turning if attached vertically and pitching if attached horizontally.
+travellers.description.wing.rare=Improves turning if attached vertically and pitching if attached horizontally.
+travellers.description.wing.exotic=Improves turning if attached vertically and pitching if attached horizontally.
+
+travellers.node.cannon.common=Tier 1 Cannon
+travellers.node.cannon.uncommon=Tier 2 Cannon
+travellers.node.cannon.rare=Tier 3 Cannon
+travellers.node.cannon.exotic=Tier 4 Cannon
+travellers.node.cannon.cannon_shells=Cannon Shells
+
+travellers.description.cannon.common=Deliver withering barrages against ships or target enemies on land.
+travellers.description.cannon.uncommon=Deliver withering barrages against ships or target enemies on land.
+travellers.description.cannon.rare=Deliver withering barrages against ships or target enemies on land.
+travellers.description.cannon.exotic=Deliver withering barrages against ships or target enemies on land.
+travellers.description.cannon.cannon_shells=Cannon shells for ship cannons. Can be placed inside the ammo boxes of cannons.
+
+travellers.node.swivel.common=Tier 1 Swivel Gun
+travellers.node.swivel.uncommon=Tier 2 Swivel Gun
+travellers.node.swivel.rare=Tier 3 Swivel Gun
+travellers.node.swivel.exotic=Tier 4 Swivel Gun
+travellers.node.swivel.buckshot_shells=Buckshot Shells
+
+travellers.description.swivel.common=Deliver withering barrages against ships or target enemies on land.
+travellers.description.swivel.uncommon=Deliver withering barrages against ships or target enemies on land.
+travellers.description.swivel.rare=Deliver withering barrages against ships or target enemies on land.
+travellers.description.swivel.exotic=Deliver withering barrages against ships or target enemies on land.
+travellers.description.swivel.buckshot_shells=Buckshot shells that can be placed in swivel gun ammo boxes.
+
+travellers.gui.button.research=Research
+travellers.gui.title.knowledge_tree=Knowledge Tree
+travellers.gui.title.belt=Belt
+travellers.gui.title.selected_schematic=Selected Schematic
+
+travellers.gui.message.cost=Cost: %d
+travellers.gui.message.too_expensive=[Too Expensive]
+travellers.gui.message.default_tree=Select an area of research from the left to begin
+travellers.gui.message.knowledge=Knowledge: %d
+
 travellers.gui.button.show=SHOW
 travellers.gui.button.craft=CRAFT
 travellers.gui.button.rename=RENAME

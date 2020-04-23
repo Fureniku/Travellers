@@ -1,5 +1,6 @@
 package com.silvaniastudios.travellers;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.silvaniastudios.travellers.items.ItemAssembler;
@@ -28,7 +29,8 @@ public class ModItems {
 			5.0F, 0);
 
 	public static ItemBasic atlas_shard = new ItemBasic("shard_atlas");
-
+	
+	public static HashMap<String, ItemSchematic> schematicsByName = new HashMap<String, ItemSchematic>();
 	public static List<ItemSchematic> schematics = Travellers.SCHEMATIC_DATA.generateItems();
 	//public static SchematicItems parsed_schematics = new SchematicItems();
 

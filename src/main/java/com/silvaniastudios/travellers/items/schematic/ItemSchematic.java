@@ -52,6 +52,7 @@ public class ItemSchematic extends Item {
 		this("schematic_default");
 		
 		ModItems.schematics.add(this);
+		ModItems.schematicsByName.put("schematic_default", this);
 	}
 
 	/**
@@ -67,6 +68,7 @@ public class ItemSchematic extends Item {
 		schematicData.setType(SchematicTypeEnum.FIXED);
 		schematicData.setStats(stats);
 		schematicData.setCrafting(crafting);
+		ModItems.schematicsByName.put(name, this);
 	}
 
 	/**
@@ -81,6 +83,7 @@ public class ItemSchematic extends Item {
 		schematicData.setType(type);
 
 		ModItems.schematics.add(this);
+		ModItems.schematicsByName.put(name, this);
 	}
 
 	@Override

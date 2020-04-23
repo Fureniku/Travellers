@@ -1,8 +1,10 @@
 package com.silvaniastudios.travellers;
 
+import com.silvaniastudios.travellers.commands.KnowledgeCommand;
 import com.silvaniastudios.travellers.commands.PlayerDataViewer;
 import com.silvaniastudios.travellers.commands.SchematicDataViewer;
 import com.silvaniastudios.travellers.commands.SchematicListViewer;
+import com.silvaniastudios.travellers.data.KnowledgeTreeData;
 import com.silvaniastudios.travellers.data.LoreCodexData;
 import com.silvaniastudios.travellers.data.ObjectKnowledgeScanReward;
 import com.silvaniastudios.travellers.data.SchematicFixedData;
@@ -66,6 +68,7 @@ public class Travellers {
 	public static final ObjectKnowledgeScanReward SCAN_REWARDS = new ObjectKnowledgeScanReward();
 	public static final LoreCodexData CODEX_DATA  = new LoreCodexData();
 	public static final SchematicFixedData SCHEMATIC_DATA = new SchematicFixedData();
+	public static final KnowledgeTreeData KNOWLEDGE_TREE = new KnowledgeTreeData();
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
@@ -89,6 +92,7 @@ public class Travellers {
 		event.registerServerCommand(new SchematicDataViewer());
 		event.registerServerCommand(new SchematicListViewer());
 		event.registerServerCommand(new PlayerDataViewer());
+		event.registerServerCommand(new KnowledgeCommand());
 	}
 
 	@Mod.EventBusSubscriber

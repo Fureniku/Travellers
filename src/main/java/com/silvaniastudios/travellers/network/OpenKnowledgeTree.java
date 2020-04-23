@@ -4,7 +4,6 @@ import java.util.UUID;
 
 import com.silvaniastudios.travellers.GuiHandler.TravellersContainers;
 import com.silvaniastudios.travellers.Travellers;
-import com.silvaniastudios.travellers.inventory.EmptyContainer;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
@@ -43,12 +42,8 @@ public class OpenKnowledgeTree implements IMessage {
 			
 			server.addScheduledTask(() -> {
 				EntityPlayer player = server.getPlayerList().getPlayerByUUID(message.playerUUID);
-				System.out.println(player.openContainer);
-				if (player.openContainer instanceof EmptyContainer) {
-					player.closeScreen();
-				} else {
-					player.openGui(Travellers.instance, TravellersContainers.KNOWLEDGE_TREE.ordinal(), server.getEntityWorld(), 0, 0, 0);
-				}
+
+				player.openGui(Travellers.instance, TravellersContainers.KNOWLEDGE_TREE.ordinal(), server.getEntityWorld(), 0, 0, 0);
 				
 			});
 			

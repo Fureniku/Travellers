@@ -1,0 +1,340 @@
+{
+	"tree": [{
+		"name": "shipbuilding",
+		"position": [0, 0],
+		"texture": [30, 0],
+		"maxUses": 1,
+		"infiniteRoll": 0,
+		"cost": 100,
+		"unlocks": [
+			{"name": "engine.common", "uses": 1},
+			{"name": "wing.common", "uses": 1},
+			{"name": "cannon.common", "uses": 1},
+			{"name": "swivel.common", "uses": 1},
+			{"name": "increase_slots", "uses": 1},
+			{"name": "territory_control", "uses": 1}
+		],
+		"rewards": {
+			"type": "none"
+		}
+	},{
+		"name": "increase_slots",
+		"position": [-40, 40],
+		"texture": [120, 0],
+		"maxUses": 100,
+		"infiniteRoll": 0,
+		"costs": 50,
+		"unlocks": [],
+		"rewards": {
+			"type": "increase_schematic_slots"
+		}
+	},{
+		"name": "territory_control",
+		"position": [-100, 0],
+		"texture": [60, 0],
+		"maxUses": 1,
+		"infiniteRoll": 0,
+		"cost": 500,
+		"unlocks": [],
+		"rewards": {
+			"type": "learn_schematic",
+			"schematics": []
+		},
+		"rewards": {
+			"type": "learn_schematic",
+			"schematics": ["territory_control_tower"]
+		}
+	},{
+		"name": "reviver_interface",
+		"position": [100, 0],
+		"texture": [90, 0],
+		"maxUses": 1,
+		"infiniteRoll": 0,
+		"cost": 50,
+		"unlocks": [{"name": "shipbuilding", "uses": 1}],
+		"rewards": {
+			"type": "none"
+		}
+	},{
+		"name": "engine.common",
+		"position": [0, -60],
+		"texture": [30, 30],
+		"maxUses": 3,
+		"infiniteRoll": 1,
+		"cost": 175,
+		"unlocks": [
+			{"name": "engine.uncommon", "uses": 3},
+			{"name": "engine.power_generator", "uses": 1},
+			{"name": "engine.moonshine", "uses": 1},
+			{"name": "engine.common_cipher", "uses": 3}
+		],
+		"rewards": {
+			"type": "learn_procedural"
+		}
+	},{
+		"name": "engine.uncommon",
+		"position": [0, -100],
+		"texture": [60, 30],
+		"maxUses": 4,
+		"infiniteRoll": 1,
+		"cost": 235,
+		"unlocks": [
+			{"name": "engine.rare", "uses": 4},
+			{"name": "engine.uncommon_cipher", "uses": 4}
+		],
+		"rewards": {
+			"type": "learn_procedural"
+		}
+	},{
+		"name": "engine.rare",
+		"position": [0, -140],
+		"texture": [90, 30],
+		"maxUses": 5,
+		"infiniteRoll": 1,
+		"cost": 315,
+		"unlocks": [
+			{"name": "engine.exotic", "uses": 5},
+			{"name": "engine.rare_cipher_1", "uses": 5},
+			{"name": "engine.rare_cipher_2", "uses": 5}
+		],
+		"rewards": {
+			"type": "learn_procedural"
+		}
+	},{
+		"name": "engine.exotic",
+		"position": [0, -180],
+		"texture": [120, 30],
+		"maxUses": 6,
+		"infiniteRoll": 1,
+		"cost": 415,
+		"unlocks": [
+			{"name": "engine.exotic_cipher_1", "uses": 6},
+			{"name": "engine.exotic_cipher_2", "uses": 6}
+		],
+		"rewards": {
+			"type": "learn_procedural"
+		}
+	},{
+		"name": "engine.power_generator",
+		"position": [40, -40],
+		"texture": [150, 30],
+		"maxUses": 1,
+		"infiniteRoll": 0,
+		"cost": 0,
+		"unlocks": [],
+		"rewards": {
+			"type": "learn_schematic",
+			"schematics": ["engine.power_generator"]
+		}
+	},{
+		"name": "engine.moonshine",
+		"position": [40, -80],
+		"texture": [180, 30],
+		"maxUses": 1,
+		"infiniteRoll": 0,
+		"cost": 0,
+		"unlocks": [],
+		"rewards": {
+			"type": "none"
+		}
+	},
+	{
+		"name": "wing.common",
+		"position": [-80, 40],
+		"texture": [30, 60],
+		"maxUses": 3,
+		"infiniteRoll": 1,
+		"cost": 100,
+		"unlocks": [
+			{"name": "wing.uncommon", "uses": 3},
+			{"name": "wing.common_cipher", "uses": 3}
+		],
+		"rewards": {
+			"type": "learn_procedural"
+		}
+	},{
+		"name": "wing.uncommon",
+		"position": [-80, 80],
+		"texture": [60, 60],
+		"maxUses": 4,
+		"infiniteRoll": 1,
+		"cost": 130,
+		"unlocks": [
+			{"name": "wing.rare", "uses": 4},
+			{"name": "wing.uncommon_cipher", "uses": 4}
+		],
+		"rewards": {
+			"type": "learn_procedural"
+		}
+	},{
+		"name": "wing.rare",
+		"position": [-80, 120],
+		"texture": [90, 60],
+		"maxUses": 5,
+		"infiniteRoll": 1,
+		"cost": 160,
+		"unlocks": [
+			{"name": "wing.exotic", "uses": 5},
+			{"name": "wing.rare_cipher_1", "uses": 5},
+			{"name": "wing.rare_cipher_2", "uses": 5}
+		],
+		"rewards": {
+			"type": "learn_procedural"
+		}
+	},{
+		"name": "wing.exotic",
+		"position": [-80, 160],
+		"texture": [120, 60],
+		"maxUses": 6,
+		"infiniteRoll": 1,
+		"cost": 200,
+		"unlocks": [
+			{"name": "wing.exotic_cipher_1", "uses": 6},
+			{"name": "wing.exotic_cipher_2", "uses": 6}
+		],
+		"rewards": {
+			"type": "learn_procedural"
+		}
+	},{
+		"name": "cannon.common",
+		"position": [40, 40],
+		"texture": [30, 90],
+		"maxUses": 3,
+		"infiniteRoll": 1,
+		"cost": 150,
+		"unlocks": [
+			{"name": "cannon.cannon_shells", "uses": 1},
+			{"name": "cannon.uncommon", "uses": 3},
+			{"name": "cannon.common_cipher", "uses": 3}
+		],
+		"rewards": {
+			"type": "learn_procedural"
+		}
+	},{
+		"name": "cannon.uncommon",
+		"position": [40, 80],
+		"texture": [60, 90],
+		"maxUses": 4,
+		"infiniteRoll": 1,
+		"cost": 190,
+		"unlocks": [
+			{"name": "cannon.rare", "uses": 4},
+			{"name": "cannon.uncommon_cipher", "uses": 4}
+		],
+		"rewards": {
+			"type": "learn_procedural"
+		}
+	},{
+		"name": "cannon.rare",
+		"position": [40, 120],
+		"texture": [90, 90],
+		"maxUses": 5,
+		"infiniteRoll": 1,
+		"cost": 240,
+		"unlocks": [
+			{"name": "cannon.exotic", "uses": 5},
+			{"name": "cannon.rare_cipher_1", "uses": 5},
+			{"name": "cannon.rare_cipher_2", "uses": 5}
+		],
+		"rewards": {
+			"type": "learn_procedural"
+		}
+	},{
+		"name": "cannon.exotic",
+		"position": [40, 160],
+		"texture": [120, 90],
+		"maxUses": 6,
+		"infiniteRoll": 1,
+		"cost": 300,
+		"unlocks": [
+			{"name": "cannon.exotic_cipher_1", "uses": 6},
+			{"name": "cannon.exotic_cipher_2", "uses": 6}
+		],
+		"rewards": {
+			"type": "learn_procedural"
+		}
+	},{
+		"name": "cannon.cannon_shells",
+		"position": [0, 40],
+		"texture": [150, 90],
+		"maxUses": 1,
+		"infiniteRoll": 0,
+		"cost": 0,
+		"unlocks": [],
+		"rewards": {
+			"type": "learn_schematic",
+			"schematics": ["cannon.cannon_shells"]
+		}
+	},
+	{
+		"name": "swivel.common",
+		"position": [80, 40],
+		"texture": [30, 120],
+		"maxUses": 3,
+		"infiniteRoll": 1,
+		"cost": 150,
+		"unlocks": [
+			{"name": "swivel.buckshot_shells", "uses": 1},
+			{"name": "swivel.uncommon", "uses": 3},
+			{"name": "swivel.common_cipher", "uses": 3}
+		],
+		"rewards": {
+			"type": "learn_procedural"
+		}
+	},{
+		"name": "swivel.uncommon",
+		"position": [80, 80],
+		"texture": [60, 120],
+		"maxUses": 4,
+		"infiniteRoll": 1,
+		"cost": 190,
+		"unlocks": [
+			{"name": "swivel.rare", "uses": 4},
+			{"name": "swivel.uncommon_cipher", "uses": 4}
+		],
+		"rewards": {
+			"type": "learn_procedural"
+		}
+	},{
+		"name": "swivel.rare",
+		"position": [80, 120],
+		"texture": [90, 120],
+		"maxUses": 5,
+		"infiniteRoll": 1,
+		"cost": 240,
+		"unlocks": [
+			{"name": "swivel.exotic", "uses": 5},
+			{"name": "swivel.rare_cipher_1", "uses": 5},
+			{"name": "swivel.rare_cipher_2", "uses": 5}
+		],
+		"rewards": {
+			"type": "learn_procedural"
+		}
+	},{
+		"name": "swivel.exotic",
+		"position": [80, 160],
+		"texture": [120, 120],
+		"maxUses": 6,
+		"infiniteRoll": 1,
+		"cost": 300,
+		"unlocks": [
+			{"name": "swivel.exotic_cipher_1", "uses": 6},
+			{"name": "swivel.exotic_cipher_2", "uses": 6}
+		],
+		"rewards": {
+			"type": "learn_procedural"
+		}
+	},{
+		"name": "swivel.buckshot_shells",
+		"position": [120, 40],
+		"texture": [150, 120],
+		"maxUses": 1,
+		"infiniteRoll": 0,
+		"cost": 0,
+		"unlocks": [],
+		"rewards": {
+			"type": "learn_schematic",
+			"schematics": ["swivel.buckshot_shells"]
+		}
+	}]
+}

@@ -56,6 +56,8 @@ public interface IPlayerData {
 	
 	public HashMap<String, Integer> getKnowledgeNodeUses();
 	
+	public int getKnowledgeNodeUsage (String nodeKey);
+	
 	public void useKnowlegeNode(String nodeKey);
 	
 	public HashMap<String, Integer> setKnowledgeNodeUses(String nodeKey, int times);

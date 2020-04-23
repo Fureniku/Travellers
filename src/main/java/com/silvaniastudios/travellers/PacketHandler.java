@@ -5,6 +5,7 @@ import com.silvaniastudios.travellers.network.OpenKnowledgeTree;
 import com.silvaniastudios.travellers.network.PlayerDataSyncMessage;
 import com.silvaniastudios.travellers.network.SalvageSchematicMessage;
 import com.silvaniastudios.travellers.network.ScannerLineSyncMessage;
+import com.silvaniastudios.travellers.network.UseKnowledgeNode;
 
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
@@ -34,6 +35,9 @@ public class PacketHandler {
 				id++, Side.CLIENT);
 
 		INSTANCE.registerMessage(OpenKnowledgeTree.SOpenKnowledgeTreeHandler.class, OpenKnowledgeTree.class, id++,
+				Side.SERVER);
+		
+		INSTANCE.registerMessage(UseKnowledgeNode.SUserKnowledgeNodeHandler.class, UseKnowledgeNode.class, id++,
 				Side.SERVER);
 	}
 }

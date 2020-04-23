@@ -10,6 +10,42 @@
 				{"name": "travellers.slot.handle", "type": "travellers.material.wood", "amount": 30},
 				{"name": "travellers.slot.cloth", "type": "travellers.material.cloth", "amount": 10}
 			]
+		},{
+			"name": "engine.power_generator",
+			"rarity": "common",
+			"stats": [
+				{"name": "travellers.stat.resilience.name", "amount": 50}
+			],
+			"crafting": [
+				{"name": "travellers.slot.casing", "type": "travellers.material.metal", "amount": 100}
+			]
+		},{
+			"name": "territory_control_tower",
+			"rarity": "pristine",
+			"stats": [
+				{"name": "travellers.stat.resilience.name", "amount": 100}
+			],
+			"crafting": [
+				{"name": "travellers.slot.casing", "type": "travellers.material.metal", "amount": 1000}
+			]
+		},{
+			"name": "cannon.cannon_shells",
+			"rarity": "common",
+			"stats": [
+				{"name": "travellers.stat.resilience.name", "amount": 100}
+			],
+			"crafting": [
+				{"name": "travellers.slot.casing", "type": "travellers.material.metal", "amount": 50}
+			]
+		},{
+			"name": "swivel.buckshot_shells",
+			"rarity": "common",
+			"stats": [
+				{"name": "travellers.stat.resilience.name", "amount": 100}
+			],
+			"crafting": [
+				{"name": "travellers.slot.casing", "type": "travellers.material.metal", "amount": 50}
+			]
 		}
 	]
 }

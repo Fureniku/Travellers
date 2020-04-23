@@ -128,6 +128,14 @@ public class PlayerData implements IPlayerData {
 	public HashMap<String, Integer> getKnowledgeNodeUses() {
 		return this.knowledgeNodeUses;
 	}
+	
+	public int getKnowledgeNodeUsage (String nodeKey) {
+		if (this.knowledgeNodeUses.get(nodeKey) != null) {
+			return this.knowledgeNodeUses.get(nodeKey);
+		} else {
+			return 0;
+		}
+	}
 
 	@Override
 	public void useKnowlegeNode(String nodeKey) {
@@ -139,6 +147,7 @@ public class PlayerData implements IPlayerData {
 
 			this.knowledgeNodeUses.put(nodeKey, 1);
 		}
+		System.out.println(this.knowledgeNodeUses.toString());
 	}
 
 	@Override
@@ -283,9 +292,15 @@ public class PlayerData implements IPlayerData {
 			scannedObjects.add(nbtTag.getCompoundTag("scannedObjects").getString(key));
 		}
 		
+		HashMap<String, Integer> knowledgeTree = new HashMap<String, Integer>();
+		for (String key: nbtTag.getCompoundTag("knowledgeTreeUses").getKeySet()) {
+			knowledgeTree.put(key, nbtTag.getCompoundTag("knowledgeTreeUses").getInteger(key));
+		}
+		
 		this.scannedObjects = scannedObjects;
 		this.shipDesignList = designList;
 		this.schematicList = schematicList;
+		this.knowledgeNodeUses = knowledgeTree;
 		this.setKnownLorePieces(knownLorePieces);
 
 	}
@@ -314,6 +329,8 @@ public class PlayerData implements IPlayerData {
 		this.shipDesignList = capability.getShipDesignSchematics();
 
 		this.setKnownLorePieces(capability.getKnownLorePieces());
+		
+		this.knowledgeNodeUses = capability.getKnowledgeNodeUses();
 	}
 
 	@Override
