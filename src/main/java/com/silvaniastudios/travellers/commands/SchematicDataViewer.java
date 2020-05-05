@@ -40,7 +40,7 @@ public class SchematicDataViewer extends CommandBase {
 			&& schemHolding.hasCapability(SchematicDataProvider.SCHEMATIC_DATA, null)) {
 			
 			ISchematicData schemdata = schemHolding.getCapability(SchematicDataProvider.SCHEMATIC_DATA, null);
-			
+			System.out.println(schemdata.toNBT().toString());
 			sender.sendMessage(new TextComponentString("UUID: " + schemdata.getUUID().toString()));
 			sender.sendMessage(new TextComponentString("Name: " + schemdata.getName()));
 			sender.sendMessage(new TextComponentString("Rarity: " + schemdata.getRarity().toString()));

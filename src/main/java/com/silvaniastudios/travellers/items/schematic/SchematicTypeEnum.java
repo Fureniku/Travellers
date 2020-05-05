@@ -1,14 +1,35 @@
 package com.silvaniastudios.travellers.items.schematic;
 
-public enum SchematicTypeEnum {
-	FIXED("fixed", 0), ENGINE("engine", 5), WING("wing", 3), CANNON("cannon", 5), SWIVELCANNON("swivel", 5);
+import javax.annotation.Nullable;
 
+import com.silvaniastudios.travellers.capability.schematicData.ISchematicData;
+import com.silvaniastudios.travellers.data.SchematicFixedData;
+import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicCategories;
+import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicCrafting;
+import com.silvaniastudios.travellers.items.schematic.data.IProceduralData;
+
+public enum SchematicTypeEnum implements IProceduralData {
+	
+	FIXED("fixed", 0), 
+	ENGINE("engine", 5, SchematicFixedData.engineData), 
+	WING("wing", 3, SchematicFixedData.wingData), 
+	CANNON("cannon", 5, SchematicFixedData.cannonData), 
+	SWIVELCANNON("swivel", 5, SchematicFixedData.swivelData);
+	
 	public String name;
 	public int statNo;
+	
+	public IProceduralData dataManager;
 
 	SchematicTypeEnum(String name, int statNo) {
 		this.name = name;
 		this.statNo = statNo;
+	}
+	
+	SchematicTypeEnum(String name, int statNo, IProceduralData dataManager) {
+		this.name = name;
+		this.statNo = statNo;
+		this.dataManager = dataManager;
 	}
 
 	public static SchematicTypeEnum fromString(String name) {
@@ -26,32 +47,65 @@ public enum SchematicTypeEnum {
 		}
 	}
 
-	//TODO: not static?
-	public static String[] getStatNames(SchematicTypeEnum type) {
-		switch (type) {
-		case FIXED:
-			return EngineProceduralData.FIXED_STAT_NAMES;
-		case ENGINE:
-			return EngineProceduralData.ENGINE_STAT_NAMES;
-		case WING:
-			return EngineProceduralData.WING_STAT_NAMES;
-		case CANNON:
-			return EngineProceduralData.CANNON_STAT_NAMES;
-		case SWIVELCANNON:
-			return EngineProceduralData.SWIVELCANNON_STAT_NAMES;
-		default:
-			return EngineProceduralData.FIXED_STAT_NAMES;
+	@Override
+	public String toString() {
+		return this.name;
+	}
+
+	@Override
+	public String[] getStatNames() {
+		if (this.dataManager != null) {
+			return this.dataManager.getStatNames();
 		}
+		return null;
 	}
 	
+	@Override
 	public String[] getSlotNames () {
-		switch (this) {
-		default:
-			return null;
-		case ENGINE:
-			return EngineProceduralData.ENGINE_SLOT_NAMES;
+		if (this.dataManager != null) {
+			return this.dataManager.getSlotNames();
 		}
-		
-		//TODO: add more here
+		return null;
+	}
+	
+	@Override
+	@Nullable
+	public String[] getNameComponents (ISchematicData schematic) {
+		if (this.dataManager != null) {
+			return this.dataManager.getNameComponents(schematic);
+		} 
+		return null;
+	}
+
+	@Override
+	@Nullable
+	public String getNameFormat() {
+		if (this.dataManager != null) {
+			return this.dataManager.getNameFormat();
+		} 
+		return null;
+	}
+	
+	public String getName (ISchematicData schematic) {
+		return String.format(getNameFormat(), (Object[])getNameComponents(schematic));
+	}
+
+	@Override
+	public SchematicCrafting getCrafting(ISchematicData schematic) {
+		if (this.dataManager != null) {
+			return this.dataManager.getCrafting(schematic);
+		}
+		return null;
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.silvaniastudios.travellers.items.schematic.data.IProceduralData#getCategories(com.silvaniastudios.travellers.capability.schematicData.ISchematicData)
+	 */
+	@Override
+	public SchematicCategories getCategories(ISchematicData schematic) {
+		if (this.dataManager != null) {
+			return this.dataManager.getCategories(schematic);
+		}
+		return null;
 	}
 }

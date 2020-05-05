@@ -2,16 +2,27 @@ package com.silvaniastudios.travellers.data;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 import com.google.gson.Gson;
 import com.silvaniastudios.travellers.Travellers;
 import com.silvaniastudios.travellers.items.schematic.ItemSchematic;
+import com.silvaniastudios.travellers.items.schematic.data.CannonData;
+import com.silvaniastudios.travellers.items.schematic.data.EngineData;
+import com.silvaniastudios.travellers.items.schematic.data.SwivelData;
+import com.silvaniastudios.travellers.items.schematic.data.WingData;
 
 public class SchematicFixedData {
 	
 	public static final String SCHEMATIC_LOCATION = "/assets/travellers/schematics.json";
+	
+	public static final EngineData engineData = new EngineData();
+	public static final WingData wingData = new WingData();
+	public static final CannonData cannonData = new CannonData();
+	public static final SwivelData swivelData = new SwivelData();
 	
 	public ArrayList<Schematic> schematicList;
 	
@@ -46,7 +57,7 @@ public class SchematicFixedData {
 		public SchematicCategories categories;
 	}
 	
-	public static class SchematicStatisticSlot {
+	public static class SchematicStatisticSlot implements Comparable<SchematicStatisticSlot> {
 		public String name;
 		public float amount;
 		
@@ -58,6 +69,20 @@ public class SchematicFixedData {
 		@Override
 		public String toString() {
 			return String.format("{name=%s, amount=%.2f}", name, amount);
+		}
+
+		/** (non-Javadoc)
+		 * @see java.lang.Comparable#compareTo(java.lang.Object)
+		 */
+		@Override
+		public int compareTo(SchematicStatisticSlot o) {
+			if (o.amount < this.amount) {
+				return 1;
+			} else if (o.amount > this.amount) {
+				return -1;
+			} else {
+				return 0;
+			}
 		}
 	}
 	
@@ -91,15 +116,14 @@ public class SchematicFixedData {
 		 * @return SchematicStatisticSlot
 		 */
 		public SchematicStatisticSlot maxStat () {
-			SchematicStatisticSlot maxStat = new SchematicStatisticSlot("null", 0);
-			for (SchematicStatisticSlot slot : this) {
-				if (slot.amount > maxStat.amount) {
-					maxStat = slot;
-				}
-			}
-			
-			return maxStat;
+			Collections.sort((List<SchematicStatisticSlot>) this);
+			return this.get(0);
 		}
+		
+		public SchematicStatisticSlot secondaryStat () {
+			Collections.sort((List<SchematicStatisticSlot>) this);
+			return this.get(1);
+		} 
 	}
 	
 	public static class SchematicCraftingSlot {

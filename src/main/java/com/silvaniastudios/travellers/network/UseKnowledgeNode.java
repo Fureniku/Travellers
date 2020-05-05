@@ -156,17 +156,22 @@ public class UseKnowledgeNode implements IMessage {
 					int prevUses = playerData.getKnowledgeNodeUsage(message.nodeKey);
 
 					if (node != null) {
-
-						if (playerData.getKnowledgeBalance() >= node.cost) {
+						
+						int cost = node.cost;
+						if (node.name.equals("increase_slots")) {
+							cost += playerData.getKnowledgeNodeUsage("increase_slots") * 50; 
+						}
+						
+						if (playerData.getKnowledgeBalance() >= cost) {
 							if (node.infiniteRoll == 1 || prevUses < node.maxUses) {
 								playerData.useKnowlegeNode(message.nodeKey);
-								playerData.incrementKnowledgeBalance(-node.cost);
+								playerData.incrementKnowledgeBalance(-cost);
 
 								ITextComponent msg = ChatHandler.translatedString("chat.message.researchNode",
 										TextFormatting.GOLD,
 										ChatHandler.translatedString("travellers.node." + message.nodeKey,
 												TextFormatting.WHITE),
-										ChatHandler.number(node.cost, TextFormatting.WHITE));
+										ChatHandler.number(cost, TextFormatting.WHITE));
 
 								player.sendMessage(msg);
 

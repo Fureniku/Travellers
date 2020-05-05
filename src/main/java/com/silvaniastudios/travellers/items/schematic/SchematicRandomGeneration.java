@@ -13,7 +13,7 @@ public class SchematicRandomGeneration {
 	public static SchematicStats generateRandomStats(SchematicTypeEnum type,
 			SchematicRarityEnum rarity) {
 		float[] stats = generateRandomArrayWithTotal(type.statNo, rarity.getTotal(type.statNo));
-		String[] names = SchematicTypeEnum.getStatNames(type);
+		String[] names = type.getStatNames();
 
 		SchematicStats combinedLists = new SchematicStats();
 

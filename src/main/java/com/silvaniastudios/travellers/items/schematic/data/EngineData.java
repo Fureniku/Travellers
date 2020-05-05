@@ -1,4 +1,7 @@
-package com.silvaniastudios.travellers.items.schematic;
+/**
+ * 
+ */
+package com.silvaniastudios.travellers.items.schematic.data;
 
 import java.util.Arrays;
 
@@ -10,29 +13,101 @@ import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicStatistic
 import com.silvaniastudios.travellers.data.SchematicFixedData.SchematicStats;
 
 /**
- * 
  * @author jamesm2w
+ *
  */
-public class EngineProceduralData {
+public class EngineData implements IProceduralData {
+	
+	public SchematicCategories getCategories(ISchematicData schematic) {
+		SchematicCategories engineCategories = new SchematicCategories();
+		engineCategories.add("assembler");
+		engineCategories.add("engine");
+		engineCategories.add(schematic.getRarity().name);
+		return engineCategories;
+	};
 
-	/**
-	 * Credit to Node, Ziwix, Machine Maker, Kruft, Docfreeman, Vloshko,
-	 * jamesm2w all from the community and Matt Foster from Bossa Studios (Bossa
-	 * Moster) For compiling the many engine schematics to make sure all
-	 * possible part names were covered, and thanks to Moster for confirming
-	 * which were actually bugs :)
-	 * 
-	 * @param schematic The Schematic Data object
-	 * @return String representing the name of the engine
+	/* (non-Javadoc)
+	 * @see com.silvaniastudios.travellers.items.schematic.data.IProceduralData#getStatNames()
 	 */
-	public static String getEngineName(ISchematicData schematic) {
+	@Override
+	public String[] getStatNames() {
+		return new String[] { "travellers.stat.resilience.name",
+				"travellers.stat.power.name", "travellers.stat.boost.name", "travellers.stat.fueleff.name",
+				"travellers.stat.ohl.name" };
+	}
+
+	/* (non-Javadoc)
+	 * @see com.silvaniastudios.travellers.items.schematic.data.IProceduralData#getSlotNames()
+	 */
+	@Override
+	public String[] getSlotNames() {
+		return new String[] { "travellers.slot.casing.name",
+				"travellers.slot.combus.name", "travellers.slot.mech.name", "travellers.slot.prop.name" };
+	}
+
+	/* (non-Javadoc)
+	 * @see com.silvaniastudios.travellers.items.schematic.data.IProceduralData#getNameComponents()
+	 */
+	@Override
+	public String[] getNameComponents(ISchematicData schematic) {
 		EngineCasing casing = getCasing(schematic);
 		EnginePropMount propMount = getPropMount(schematic, casing);
 		EngineProp prop = getProp(schematic, propMount);
 		
 		int powerNumber = getPowerOffset(schematic, propMount);
 		
-		return String.format("%s %s %s%s", casing.name, propMount.name, prop.letter, String.valueOf(powerNumber));
+		return new String[] {
+				casing.name, propMount.name, prop.letter, String.valueOf(powerNumber)
+		};
+	}
+
+	/* (non-Javadoc)
+	 * @see com.silvaniastudios.travellers.items.schematic.data.IProceduralData#getNameFormat()
+	 */
+	@Override
+	public String getNameFormat() {
+		return "%s %s %s%s";
+	}
+
+	/* (non-Javadoc)
+	 * @see com.silvaniastudios.travellers.items.schematic.data.IProceduralData#getCrafting()
+	 */
+	@Override
+	public SchematicCrafting getCrafting(ISchematicData schematic) {
+		SchematicStats stats = schematic.getStats();
+		
+		SchematicStatisticSlot statResilience = stats.find("travellers.stat.resilience.name");
+		SchematicStatisticSlot statPower = stats.find("travellers.stat.power.name");
+		SchematicStatisticSlot statBoost = stats.find("travellers.stat.boost.name");
+		SchematicStatisticSlot statFuelEff = stats.find("travellers.stat.fueleff.name");
+		SchematicStatisticSlot statOhl = stats.find("travellers.stat.ohl.name");
+		
+		EngineCasing casing = getCasing(schematic);
+		EnginePropMount propMount = getPropMount(schematic, casing);
+		EngineProp prop = getProp(schematic, propMount);
+		
+		SchematicCraftingSlot slotCasing = new SchematicCraftingSlot("travellers.slot.casing.name");
+		slotCasing.amount = 2 * (int)(statResilience.amount + statPower.amount + statBoost.amount); //2 x (Resilience + Power + Spinup)
+		slotCasing.type = casing.materialType(); // Dependent on tier / resilience value
+		
+		SchematicCraftingSlot slotCombus = new SchematicCraftingSlot("travellers.slot.combus.name"); 
+		slotCombus.amount = 2 * (int)(statPower.amount + statFuelEff.amount + statOhl.amount); //2 x (Power + Fuel efficiency + Overheat)
+		slotCombus.type = "travellers.material.metal"; // Always metal
+		
+		SchematicCraftingSlot slotMech = new SchematicCraftingSlot("travellers.slot.mech.name");
+		slotMech.amount = 2 * (int)(statPower.amount + statFuelEff.amount); //2 x (Power + Fuel efficiency)
+		slotMech.type = "travellers.material.metal"; // Always metal
+		
+		SchematicCraftingSlot slotProp = new SchematicCraftingSlot("travellers.slot.prop.name");
+		slotProp.amount = 2 * (int)(statBoost.amount + statOhl.amount); //2 x (Spinup + Overheat)
+		slotProp.type = prop.materialType(); // Is Prop Vowel?
+		
+		SchematicCrafting slots = new SchematicCrafting();
+		slots.add(slotCasing);
+		slots.add(slotCombus);
+		slots.add(slotMech);
+		slots.add(slotProp);
+		return slots;
 	}
 	
 	public static EngineCasing getCasing (ISchematicData schematic) {
@@ -86,73 +161,6 @@ public class EngineProceduralData {
 		return Math.round(power - propMount.minPower);
 	}
 	
-	public static SchematicCrafting generateEngineCosts (ISchematicData schematic) {
-		
-		SchematicStats stats = schematic.getStats();
-		
-		SchematicStatisticSlot statResilience = stats.find("travellers.stat.resilience.name");
-		SchematicStatisticSlot statPower = stats.find("travellers.stat.power.name");
-		SchematicStatisticSlot statBoost = stats.find("travellers.stat.boost.name");
-		SchematicStatisticSlot statFuelEff = stats.find("travellers.stat.fueleff.name");
-		SchematicStatisticSlot statOhl = stats.find("travellers.stat.ohl.name");
-		
-		EngineCasing casing = getCasing(schematic);
-		EnginePropMount propMount = getPropMount(schematic, casing);
-		EngineProp prop = getProp(schematic, propMount);
-		
-		SchematicCraftingSlot slotCasing = new SchematicCraftingSlot("travellers.slot.casing.name");
-		slotCasing.amount = 2 * (int)(statResilience.amount + statPower.amount + statBoost.amount); //2 x (Resilience + Power + Spinup)
-		slotCasing.type = casing.materialType(); // Dependent on tier / resilience value
-		
-		SchematicCraftingSlot slotCombus = new SchematicCraftingSlot("travellers.slot.combus.name"); 
-		slotCombus.amount = 2 * (int)(statPower.amount + statFuelEff.amount + statOhl.amount); //2 x (Power + Fuel efficiency + Overheat)
-		slotCombus.type = "travellers.material.metal"; // Always metal
-		
-		SchematicCraftingSlot slotMech = new SchematicCraftingSlot("travellers.slot.mech.name");
-		slotMech.amount = 2 * (int)(statPower.amount + statFuelEff.amount); //2 x (Power + Fuel efficiency)
-		slotMech.type = "travellers.material.metal"; // Always metal
-		
-		SchematicCraftingSlot slotProp = new SchematicCraftingSlot("travellers.slot.prop.name");
-		slotProp.amount = 2 * (int)(statBoost.amount + statOhl.amount); //2 x (Spinup + Overheat)
-		slotProp.type = prop.materialType(); // Is Prop Vowel?
-		
-		SchematicCrafting slots = new SchematicCrafting();
-		slots.add(slotCasing);
-		slots.add(slotCombus);
-		slots.add(slotMech);
-		slots.add(slotProp);
-		return slots;
-
-	}
-	
-	public static SchematicCategories getCategories (ISchematicData schematicData) {
-		SchematicCategories engineCategories = new SchematicCategories();
-		engineCategories.add("assembler");
-		engineCategories.add("engine");
-		engineCategories.add(schematicData.getRarity().name);
-		return engineCategories;
-	}	
-
-	public static final String[] ENGINE_SLOT_NAMES = new String[] { "travellers.slot.casing.name",
-			"travellers.slot.combus.name", "travellers.slot.mech.name", "travellers.slot.prop.name" };
-
-	public static final String[] ENGINE_STAT_NAMES = new String[] { "travellers.stat.resilience.name",
-			"travellers.stat.power.name", "travellers.stat.boost.name", "travellers.stat.fueleff.name",
-			"travellers.stat.ohl.name" };
-
-	public static final String[] WING_STAT_NAMES = new String[] { "travellers.stat.resilience.name",
-			"travellers.stat.airbrake.name", "travellers.stat.wingpower.name" };
-
-	public static final String[] CANNON_STAT_NAMES = new String[] { "travellers.stat.resilience.name",
-			"travellers.stat.range.name", "travellers.stat.frag.name", "travellers.stat.cannonohl.name",
-			"travellers.stat.rof.name" };
-
-	public static final String[] SWIVELCANNON_STAT_NAMES = new String[] { "travellers.stat.resilience.name",
-			"travellers.stat.range.name", "travellers.stat.frag.name", "travellers.stat.cannonohl.name",
-			"travellers.stat.rof.name" };
-
-	public static final String[] FIXED_STAT_NAMES = new String[] { "travellers.stat.resilience.name" };
-
 	public static final EngineCasing[] EngineCasingList = new EngineCasing[] {
 			new EngineCasing(1, "Piped", "travellers.stat.boost.name", "w"),
 			new EngineCasing(1, "Squareframe", "travellers.stat.resilience.name", "w"),
@@ -272,6 +280,5 @@ public class EngineProceduralData {
 			return String.format("[boost=%d, letter=%s, jet=%s]", minBoost, letter, propType);
 		}
 	}
-
 
 }

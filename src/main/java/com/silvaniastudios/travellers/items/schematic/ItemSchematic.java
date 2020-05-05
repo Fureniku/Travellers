@@ -104,12 +104,13 @@ public class ItemSchematic extends Item {
 
 		if (hasCapability) {
 			ISchematicData schematicData = stack.getCapability(SchematicDataProvider.SCHEMATIC_DATA, null);
-
-			switch (schematicData.getType()) {
-			case ENGINE:
-				return EngineProceduralData.getEngineName(schematicData);
-			default:
-				return super.getItemStackDisplayName(stack);
+			
+			
+			if (schematicData.getType() != SchematicTypeEnum.FIXED) {
+				String name = schematicData.getType().getName(schematicData);
+				if (name != null) {
+					return name;
+				}
 			}
 		}
 
@@ -170,8 +171,8 @@ public class ItemSchematic extends Item {
 						schematicData.setStats(SchematicRandomGeneration.generateRandomStats(schematicData.getType(),
 								schematicData.getRarity()));
 						
-						schematicData.setCrafting(EngineProceduralData.generateEngineCosts(schematicData));
-						schematicData.setCategories(EngineProceduralData.getCategories(schematicData));
+						schematicData.setCrafting(schematicData.getType().getCrafting(schematicData));
+						schematicData.setCategories(schematicData.getType().getCategories(schematicData));
 						schematicData.generateUUID();
 					}
 

@@ -30,52 +30,99 @@ import net.minecraft.world.World;
 
 /**
  * 
+ * Draws the knowledge tree GUI to the screen
+ * 
  * @author jamesm2w
  *
  */
 public class GuiKnowledgeTree extends GuiContainer {
 
+	/**
+	 * Left hand side of the GUI background
+	 */
 	public static final ResourceLocation TEXTURE_LEFT = new ResourceLocation(Travellers.MODID,
 			"textures/gui/inventory_generic_left.png");
 
+	/**
+	 * Right hand side of the GUI background
+	 */
 	public static final ResourceLocation TEXTURE_RIGHT = new ResourceLocation(Travellers.MODID,
 			"textures/gui/inventory_generic_right.png");
 
+	/**
+	 * Icons displayed in the knowledge tree nodes
+	 */
 	public static final ResourceLocation TREE_ICONS = new ResourceLocation(Travellers.MODID,
 			"textures/gui/knowledge_tree.png");
 
+	/**
+	 * Width of the whole GUI (left + right)
+	 */
 	private int xSize = 206 + 256;
+	/**
+	 * Height of the GUI
+	 */
 	private int ySize = 256;
 
+	/**
+	 * Is the user dragging the screen around?
+	 */
 	private boolean isDragging = false;
+	/**
+	 * Offset X, Y of how the user has dragged the screen
+	 */
 	private float offsetX = 0;
 	private float offsetY = 0;
+	/**
+	 * Scroll factor to scale by
+	 */
 	private float deltaScroll = 1;
 
+	/**
+	 * Player which opened the GUI
+	 */
 	private EntityPlayer player;
+	/**
+	 * Players Data Instance
+	 */
 	private IPlayerData playerData;
 
+	/**
+	 * Node which was moused over
+	 */
 	private NodeArea selectedNode;
 
+	/**
+	 * List of areas on the screen where the nodes are (for click events and hover)
+	 */
 	private ArrayList<NodeArea> nodeAreas = new ArrayList<NodeArea>();
 
+	/**
+	 * Minecraft instance
+	 */
 	private final Minecraft mc = Minecraft.getMinecraft();
 
+	/**
+	 * Create a new instance of the GUI
+	 * @param player Player who is opening the GUI
+	 * @param world The world that player is in
+	 */
 	public GuiKnowledgeTree(EntityPlayer player, World world) {
 		super(new EmptyContainer(player.inventory, !world.isRemote, player));
 		this.player = player;
 	}
-
+	
 	@Override
 	public void initGui() {
 		super.initGui();
-
+		// Set up these variables used as offsets in the drawing functions
 		guiLeft = (width - xSize) / 2;
 		guiTop = (height - ySize) / 2;
 
+		// Add the "Research" schematic button to the GUI
 		this.buttonList.add(
 				new GuiButton(5, guiLeft + 298, guiTop + 90, 153, 20, I18n.format("travellers.gui.button.research")));
-
+		// If the player has player data (they should) take the instance
 		if (player.hasCapability(PlayerDataProvider.PLAYER_DATA, null)) {
 			playerData = player.getCapability(PlayerDataProvider.PLAYER_DATA, null);
 		}
@@ -83,6 +130,8 @@ public class GuiKnowledgeTree extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+		// Draws the background in two parts
+		
 		mc.renderEngine.bindTexture(TEXTURE_LEFT);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, 206, ySize);
 
@@ -92,15 +141,22 @@ public class GuiKnowledgeTree extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+		// Draws foreground (strings and such)
 		fontRenderer.drawStringWithShadow(I18n.format("travellers.gui.title.knowledge_tree"), 206 + 87, 8, 0xFFFFFF);
 
 		fontRenderer.drawStringWithShadow(I18n.format("travellers.gui.title.belt"), 206 + 87, 129, 0xFFFFFF);
 		fontRenderer.drawStringWithShadow(I18n.format("travellers.gui.title.selected_schematic"), 206 + 87, 22,
 				0xFFFFFF);
 		if (selectedNode != null) {
+			
+			int cost = selectedNode.node.cost;
+			if (selectedNode.node.name.equals("increase_slots")) {
+				cost += playerData.getKnowledgeNodeUsage("increase_slots") * 50; 
+			}
+			
 			String[] lines = new String[] { I18n.format("travellers.node." + selectedNode.node.name),
-					I18n.format("travellers.gui.message.cost", selectedNode.node.cost) + " "
-							+ ((playerData.getKnowledgeBalance() >= selectedNode.node.cost) ? ""
+					I18n.format("travellers.gui.message.cost", cost) + " "
+							+ ((playerData.getKnowledgeBalance() >= cost) ? ""
 									: TextFormatting.RED + I18n.format("travellers.gui.message.too_expensive")
 											+ TextFormatting.RESET),
 					I18n.format("travellers.description." + selectedNode.node.name) };
@@ -111,7 +167,7 @@ public class GuiKnowledgeTree extends GuiContainer {
 			}
 			this.buttonList.get(0).visible = true;
 
-			if (selectedNode.unlocked && (playerData.getKnowledgeBalance() >= selectedNode.node.cost)) {
+			if (selectedNode.unlocked && (playerData.getKnowledgeBalance() >= cost)) {
 				this.buttonList.get(0).enabled = true;
 			} else {
 				this.buttonList.get(0).enabled = false;
@@ -166,11 +222,16 @@ public class GuiKnowledgeTree extends GuiContainer {
 							lines.add(TextFormatting.RED + I18n.format("Locked") + TextFormatting.RESET);
 						}
 						
-						if (playerData.getKnowledgeBalance() >= area.node.cost) {
-							lines.add(TextFormatting.GREEN + I18n.format("travellers.gui.message.cost", area.node.cost)
+						int cost = area.node.cost;
+						if (area.node.name.equals("increase_slots")) {
+							cost += playerData.getKnowledgeNodeUsage("increase_slots") * 50; 
+						}
+						
+						if (playerData.getKnowledgeBalance() >= cost) {
+							lines.add(TextFormatting.GREEN + I18n.format("travellers.gui.message.cost", cost)
 									+ TextFormatting.RESET);
 						} else {
-							lines.add(I18n.format("travellers.gui.message.cost", area.node.cost) + " " + TextFormatting.RED
+							lines.add(I18n.format("travellers.gui.message.cost", cost) + " " + TextFormatting.RED
 									+ I18n.format("travellers.gui.message.too_expensive") + TextFormatting.RESET);
 						}
 					} else {
@@ -344,10 +405,16 @@ public class GuiKnowledgeTree extends GuiContainer {
 			drawNode(unlock.name, unlockedSubNode, distanceFromUnlocked);
 
 		}
+		
+		int cost = node.cost;
+		if (node.name.equals("increase_slots")) {
+			cost += playerData.getKnowledgeNodeUsage("increase_slots") * 50; 
+		}
+		
 
 		boolean invisible = distanceFromUnlocked > 0;
 		boolean used = uses > 0;
-		boolean canUse = knowledge >= node.cost;
+		boolean canUse = knowledge >= cost;
 		boolean maxedOut = uses == node.maxUses && node.infiniteRoll == 0;
 
 		// System.out.printf("name=%s text=%s %s\n",

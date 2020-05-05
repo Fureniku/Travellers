@@ -23,7 +23,7 @@
 		"texture": [120, 0],
 		"maxUses": 100,
 		"infiniteRoll": 0,
-		"costs": 50,
+		"cost": 50,
 		"unlocks": [],
 		"rewards": {
 			"type": "increase_schematic_slots"
