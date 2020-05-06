@@ -77,9 +77,9 @@ public class SchematicFixedData {
 		@Override
 		public int compareTo(SchematicStatisticSlot o) {
 			if (o.amount < this.amount) {
-				return 1;
-			} else if (o.amount > this.amount) {
 				return -1;
+			} else if (o.amount > this.amount) {
+				return 1;
 			} else {
 				return 0;
 			}

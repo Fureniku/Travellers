@@ -110,6 +110,10 @@ travellers.slot.casing.name=Casing
 travellers.slot.combus.name=Combustion Internals
 travellers.slot.mech.name=Mechanical Internals
 travellers.slot.prop.name=Propeller
+travellers.slot.aileron.name=Aileron
+travellers.slot.barrel.name=Barrel
+travellers.slot.ammoloader.name=Ammunition Loader
+travellers.slot.firingmech.name=Firing Mechanism
 
 travellers.config.title_world=Travellers Config
 
@@ -179,7 +183,7 @@ travellers.tooltip.food.breaded_mushrooms=A crispy coated mushroom. Delicious.
 travellers.tooltip.ship_parts.engine=Provides propulsion if attached to a ship, requires a power generator to run.
 travellers.tooltip.ship_parts.cannon=Deliver withering barrages against ships or target enemies on land.
 travellers.tooltip.ship_parts.wing=Improves turning if attached vertically and pitching if attached horizontally.
-travellers.tooltip.ship_parts.swivel_gun=Close range ship turrets capable of shredding soft targets.
+travellers.tooltip.ship_parts.swivel=Close range ship turrets capable of shredding soft targets.
 travellers.tooltip.ship_parts.power_generator=Generators refine fuel to power engines. Interact with them once they are attached to a ship to place fuel inside.
 
 travellers.tooltip.crafting.paint_can=Place in the customization slot while crafting ship parts to paint them.

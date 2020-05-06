@@ -161,8 +161,12 @@ public class GuiSchematicInfoScreen extends GuiScreen {
 
 			// Draw progress bars
 			int index = 1;
-			for (SchematicStatisticSlot stat : schematic.getStats()) {
-
+			for (String statKey : schematic.getType().getStatNames()) {
+				
+				SchematicStatisticSlot stat = schematic.getStats().find(statKey);
+				
+				if (stat == null) continue;
+				
 				this.drawTexturedModalRect(screenLeft + infoSectionXSize + infoMarginRight,
 						screenTop - 14 + ((index) * 19), 0, 110, 114, 19);
 
@@ -255,7 +259,12 @@ public class GuiSchematicInfoScreen extends GuiScreen {
 		if (schematic.getStats().size() > 0) {
 
 			index = 0;
-			for (SchematicStatisticSlot stat : schematic.getStats()) {
+			for (String statKey : schematic.getType().getStatNames()) {
+			
+				SchematicStatisticSlot stat = schematic.getStats().find(statKey);
+				
+				if (stat == null) continue;
+				
 				fontRenderer.drawString(I18n.format(stat.name), screenLeft + infoSectionXSize + infoMarginRight + 7,
 						screenTop + 8 + (19 * index), 5592405);
 

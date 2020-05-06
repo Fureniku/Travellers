@@ -141,12 +141,21 @@ public class ItemSchematic extends Item {
 			tooltip.add(String.format("%s%s%s", getRarity(stack).rarityColor, I18n.format("travellers.tooltip."
 					+ schematicData.getType().name.toLowerCase() + "." + schematicData.getRarity().name.toLowerCase()),
 					TextFormatting.RESET));
+			
+			if (schematicData.getType() != SchematicTypeEnum.FIXED && schematicData.getStats().size() > 0) {
 
-			for (SchematicStatisticSlot stat : schematicData.getStats()) {
-				tooltip.add(String.format("%s: %s", I18n.format(stat.name), (flagIn == TooltipFlags.ADVANCED)
-						? String.valueOf(stat.amount) : String.valueOf((int) Math.floor(stat.amount))));
+				for (String statKey : schematicData.getType().getStatNames()) {
+					SchematicStatisticSlot stat = schematicData.getStats().find(statKey);
+					
+					tooltip.add(String.format("%s: %s", I18n.format(stat.name), (flagIn == TooltipFlags.ADVANCED)
+							? String.valueOf(stat.amount) : String.valueOf((int) Math.floor(stat.amount))));
+				}
+			} else {
+				for (SchematicStatisticSlot stat : schematicData.getStats()) {					
+					tooltip.add(String.format("%s: %s", I18n.format(stat.name), (flagIn == TooltipFlags.ADVANCED)
+							? String.valueOf(stat.amount) : String.valueOf((int) Math.floor(stat.amount))));
+				}
 			}
-
 		}
 	}
 
